@@ -1751,6 +1751,55 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-master-whos-in .wc-roster-row .los-avatar-art{width:48px!important;height:48px!important}
 }
 
+/* West Coast Master Runtime: live Showtime / ready state. */
+.wc-master-showtime .wc-master-stage{background:none}
+.wc-master-showtime .wc-master-stage::before{content:"";position:absolute;z-index:0;inset:-5.5%;background:center/cover no-repeat url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png");pointer-events:none}
+.wc-master-showtime .wc-master-board{z-index:1;left:15.72%;top:18.5%;width:69.31%;height:70.06%;padding:clamp(24px,2vw,40px);display:flex;align-items:center;justify-content:center;overflow:visible}
+.wc-master-showtime .wc-global-controls{z-index:45;top:2.4%;right:5.25%;left:2.35%}
+.wc-master-showtime .wc-global-tools{margin-left:auto}
+.wc-master-showtime .wc-global-tools .wc-settings-gear{width:clamp(64px,4.4vw,82px);height:clamp(64px,7.4vh,82px);min-width:64px;min-height:64px}
+.wc-master-showtime .wc-settings-gear-art{width:88%;height:88%;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))}
+.wc-master-showtime .wc-settings-gear-teeth,.wc-master-showtime .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}.wc-master-showtime .wc-settings-gear-ring{stroke-width:2.2}
+.wc-showtime-live{width:94%;max-width:none;height:94%;max-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;gap:clamp(8px,1vh,14px);text-align:center}
+.wc-showtime-kicker{color:#d655ff;font:900 clamp(.85rem,1.1vw,1.25rem)/1 "Arial Narrow",Impact,sans-serif;letter-spacing:.3em;text-shadow:0 0 8px rgba(207,63,255,.8)}
+.wc-showtime-live h1{width:100%;max-width:none;box-sizing:border-box;margin:0;padding:0;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1vh,14px);overflow:visible;font-family:Impact,"Arial Narrow",sans-serif;font-style:italic;letter-spacing:.025em;filter:drop-shadow(0 4px 0 #2b1600) drop-shadow(0 0 14px rgba(255,187,26,.32))}
+.wc-showtime-live h1 span{display:block;width:28%;max-width:none;box-sizing:border-box;padding:.12em .4em;overflow:visible;font-size:clamp(2.3rem,4.4vw,5.5rem);line-height:1;white-space:nowrap;background:linear-gradient(180deg,#fff7a8 0%,#ffdb4d 28%,#b46300 68%,#ffe87a 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wc-showtime-live h1 strong{display:block;width:82%;max-width:none;box-sizing:border-box;padding:.08em .22em;overflow:visible;font-size:clamp(7rem,8.35vw,10rem);line-height:.94;white-space:nowrap;background:linear-gradient(180deg,#fffde9 0%,#d9dadf 32%,#75767d 58%,#f7f7f7 78%,#8d8e94 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 1px #fff) drop-shadow(0 0 12px rgba(201,64,255,.2))}
+.wc-showtime-players{width:88%;max-width:none;padding-block:.1em;overflow:visible;color:#fff;font:900 clamp(1.55rem,2.8vw,3.4rem)/1.15 "Arial Narrow",Impact,sans-serif;letter-spacing:.035em;text-overflow:clip;white-space:normal;overflow-wrap:anywhere;text-wrap:balance;text-shadow:0 3px 4px #000,0 0 10px rgba(198,52,255,.28)}.wc-showtime-players b{color:#d34cff;padding-inline:.18em;text-shadow:0 0 8px #bd2eff}
+.wc-showtime-rule{padding:.55em 1.5em;border-top:1px solid rgba(255,212,69,.55);border-bottom:1px solid rgba(255,212,69,.55);color:#f7cb42;font:900 clamp(1rem,1.65vw,1.8rem)/1 "Arial Narrow",Impact,sans-serif;letter-spacing:.14em;text-shadow:0 0 8px rgba(247,177,23,.38)}.wc-showtime-rule i{padding-inline:.6em;color:#d04dff;font-style:normal;text-shadow:0 0 8px #b52cff}
+.wc-showtime-summary{color:#d6d5dc;font:800 clamp(.72rem,1vw,1.05rem)/1.2 Arial,sans-serif;letter-spacing:.06em}.wc-showtime-summary span{color:#d34cff;padding-inline:.35em}
+.wc-showtime-status{min-height:1.25em;color:#f2e9f5;font:800 clamp(.76rem,1.05vw,1.08rem)/1.2 Arial,sans-serif;letter-spacing:.055em}
+.wc-showtime-start{position:relative;z-index:4;min-width:min(480px,72%);min-height:clamp(58px,7vh,78px);padding:.6em 1.5em;border:2px solid #ffe37c;border-radius:18px;background:linear-gradient(180deg,#fff5a1 0%,#f8cd43 28%,#c47700 67%,#f2ba27 100%);box-shadow:inset 0 2px 0 rgba(255,255,255,.78),inset 0 -6px 12px rgba(91,42,0,.62),0 0 16px rgba(255,184,30,.55),0 0 28px rgba(161,35,240,.22);color:#150d02;font:900 clamp(1.2rem,1.8vw,2rem)/1 Impact,"Arial Narrow",sans-serif;letter-spacing:.08em;text-shadow:0 1px rgba(255,255,255,.45);cursor:pointer;touch-action:manipulation}
+.wc-showtime-start:hover{filter:brightness(1.08);transform:translateY(-1px)}.wc-showtime-start:active{transform:translateY(1px);filter:brightness(.96)}.wc-showtime-start:focus-visible{outline:3px solid #fff;outline-offset:4px}
+
+@media (orientation:portrait){
+ .wc-master-showtime .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png")}
+ .wc-master-showtime .wc-master-board{left:17.25%;top:18.42%;width:65.5%;height:59.16%;padding:clamp(22px,3.2vw,36px)}
+ .wc-master-showtime .wc-global-controls{top:2.1%;right:6.5%;left:2.6%}
+ .wc-master-showtime .wc-global-tools .wc-settings-gear{width:clamp(62px,8vw,78px);height:clamp(62px,4.4vh,78px)}
+ .wc-showtime-live{width:94%;height:90%;gap:clamp(12px,1.15vh,21px)}
+ .wc-showtime-live h1{width:100%;gap:clamp(10px,.8vh,16px)}.wc-showtime-live h1 span{width:28%;font-size:clamp(2.1rem,6.8vw,4.7rem)}.wc-showtime-live h1 strong{width:82%;font-size:clamp(4rem,8.9vw,6rem)}
+ .wc-showtime-players{width:88%;font-size:clamp(1.35rem,4.4vw,2.8rem)}
+ .wc-showtime-rule{font-size:clamp(.85rem,2.6vw,1.5rem);padding-inline:.8em;letter-spacing:.1em}
+ .wc-showtime-summary{max-width:34em;font-size:clamp(.68rem,1.9vw,1rem);line-height:1.45}
+ .wc-showtime-start{min-width:82%;min-height:clamp(56px,4.6vh,72px);font-size:clamp(1.1rem,3.6vw,1.8rem)}
+}
+
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .wc-master-showtime .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png")}
+ .wc-master-showtime .wc-master-board{left:18.83%;top:24.14%;width:62.22%;height:61.66%;padding:clamp(18px,1.4vw,30px)}
+ .wc-master-showtime .wc-global-controls{top:2.25%;right:4.6%;left:2.3%}
+ .wc-showtime-live{width:94%;height:96%;justify-content:space-between;gap:2px}
+ .wc-showtime-live h1{width:100%}.wc-showtime-live h1 span{width:28%;font-size:clamp(2rem,3.8vw,6rem)}.wc-showtime-live h1 strong{width:82%;font-size:clamp(7rem,6.55vw,10.5rem)}
+ .wc-showtime-players{font-size:clamp(1.35rem,2.1vw,2.9rem)}
+ .wc-showtime-rule{padding-block:.35em}
+}
+
+@media (max-width:500px), (orientation:landscape) and (max-height:430px){
+ .wc-master-showtime .wc-master-board{display:grid;padding:8px 12px}
+ .wc-showtime-live{gap:4px;width:94%}.wc-showtime-kicker{font-size:.55rem}.wc-showtime-live h1 span{font-size:1.25rem}.wc-showtime-live h1 strong{font-size:2.5rem}.wc-showtime-players{font-size:1rem}.wc-showtime-rule{font-size:.6rem}.wc-showtime-summary,.wc-showtime-status{font-size:.5rem}.wc-showtime-start{min-width:60%;min-height:44px;font-size:.8rem;padding:3px 8px;border-radius:10px}
+}
+
 /* Keep the West Coast roster geometry authoritative over earlier reusable
    roster/picker containment rules. */
 .los-west-coast-whos-in .los-selected-players{display:grid;flex-wrap:nowrap;justify-content:stretch;padding:0;pointer-events:none}
