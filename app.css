@@ -1455,6 +1455,61 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .los-player-up-timer{top:71.6%;width:11%}.los-player-up-timer .handoff-count{font-size:clamp(2.5rem,4.4vw,5.5rem)}
 }
 
+/* West Coast Who's In: the locked runtime plate owns the composition while
+   the Original roster DOM remains live for saved profiles, editing, voice,
+   keyboard, and navigation. */
+.los-west-coast-whos-in{position:relative;padding:0;background:#020305 url("./assets/west-coast/runtime/whos-in/Whos_In_Landscape_Runtime_LOCKED.png") center/cover no-repeat;overflow:hidden}
+.los-west-coast-whos-in .shell{position:absolute;inset:0;width:100%;height:100%;max-width:none;padding:0;display:block}
+.los-west-coast-whos-in .topbar,.los-west-coast-whos-in .topbar-tools,.los-west-coast-whos-in .content,.los-west-coast-whos-in .footer,.los-west-coast-whos-in .los-roster,.los-west-coast-whos-in .los-roster-actions{display:contents}
+.los-west-coast-whos-in .topbar-title,.los-west-coast-whos-in .los-roster-heading,.los-west-coast-whos-in .los-roster>.subtle{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.los-west-coast-whos-in .los-selected-players{position:absolute;z-index:4;left:23.92%;top:33.58%;width:52.1%;height:31.9%;min-height:0;max-height:none;margin:0;padding:0;display:grid;grid-template-rows:repeat(5,20%);align-content:start;gap:0;overflow-y:auto;overflow-x:hidden;background:transparent}
+.los-west-coast-whos-in .los-selected-player{position:relative;z-index:4;width:100%;min-width:0;max-width:none;height:100%;margin:0;padding:2% 1.5%;display:grid;grid-template-columns:7% 10% minmax(0,1fr) 7%;align-items:center;gap:1.5%;border:0;border-radius:0;background:transparent;box-shadow:none;pointer-events:none}
+.los-west-coast-whos-in .los-selected-player .los-avatar-art{width:auto;height:88%;max-width:100%;aspect-ratio:1;border:0;border-radius:50%;box-shadow:none;justify-self:center}
+.los-west-coast-whos-in .los-selected-player strong{align-self:stretch;display:grid;place-items:center start;min-width:0;padding:0 3%;overflow:hidden;color:#fff;font:900 clamp(.88rem,1.45vw,1.65rem)/1 Impact,"Arial Narrow",sans-serif;letter-spacing:.035em;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 2px 3px #000}
+.los-west-coast-whos-in .los-selected-player button{pointer-events:auto;cursor:pointer}
+.los-west-coast-whos-in .los-roster-check{width:100%;height:100%;min-width:44px;min-height:44px;padding:0;border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;color:#f7ca38!important;font:1000 clamp(1.1rem,1.8vw,2rem)/1 system-ui!important}
+.los-west-coast-whos-in .los-roster-edit{width:100%;height:100%;min-width:44px;min-height:44px;padding:0;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;color:transparent!important;font-size:0!important}
+.los-west-coast-whos-in .los-selected-empty{display:none}
+.los-west-coast-whos-in #selectPlayers,.los-west-coast-whos-in #add,.los-west-coast-whos-in #back,.los-west-coast-whos-in #continue,.los-west-coast-whos-in [data-setup-exit]{position:absolute;z-index:3;margin:0;padding:0;min-width:44px;min-height:44px;border:0;border-radius:12px;background:transparent;color:transparent;font-size:0;box-shadow:none;cursor:pointer}
+.los-west-coast-whos-in #selectPlayers{left:23.92%;top:33.58%;width:52.1%;height:31.9%}
+.los-west-coast-whos-in #add{left:23.92%;top:66.74%;width:52.1%;height:8.08%}
+.los-west-coast-whos-in #back{left:2.09%;top:3.19%;width:10.83%;height:7.23%}
+.los-west-coast-whos-in #continue{left:25.12%;top:76.51%;width:49.9%;height:12.75%}
+.los-west-coast-whos-in [data-setup-exit]{display:none}
+.los-west-coast-whos-in #rosterError{position:absolute;z-index:8;left:30%;top:73.7%;width:40%;min-height:0;margin:0;padding:4px 10px;border-radius:8px;background:rgba(5,3,9,.9);text-align:center;font-size:clamp(.65rem,1vw,1rem)}
+.los-west-coast-whos-in #rosterError:empty{display:none}
+.los-west-coast-whos-in .persistent-mic{position:absolute;z-index:8;left:83.2%;top:3.19%;width:14.9%;height:7.23%;min-width:44px;min-height:44px;margin:0;padding:0 7%;display:flex;align-items:center;justify-content:center;gap:7%;border:0;background:transparent;box-shadow:none;color:#fff;font:900 clamp(.68rem,1.15vw,1.35rem)/1 Impact,"Arial Narrow",sans-serif;overflow:hidden}
+.los-west-coast-whos-in .persistent-mic span{font-size:0}.los-west-coast-whos-in .persistent-mic span::before{content:"🎙";font-size:clamp(.9rem,1.45vw,1.7rem)}
+.los-west-coast-whos-in .persistent-mic strong{white-space:nowrap}.los-west-coast-whos-in .persistent-mic::after{content:"▮▮▮▮";color:#fff;font-size:clamp(.5rem,.85vw,1rem);letter-spacing:.06em}
+.los-west-coast-whos-in .persistent-mic.is-off{color:#bbb}.los-west-coast-whos-in .persistent-mic.is-off::after{opacity:.35}
+.los-west-coast-whos-in :is(#selectPlayers,#add,#back,#continue,.persistent-mic,.los-roster-check,.los-roster-edit):focus-visible{outline:3px solid #fff!important;outline-offset:-5px!important}
+.los-west-coast-whos-in #selectPlayers:focus,.los-west-coast-whos-in #selectPlayers:focus-visible{outline:0!important;box-shadow:none!important}
+.los-west-coast-whos-in .persistent-mic:focus-visible{outline:0!important}
+
+@media (orientation:portrait){
+ .los-west-coast-whos-in{background-image:url("./assets/west-coast/runtime/whos-in/Whos_In_Portrait_Runtime_LOCKED.png")}
+ .los-west-coast-whos-in .los-selected-players{left:20.3%;top:35.3%;width:60.68%;height:27.2%;grid-template-rows:repeat(5,20%)}
+ .los-west-coast-whos-in .los-selected-player{grid-template-columns:8% 13% minmax(0,1fr) 8%;gap:1.7%;padding-block:2.5%}
+ .los-west-coast-whos-in .los-selected-player strong{font-size:clamp(1rem,3.2vw,2rem)}
+ .los-west-coast-whos-in #selectPlayers{left:20.3%;top:35.3%;width:60.68%;height:27.2%}
+ .los-west-coast-whos-in #add{left:19.1%;top:64.8%;width:62.2%;height:5.1%}
+ .los-west-coast-whos-in #back{left:2.55%;top:1.91%;width:16.6%;height:3.77%}
+ .los-west-coast-whos-in #continue{left:19.1%;top:71.83%;width:62.2%;height:8.73%}
+ .los-west-coast-whos-in #rosterError{left:24%;top:69.7%;width:52%}
+ .los-west-coast-whos-in .persistent-mic{left:72.16%;top:1.91%;width:25.1%;height:3.77%;padding-inline:5%;font-size:clamp(.68rem,2.4vw,1.4rem)}
+ .los-west-coast-whos-in .persistent-mic span::before{font-size:clamp(.9rem,3vw,1.8rem)}.los-west-coast-whos-in .persistent-mic::after{font-size:clamp(.5rem,1.8vw,1rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .los-west-coast-whos-in{background-image:url("./assets/west-coast/runtime/whos-in/Whos_In_Ultrawide_Runtime_LOCKED.png")}
+ .los-west-coast-whos-in .los-selected-players{left:24.33%;top:31.08%;width:51.24%;height:36%;grid-template-rows:repeat(5,20%)}
+ .los-west-coast-whos-in #selectPlayers{left:24.33%;top:31.08%;width:51.24%;height:36%}
+ .los-west-coast-whos-in #add{left:24.33%;top:68.8%;width:51.24%;height:6.4%}
+ .los-west-coast-whos-in #back{left:1.45%;top:2.33%;width:7.92%;height:7%}
+ .los-west-coast-whos-in #continue{left:34.37%;top:77.5%;width:31.6%;height:11.9%}
+ .los-west-coast-whos-in #rosterError{left:35%;top:74.8%;width:30%}
+ .los-west-coast-whos-in .persistent-mic{left:84.5%;top:2.2%;width:12.4%;height:7.1%;padding-inline:3.5%}
+}
+
 /* Approved gameplay artwork package: runtime overlays preserve all game state. */
 .los-gameplay-art-screen{position:relative;padding:0!important;overflow:hidden;background:#030205!important;isolation:isolate}
 .los-gameplay-art-screen::before,.los-gameplay-art-screen::after{display:none!important}
@@ -1642,4 +1697,197 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .los-west-coast-choose-game [data-topic="culture"]{left:calc(var(--wc-art-w)*.052 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.414 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.294);height:calc(var(--wc-art-h)*.093)}.los-west-coast-choose-game [data-topic="transit"]{left:calc(var(--wc-art-w)*.355 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.414 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.294);height:calc(var(--wc-art-h)*.093)}.los-west-coast-choose-game [data-topic="entertainment"]{left:calc(var(--wc-art-w)*.649 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.414 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.294);height:calc(var(--wc-art-h)*.093)}.los-west-coast-choose-game [data-topic="brain"]{left:calc(var(--wc-art-w)*.052 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.536 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.294);height:calc(var(--wc-art-h)*.093)}
  .los-west-coast-choose-game .pack-summary{left:28%;top:calc(66.5% + var(--wc-upper-shift));width:44%;height:5%}
  .los-west-coast-choose-game #back{left:37.8%;top:73.6%;width:10.5%;height:9.4%}.los-west-coast-choose-game #continuePacks{left:49.4%;top:73.6%;width:12.1%;height:9.4%}
+}
+
+@media (max-width:500px), (orientation:landscape) and (max-height:430px){
+ .wc-master-board{display:flex;flex-direction:column}
+ .wc-roster-heading{flex:0 0 auto}
+ .wc-roster-live{flex:1 1 0;width:100%;min-height:0;overflow:hidden}
+ .wc-roster-list{height:auto!important;max-height:100%!important}
+}
+
+/* Who's In refinement: enlarge the master artwork without scaling live
+   controls, keep one premium Settings gear, and expose more roster entries. */
+.wc-master-whos-in .wc-master-stage{background:none}
+.wc-master-whos-in .wc-master-stage::before{content:"";position:absolute;z-index:0;inset:-5.5%;background:center/cover no-repeat url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png");pointer-events:none}
+.wc-master-whos-in .wc-master-board{z-index:1;left:15.72%;top:18.5%;width:69.31%;height:70.06%;padding:clamp(18px,1.65vw,32px) clamp(20px,2vw,38px)}
+.wc-master-whos-in .wc-global-controls{z-index:45;top:2.4%;right:5.25%;left:2.35%}
+.wc-master-whos-in .wc-global-tools{margin-left:auto}
+.wc-master-whos-in .wc-global-tools .wc-settings-gear{width:clamp(64px,4.4vw,82px);height:clamp(64px,7.4vh,82px);min-width:64px;min-height:64px}
+.wc-master-whos-in .wc-settings-gear-art{width:88%;height:88%;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))}
+.wc-master-whos-in .wc-settings-gear-teeth,.wc-master-whos-in .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}
+.wc-master-whos-in .wc-settings-gear-ring{stroke-width:2.2}
+.wc-master-whos-in .wc-roster-heading h1{font-size:clamp(2.8rem,4.7vw,5.35rem)}
+.wc-master-whos-in .wc-roster-heading p{margin:.18em 0 .42em}
+.wc-master-whos-in .wc-roster-live{gap:clamp(7px,.72vh,11px)}
+.wc-master-whos-in .wc-roster-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-auto-rows:minmax(58px,1fr)!important;gap:clamp(6px,.7vh,10px) clamp(8px,.75vw,14px)!important;align-content:start}
+.wc-master-whos-in .los-selected-empty{grid-column:1/-1}
+.wc-master-whos-in .wc-roster-row.los-selected-player{grid-template-columns:44px 56px minmax(0,1fr) 66px;gap:clamp(6px,.55vw,10px);min-height:58px;padding:4px 8px;border-color:#f8c83e;background:linear-gradient(100deg,rgba(24,15,5,.96),rgba(5,4,8,.94) 68%,rgba(30,8,38,.91));box-shadow:inset 0 1px 0 rgba(255,248,189,.48),inset 0 -3px 8px rgba(79,38,0,.58),0 0 9px rgba(240,173,22,.24)}
+.wc-master-whos-in .wc-roster-row .los-avatar-art{width:52px!important;height:52px!important}
+.wc-master-whos-in .wc-roster-row>strong{font-size:clamp(.9rem,1.12vw,1.35rem)!important}
+.wc-master-whos-in .wc-roster-edit{height:44px!important;font-size:clamp(.65rem,.72vw,.88rem)!important}
+.wc-master-whos-in #continue{position:relative;z-index:6;isolation:isolate;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+
+@media (orientation:portrait){
+ .wc-master-whos-in .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png")}
+ .wc-master-whos-in .wc-master-board{left:17.25%;top:18.42%;width:65.5%;height:59.16%;padding:clamp(22px,2.8vw,34px) clamp(18px,2.6vw,30px)}
+ .wc-master-whos-in .wc-global-controls{top:2.1%;right:6.5%;left:2.6%}
+ .wc-master-whos-in .wc-global-tools .wc-settings-gear{width:clamp(62px,8vw,78px);height:clamp(62px,4.4vh,78px)}
+ .wc-master-whos-in .wc-roster-heading h1{font-size:clamp(2.5rem,6.6vw,4.35rem)}
+ .wc-master-whos-in .wc-roster-list{grid-template-columns:1fr!important;grid-auto-rows:minmax(60px,1fr)!important;gap:clamp(5px,.46vh,9px)!important}
+ .wc-master-whos-in .wc-roster-row.los-selected-player{grid-template-columns:44px 58px minmax(0,1fr) 62px;min-height:60px;padding:4px 8px}
+ .wc-master-whos-in .wc-roster-row .los-avatar-art{width:54px!important;height:54px!important}
+ .wc-master-whos-in .wc-roster-row>strong{font-size:clamp(.92rem,2.25vw,1.4rem)!important}
+ .wc-master-whos-in .wc-roster-actions{grid-template-columns:1fr 1fr}
+}
+
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .wc-master-whos-in .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png")}
+ .wc-master-whos-in .wc-master-board{left:18.83%;top:24.14%;width:62.22%;height:61.66%;padding:clamp(15px,1.25vw,27px) clamp(20px,1.7vw,36px)}
+ .wc-master-whos-in .wc-global-controls{top:2.25%;right:4.6%;left:2.3%}
+ .wc-master-whos-in .wc-roster-heading h1{font-size:clamp(2.5rem,3.65vw,4.55rem)}
+ .wc-master-whos-in .wc-roster-list{grid-auto-rows:minmax(52px,1fr)!important;gap:5px 12px!important}
+ .wc-master-whos-in .wc-roster-row.los-selected-player{min-height:52px;padding-block:2px}
+ .wc-master-whos-in .wc-roster-row .los-avatar-art{width:48px!important;height:48px!important}
+}
+
+/* Keep the West Coast roster geometry authoritative over earlier reusable
+   roster/picker containment rules. */
+.los-west-coast-whos-in .los-selected-players{display:grid;flex-wrap:nowrap;justify-content:stretch;padding:0;pointer-events:none}
+.los-west-coast-whos-in .los-selected-player{width:100%;min-width:0;max-width:none;height:100%;grid-template-columns:7% 10% minmax(0,1fr) 7%;gap:1.5%;padding:2% 1.5%}
+@media (orientation:portrait){
+ .los-west-coast-whos-in .los-selected-players{display:grid;max-height:none}
+ .los-west-coast-whos-in .los-selected-player{width:100%;min-width:0;max-width:none;flex-basis:auto;height:100%;grid-template-columns:8% 13% minmax(0,1fr) 8%;gap:1.7%;padding-block:2.5%}
+}
+
+/* Portrait Who's In uses one contained 941x1672 design stage. The artwork and
+   every live control therefore share the exact same coordinate system. */
+@media (orientation:portrait){
+ .los-west-coast-whos-in{display:grid;place-items:center;background:#020305;overflow:hidden}
+ .los-west-coast-whos-in .shell{left:50%;top:50%;right:auto;bottom:auto;width:min(100vw,calc(100dvh * .5627990431));height:min(100dvh,calc(100vw / .5627990431));transform:translate(-50%,-50%);background:url("./assets/west-coast/runtime/whos-in/Whos_In_Portrait_Runtime_LOCKED.png") center/100% 100% no-repeat;overflow:hidden}
+ .los-west-coast-whos-in .los-selected-players{left:20.3%;top:35.227%;width:60.68%;height:29.306%;grid-template-rows:repeat(5,20%);overflow:hidden}
+ .los-west-coast-whos-in .los-selected-player{position:relative;display:block;width:100%;height:100%;padding:0}
+ .los-west-coast-whos-in .los-selected-player .los-roster-check{position:absolute;left:0;top:5.1%;width:9.2%;height:54.1%;min-width:0;min-height:0;display:grid;place-items:center;font-size:clamp(1.05rem,3.4vw,2.15rem)!important;line-height:1!important;transform:translateY(-1px)}
+ .los-west-coast-whos-in .los-selected-player .los-avatar-art{position:absolute;left:13.5%;top:-12.2%;width:auto;height:89.8%;max-width:none;aspect-ratio:1;border-radius:50%;background-clip:padding-box;overflow:hidden;transform:translateY(-.7px)}
+ .los-west-coast-whos-in .los-selected-player strong{position:absolute;left:32.22%;top:-1%;width:51.49%;height:67.3%;padding:0 3%;display:grid;place-items:center start;font-size:clamp(1rem,3.35vw,2.05rem);text-align:left}
+ .los-west-coast-whos-in .los-selected-player .los-roster-edit{position:absolute;left:87%;top:0;width:12%;height:64%;min-width:0;min-height:0}
+ .los-west-coast-whos-in #selectPlayers{left:20.3%;top:35.227%;width:60.68%;height:29.306%;outline:0!important}
+ .los-west-coast-whos-in #selectPlayers:focus,.los-west-coast-whos-in #selectPlayers:focus-visible{outline:0!important;box-shadow:none!important}
+ .los-west-coast-whos-in #selectPlayers:focus-visible::after{content:none}
+ .los-west-coast-whos-in #add{left:19.1%;top:64.77%;width:62.2%;height:5.15%}
+ .los-west-coast-whos-in #back{left:2.55%;top:1.91%;width:16.58%;height:3.77%}
+ .los-west-coast-whos-in #continue{left:19.1%;top:71.83%;width:62.2%;height:8.73%}
+ .los-west-coast-whos-in #rosterError{left:24%;top:69.8%;width:52%}
+ .los-west-coast-whos-in .persistent-mic{left:72.16%;top:1.91%;width:25.08%;height:3.77%;min-width:0;min-height:0;padding:0 5%;display:flex;align-items:center;justify-content:center;gap:7%;border:0;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 2px rgba(194,43,255,.9),inset 0 0 9px rgba(176,35,255,.45);color:#fff;font:900 clamp(.7rem,2.35vw,1.42rem)/1 Impact,"Arial Narrow",sans-serif}
+ .los-west-coast-whos-in .persistent-mic span{position:relative;display:block;width:8%;height:45%;min-width:12px;border:2px solid #c936ff;border-radius:999px;color:transparent;font-size:0}
+ .los-west-coast-whos-in .persistent-mic span::before{content:"";position:absolute;left:50%;bottom:-35%;width:135%;height:62%;transform:translateX(-50%);border:2px solid #c936ff;border-top:0;border-radius:0 0 999px 999px}
+ .los-west-coast-whos-in .persistent-mic span::after{content:"";position:absolute;left:50%;bottom:-52%;width:2px;height:24%;transform:translateX(-50%);background:#c936ff;box-shadow:-5px 5px 0 -1px #c936ff,5px 5px 0 -1px #c936ff}
+ .los-west-coast-whos-in .persistent-mic::after{content:"▂▅▇▅▂";color:#c936ff;font-size:clamp(.62rem,2.05vw,1.25rem);letter-spacing:.03em;line-height:1}
+ .los-west-coast-whos-in .persistent-mic.is-off{color:#bbb;box-shadow:none}
+ .los-west-coast-whos-in .persistent-mic.is-off span{border-color:#95729d}.los-west-coast-whos-in .persistent-mic.is-off span::before{border-color:#95729d}.los-west-coast-whos-in .persistent-mic.is-off span::after{background:#95729d;box-shadow:-5px 5px 0 -1px #95729d,5px 5px 0 -1px #95729d}.los-west-coast-whos-in .persistent-mic.is-off::after{color:#95729d;opacity:.55}
+}
+
+/* Standard Landscape row geometry measured from the 1672x941 locked plate. */
+@media (orientation:landscape) and (max-aspect-ratio:11/5){
+ .los-west-coast-whos-in .los-selected-players{left:23.923%;top:33.688%;width:52.034%;height:32.412%;grid-template-rows:repeat(5,20%);overflow:hidden}
+ .los-west-coast-whos-in .los-selected-player{position:relative;display:block;width:100%;height:100%;padding:0}
+ .los-west-coast-whos-in .los-selected-player .los-roster-check{position:absolute;left:3.33%;top:19.7%;width:3.56%;height:54.1%;min-width:0;min-height:0;display:grid;place-items:center;font-size:clamp(.8rem,1.25vw,1.5rem)!important;line-height:1!important;transform:translateY(-1px)}
+ .los-west-coast-whos-in .los-selected-player .los-avatar-art{position:absolute;left:13.33%;top:9%;width:auto;height:73.8%;max-width:none;aspect-ratio:1;border-radius:50%;overflow:hidden}
+ .los-west-coast-whos-in .los-selected-player strong{position:absolute;left:21.95%;top:0;width:63.68%;height:91.8%;padding:0 2%;display:grid;place-items:center start;font-size:clamp(.85rem,1.45vw,1.65rem);text-align:left}
+ .los-west-coast-whos-in .los-selected-player .los-roster-edit{position:absolute;left:96.78%;top:14.3%;width:3.45%;height:64%;min-width:0;min-height:0}
+ .los-west-coast-whos-in #selectPlayers{left:23.923%;top:33.688%;width:52.034%;height:32.412%}
+ .los-west-coast-whos-in .persistent-mic{left:83.2%;top:3.19%;width:14.9%;height:7.23%;min-width:0;min-height:0;padding:0 3.2%;display:flex;align-items:center;justify-content:center;gap:7%;border:0;border-radius:999px;background:transparent;box-shadow:inset 0 0 0 2px rgba(194,43,255,.9),inset 0 0 9px rgba(176,35,255,.45);color:#fff;font:900 clamp(.68rem,1.15vw,1.35rem)/1 Impact,"Arial Narrow",sans-serif;overflow:hidden}
+ .los-west-coast-whos-in .persistent-mic span{position:relative;display:block;width:9%;height:43%;min-width:12px;border:2px solid #c936ff;border-radius:999px;color:transparent;font-size:0}
+ .los-west-coast-whos-in .persistent-mic span::before{content:"";position:absolute;left:50%;bottom:-35%;width:135%;height:62%;transform:translateX(-50%);border:2px solid #c936ff;border-top:0;border-radius:0 0 999px 999px}
+ .los-west-coast-whos-in .persistent-mic span::after{content:"";position:absolute;left:50%;bottom:-52%;width:2px;height:24%;transform:translateX(-50%);background:#c936ff;box-shadow:-5px 5px 0 -1px #c936ff,5px 5px 0 -1px #c936ff}
+ .los-west-coast-whos-in .persistent-mic::after{content:"▂▅▇▅▂";color:#c936ff;font-size:clamp(.55rem,.95vw,1.05rem);letter-spacing:.03em;line-height:1}
+}
+
+/* West Coast global control: Settings replaces the standalone MIC badge. */
+.wc-settings-gear{position:absolute;z-index:50;display:grid;place-items:center;min-width:52px;min-height:52px;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:transparent;cursor:pointer;overflow:visible;touch-action:manipulation}
+.wc-settings-gear-art{display:block;width:min(72%,88px);height:min(72%,88px);overflow:visible;filter:drop-shadow(0 0 7px rgba(200,48,255,.95)) drop-shadow(0 0 15px rgba(139,22,214,.72));transition:transform .16s ease,filter .16s ease}
+.wc-settings-gear:hover .wc-settings-gear-art{transform:rotate(10deg) scale(1.05);filter:drop-shadow(0 0 9px #e060ff) drop-shadow(0 0 18px rgba(151,27,225,.9))}.wc-settings-gear:active .wc-settings-gear-art{transform:rotate(18deg) scale(.96)}
+.wc-settings-gear-teeth,.wc-settings-gear-ring{fill:url(#wcGearMetal);stroke:#ed91ff;stroke-width:2.1;stroke-linejoin:round;filter:url(#wcGearGlow)}.wc-settings-gear-ring{fill:#170521;stroke-width:2.8}.wc-settings-gear-core{fill:url(#wcGearMetal);stroke:#f2b2ff;stroke-width:2}
+.wc-settings-gear:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.los-west-coast-choose-game .wc-settings-gear{left:68%;top:4%;width:19%;height:10.5%}
+.los-west-coast-whos-in .wc-settings-gear{left:83.2%;top:3.19%;width:14.9%;height:7.23%}
+.los-west-coast-whos-in .wc-settings-gear::before{content:"";position:absolute;z-index:-1;inset:-10%;background:radial-gradient(ellipse at 75% 42%,rgba(36,3,48,.98),rgba(10,3,24,.98) 52%,rgba(4,2,13,.96) 76%,transparent 100%);filter:blur(3px);pointer-events:none}
+.los-home-final .wc-settings-gear-home{border:0;border-radius:0;background:transparent;box-shadow:none}
+.wc-settings-overlay{position:fixed;z-index:2147483000;inset:0;display:grid;place-items:center;padding:max(18px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));background:rgba(2,2,7,.8);backdrop-filter:blur(8px);overflow:auto}
+.wc-settings-panel{width:min(520px,100%);max-height:calc(100dvh - 36px);display:grid;gap:14px;padding:clamp(20px,3vw,34px);border:2px solid #b72cff;border-radius:22px;background:linear-gradient(160deg,#101019,#050508);box-shadow:0 0 36px rgba(181,38,255,.5),inset 0 0 22px rgba(181,38,255,.08);color:#fff;overflow:auto}
+.wc-settings-panel header{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px}.wc-settings-panel h2{margin:0;color:#f4c943;font:900 clamp(2rem,5vw,3.5rem)/1 Impact,"Arial Narrow",sans-serif;letter-spacing:.04em}.wc-settings-close{width:48px;height:48px;border:1px solid #b72cff;border-radius:50%;background:#08080d;color:#fff;font:700 2rem/1 system-ui;cursor:pointer}
+.wc-settings-row,.wc-settings-volume{min-height:62px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;padding:10px 14px;border:1px solid rgba(183,44,255,.5);border-radius:14px;background:#090911;color:#fff;font:900 1rem/1 Arial,sans-serif;letter-spacing:.08em}
+.wc-settings-toggle{min-width:92px;min-height:44px;border:2px solid #6b6073;border-radius:999px;background:#050507;color:#aaa;font:900 .9rem/1 Arial,sans-serif;cursor:pointer}.wc-settings-toggle[aria-pressed="true"]{border-color:#b72cff;color:#fff;background:#24102f;box-shadow:0 0 12px rgba(183,44,255,.42)}
+.wc-settings-volume{grid-template-columns:auto minmax(120px,1fr) auto}.wc-settings-volume input{width:100%;accent-color:#b72cff}.wc-settings-volume strong{min-width:4ch;text-align:right}
+.wc-settings-action{min-height:54px;border:2px solid #b72cff;border-radius:14px;background:#0b0b12;color:#fff;font:900 1rem/1 Arial,sans-serif;letter-spacing:.07em;cursor:pointer}.wc-settings-action:disabled{opacity:.42;cursor:not-allowed}.wc-settings-exit{border-color:#d24b62;color:#ffbcc7}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .wc-settings-gear{left:67%;top:11.8%;width:27%;height:6.8%}
+ .los-west-coast-whos-in .wc-settings-gear{left:72.16%;top:1.91%;width:25.08%;height:3.77%}
+ .los-west-coast-whos-in .wc-settings-gear::before{inset:-14%;background:radial-gradient(ellipse at 50% 50%,rgba(21,3,37,.99),rgba(7,2,21,.98) 58%,transparent 100%)}
+ .wc-settings-gear-art{width:min(70%,82px);height:min(70%,82px)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .los-west-coast-choose-game .wc-settings-gear{left:64%;top:4%;width:13.5%;height:9%}
+ .los-west-coast-whos-in .wc-settings-gear{left:84.5%;top:2.2%;width:12.4%;height:7.1%}
+}
+
+/* West Coast master-runtime architecture. The master art and every live
+   Who's In control share this single responsive stage. */
+.wc-master-screen{position:relative;width:100vw;height:100dvh;min-height:0;padding:0;overflow:hidden;background:#030106}
+.wc-master-stage{position:absolute;inset:0;overflow:hidden;background:center/cover no-repeat url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png")}
+.wc-master-board{position:absolute;left:18.84%;top:21.36%;width:62.44%;height:63.12%;min-height:0;padding:clamp(18px,2.1vw,38px) clamp(20px,2.6vw,46px);display:flex;flex-direction:column;overflow:hidden!important;background:transparent}
+.wc-global-controls{position:absolute;z-index:40;inset:2.5% 2.8% auto;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+.wc-global-controls button{pointer-events:auto}
+.wc-global-back{position:relative;display:flex;align-items:center;justify-content:center;gap:.48em;min-width:clamp(150px,12vw,230px);min-height:clamp(56px,6.5vh,78px);padding:.55em 1.25em;border:2px solid #f7c84a;border-radius:999px;background:linear-gradient(180deg,#1b1716 0%,#060607 48%,#151016 100%);box-shadow:inset 0 1px 0 #fff3b0,inset 0 -3px 8px rgba(0,0,0,.9),0 0 15px rgba(255,190,46,.48),0 0 24px rgba(176,37,255,.35);color:#f8f8fa;font:900 clamp(1.05rem,1.45vw,1.65rem)/1 "Arial Narrow",Impact,sans-serif;letter-spacing:.045em;text-shadow:0 2px 3px #000;cursor:pointer}
+.wc-global-back::before{content:"";position:absolute;inset:3px;border:1px solid rgba(210,73,255,.8);border-radius:inherit;pointer-events:none}.wc-global-back span{color:#f4b92a;font-size:1.65em;filter:drop-shadow(0 0 5px rgba(255,186,38,.65))}
+.wc-global-tools{display:flex;align-items:center;gap:clamp(12px,1.2vw,24px)}
+.wc-global-mic{position:relative!important;inset:auto!important;width:clamp(190px,15vw,285px)!important;height:clamp(56px,6.5vh,78px)!important;min-width:190px!important;min-height:56px!important;margin:0!important;padding:0 clamp(18px,1.5vw,28px)!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:clamp(12px,1vw,19px)!important;border:2px solid #d44fff!important;border-radius:999px!important;background:linear-gradient(180deg,#17101d,#050407)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 -4px 10px #000,0 0 12px #c031ff,0 0 25px rgba(174,38,255,.55)!important;color:#fff!important;font:900 clamp(.95rem,1.25vw,1.35rem)/1 "Arial Narrow",Impact,sans-serif!important;letter-spacing:.04em!important;overflow:hidden!important;cursor:pointer}
+.wc-global-mic span{position:relative;width:18px;height:29px;flex:0 0 18px;border:3px solid #d04aff;border-radius:999px;color:transparent;font-size:0;filter:drop-shadow(0 0 5px #bd30ff)}
+.wc-global-mic span::before{content:"";position:absolute;left:50%;bottom:-10px;width:28px;height:16px;translate:-50% 0;border:3px solid #d04aff;border-top:0;border-radius:0 0 18px 18px}.wc-global-mic span::after{content:"";position:absolute;left:50%;bottom:-17px;width:3px;height:9px;translate:-50% 0;background:#d04aff;box-shadow:-7px 7px 0 -1px #d04aff,7px 7px 0 -1px #d04aff}
+.wc-global-mic::after{content:"▂▅▇▅▂";color:#d04aff;font:900 clamp(.72rem,1.05vw,1.1rem)/1 monospace;letter-spacing:-.08em;filter:drop-shadow(0 0 4px #bd30ff)}
+.wc-global-mic.is-off{border-color:#765081!important;color:#c3bcc6!important;box-shadow:inset 0 1px rgba(255,255,255,.1)!important}.wc-global-mic.is-off span{border-color:#8c7194;filter:none}.wc-global-mic.is-off span::before{border-color:#8c7194}.wc-global-mic.is-off span::after{background:#8c7194;box-shadow:-7px 7px 0 -1px #8c7194,7px 7px 0 -1px #8c7194}.wc-global-mic.is-off::after{color:#8c7194;filter:none}
+.wc-global-tools .wc-settings-gear{position:relative;inset:auto;width:clamp(58px,5vw,82px);height:clamp(58px,7vh,82px);min-width:58px;min-height:58px;flex:0 0 auto}
+.wc-game-mark{position:absolute;z-index:5;left:32%;right:32%;top:2.2%;display:grid;place-items:center;color:#ffd04f;text-align:center;font:italic 900 clamp(1.05rem,1.8vw,2rem)/.82 Impact,"Arial Narrow",sans-serif;letter-spacing:.05em;text-shadow:0 2px #5a3400,0 0 9px rgba(255,194,38,.45)}.wc-game-mark strong{font-size:1.38em;background:linear-gradient(180deg,#fff 0%,#d8d8dc 42%,#72737a 66%,#f1f1f2 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 2px 1px #111)}
+.wc-roster-heading{text-align:center}.wc-roster-heading h1{margin:0;background:linear-gradient(180deg,#fff7b0 0%,#ffdb48 30%,#b86a00 66%,#ffe676 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font:900 clamp(2.5rem,5vw,5.7rem)/.95 Georgia,"Times New Roman",serif;letter-spacing:.025em;filter:drop-shadow(0 3px 0 #552f00) drop-shadow(0 0 8px rgba(255,194,36,.35))}.wc-roster-heading p{margin:.35em 0 .55em;color:#f7f4fa;font:700 clamp(.85rem,1.25vw,1.35rem)/1.1 Arial,sans-serif;letter-spacing:.035em}
+.wc-roster-live{flex:1 1 0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) auto auto auto;gap:clamp(8px,1vh,14px)}
+.wc-roster-list{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;max-height:none!important;margin:0!important;padding:0 clamp(2px,.3vw,5px)!important;display:grid!important;grid-auto-rows:minmax(58px,1fr)!important;grid-template-rows:none!important;gap:clamp(7px,.72vh,12px)!important;overflow-x:hidden!important;overflow-y:auto!important;background:transparent!important;pointer-events:auto!important;scrollbar-color:#a830dc #09060c}
+.wc-roster-row.los-selected-player{position:relative;width:100%;min-width:0;max-width:none;height:auto;min-height:58px;display:grid;grid-template-columns:clamp(44px,4.2vw,64px) clamp(50px,5.2vw,78px) minmax(0,1fr) clamp(54px,5.4vw,82px);align-items:center;gap:clamp(9px,1.1vw,18px);padding:clamp(5px,.65vh,9px) clamp(9px,1vw,17px);border:1.5px solid #f0b623;border-radius:15px;background:linear-gradient(90deg,rgba(15,10,5,.94),rgba(3,3,5,.88));box-shadow:inset 0 1px rgba(255,245,175,.38),inset 0 -3px 9px rgba(74,36,0,.5),0 0 8px rgba(239,172,22,.2)}
+.wc-roster-check{appearance:none;width:clamp(44px,2.8vw,46px);height:clamp(44px,2.8vw,46px);margin:auto;border:2px solid #f6c638;border-radius:7px;background:#09080a center/72% 72% no-repeat;box-shadow:inset 0 0 8px rgba(255,183,22,.18),0 0 7px rgba(255,190,29,.28);cursor:pointer}.wc-roster-check:checked{background-color:#3b2704;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 17l7 7L27 8' fill='none' stroke='%23ffe15c' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");box-shadow:inset 0 0 9px rgba(255,202,48,.3),0 0 9px rgba(255,190,29,.5)}
+.wc-roster-row .los-avatar-art{position:relative!important;inset:auto!important;width:clamp(46px,4.5vw,68px)!important;height:clamp(46px,4.5vw,68px)!important;margin:auto;border:2px solid #f4c136;border-radius:50%;box-shadow:0 0 9px rgba(255,192,34,.45);transform:none!important}
+.wc-roster-row>strong{position:relative!important;inset:auto!important;width:auto!important;height:auto!important;min-width:0;padding:0!important;display:block!important;overflow:hidden;color:#fff;font:900 clamp(.95rem,1.55vw,1.7rem)/1.05 "Arial Narrow",Impact,sans-serif!important;letter-spacing:.025em;white-space:nowrap;text-overflow:ellipsis;text-align:left!important;text-shadow:0 2px 3px #000;transform:none!important}
+.wc-roster-edit{position:relative!important;inset:auto!important;width:100%!important;height:clamp(44px,4vh,50px)!important;min-width:48px!important;min-height:44px!important;padding:0 .6em!important;border:1.5px solid #c23cff!important;border-radius:999px!important;background:linear-gradient(180deg,#281032,#09060d)!important;box-shadow:inset 0 1px rgba(255,255,255,.18),0 0 9px rgba(185,47,255,.35)!important;color:#f4d9ff!important;font:900 clamp(.7rem,.92vw,1rem)/1 Arial,sans-serif!important;letter-spacing:.04em;cursor:pointer}
+.wc-roster-actions{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1vw,16px)}
+.wc-live-button{min-width:0;min-height:clamp(48px,5.5vh,64px);padding:.6em 1em;border-radius:14px;color:#fff;font:900 clamp(.82rem,1.25vw,1.3rem)/1 "Arial Narrow",Impact,sans-serif;letter-spacing:.045em;cursor:pointer}
+.wc-live-button-purple{border:2px solid #c53dff;background:linear-gradient(180deg,#2c1038,#09060d 65%);box-shadow:inset 0 1px rgba(255,255,255,.22),inset 0 -4px 10px #000,0 0 12px rgba(190,48,255,.45)}
+.wc-live-button-gold{border:2px solid #ffe075;background:linear-gradient(180deg,#fff08c 0%,#efbc31 36%,#a96100 74%,#e4a91f 100%);box-shadow:inset 0 2px rgba(255,255,255,.65),inset 0 -5px 10px rgba(88,43,0,.6),0 0 14px rgba(242,177,29,.45);color:#130d03;font-size:clamp(1.15rem,2vw,2rem);text-shadow:0 1px rgba(255,255,255,.3)}
+.wc-master-whos-in .los-selected-empty{min-height:100%;display:grid;place-content:center;gap:8px;border:1px dashed rgba(202,63,255,.55);border-radius:14px;color:#eee;text-align:center}.wc-master-whos-in .los-selected-empty strong{color:#d45cff}.wc-master-whos-in .roster-error{min-height:1em;margin:0;color:#ff7787;text-align:center;font-weight:900}
+
+@media (orientation:portrait){
+ .wc-master-stage{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png")}
+ .wc-master-board{left:20.5%;top:21.55%;width:59%;height:53.3%;padding:clamp(22px,3.2vw,38px) clamp(18px,3.2vw,34px)}
+ .wc-global-controls{inset:2.2% 2.6% auto}.wc-global-back{min-width:clamp(132px,22vw,210px);min-height:clamp(54px,4.5vh,72px);font-size:clamp(.95rem,2.6vw,1.5rem)}
+ .wc-global-tools{gap:clamp(8px,1.6vw,16px)}.wc-global-mic{width:clamp(170px,28vw,265px)!important;min-width:170px!important;height:clamp(54px,4.5vh,72px)!important;font-size:clamp(.83rem,2.1vw,1.25rem)!important}.wc-global-tools .wc-settings-gear{width:clamp(58px,9vw,76px);height:clamp(58px,5vh,76px)}
+ .wc-game-mark{left:28%;right:28%;top:6.8%;font-size:clamp(1.25rem,3.1vw,2.1rem)}
+ .wc-roster-heading h1{font-size:clamp(2.25rem,6.3vw,4.2rem)}.wc-roster-heading p{font-size:clamp(.78rem,2vw,1.16rem);margin-bottom:.65em}
+ .wc-roster-live{gap:clamp(7px,.65vh,12px)}.wc-roster-list{grid-auto-rows:minmax(68px,1fr)!important;gap:clamp(7px,.55vh,10px)!important}
+ .wc-roster-row.los-selected-player{grid-template-columns:clamp(44px,5.5vw,52px) clamp(48px,7vw,66px) minmax(0,1fr) clamp(48px,7vw,64px);gap:clamp(7px,1.5vw,14px);min-height:68px;padding:6px clamp(8px,1.8vw,14px)}
+ .wc-roster-check{width:clamp(44px,4.5vw,46px);height:clamp(44px,4.5vw,46px)}.wc-roster-row .los-avatar-art{width:clamp(45px,6.4vw,60px)!important;height:clamp(45px,6.4vw,60px)!important}.wc-roster-row>strong{font-size:clamp(.86rem,2.2vw,1.35rem)!important}.wc-roster-edit{font-size:clamp(.62rem,1.7vw,.9rem)!important}
+ .wc-roster-actions{grid-template-columns:1fr}.wc-live-button{min-height:clamp(48px,4.2vh,60px);font-size:clamp(.76rem,1.9vw,1.08rem)}.wc-live-button-gold{font-size:clamp(1.05rem,3vw,1.65rem)}
+}
+@media (max-width:500px), (orientation:landscape) and (max-height:430px){
+ .wc-global-controls{inset:1.5% 2% auto}.wc-global-back{min-width:88px;min-height:44px;padding:.35em .65em;font-size:.72rem}.wc-global-back span{font-size:1.35em}.wc-global-tools{gap:5px}.wc-global-mic{width:126px!important;min-width:126px!important;height:44px!important;min-height:44px!important;padding:0 9px!important;gap:7px!important;font-size:.67rem!important}.wc-global-mic span{width:13px;height:21px;flex-basis:13px;border-width:2px}.wc-global-mic span::before{width:21px;height:12px;border-width:2px}.wc-global-mic::after{font-size:.56rem}.wc-global-tools .wc-settings-gear{width:44px;height:44px;min-width:44px;min-height:44px}
+ .wc-game-mark{top:7%;font-size:1.25rem}.wc-master-board{padding:5px 8px}.wc-roster-heading h1{font-size:1.35rem}.wc-roster-heading p{margin:0 0 2px;font-size:.55rem}.wc-roster-live{gap:2px}.wc-roster-list{grid-auto-rows:minmax(46px,1fr)!important;gap:2px!important}.wc-roster-row.los-selected-player{grid-template-columns:44px 44px minmax(0,1fr) 48px;gap:4px;min-height:46px;padding:1px 3px;border-radius:8px}.wc-roster-row .los-avatar-art{width:44px!important;height:44px!important}.wc-roster-row>strong{font-size:.62rem!important}.wc-roster-edit{height:44px!important;font-size:.52rem!important;padding:0 2px!important}.wc-roster-actions{grid-template-columns:1fr 1fr;gap:2px}.wc-live-button{min-height:44px;padding:2px;font-size:.52rem}.wc-live-button-gold{font-size:.72rem}.wc-master-whos-in .roster-error{min-height:0;font-size:.5rem;line-height:1}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .wc-master-stage{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png")}
+ .wc-master-board{left:21.92%;top:26.7%;width:56.05%;height:55.55%;padding:clamp(16px,1.5vw,32px) clamp(20px,2vw,44px)}
+ .wc-global-controls{inset:2.3% 2.6% auto}.wc-game-mark{top:2%;font-size:clamp(1.1rem,1.55vw,1.9rem)}
+ .wc-roster-heading h1{font-size:clamp(2.4rem,3.8vw,4.8rem)}.wc-roster-heading p{margin:.2em 0 .4em}.wc-roster-list{grid-auto-rows:minmax(52px,1fr)!important;gap:clamp(5px,.6vh,9px)!important}.wc-roster-row{min-height:52px;padding-block:4px}.wc-live-button{min-height:clamp(44px,5vh,58px)}
+}
+
+@media (max-width:500px), (orientation:landscape) and (max-height:430px){
+ .wc-master-board{display:flex;flex-direction:column}
+ .wc-roster-heading{flex:0 0 auto}
+ .wc-roster-live{flex:1 1 0;width:100%;min-height:0;overflow:hidden}
+ .wc-roster-list{height:auto!important;max-height:100%!important}
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION="6.38-b8283ca625e5";
+const CACHE_VERSION="6.38-f30cdb34fc82";
 const CACHE_NAME=`last-one-standing-shell-${CACHE_VERSION}`;
 const APP_SHELL=[
  "./",
@@ -40,6 +40,9 @@ const APP_SHELL=[
  "./assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Landscape_Runtime_LOCKED.png",
  "./assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Portrait_Runtime_LOCKED.png",
  "./assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Ultrawide_Runtime_LOCKED.png",
+ "./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png",
+ "./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png",
+ "./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png",
  "./assets/visual-6.36/references/LOS_PAUSE_6_36_LANDSCAPE_RUNTIME.png",
  "./assets/visual-6.36/references/LOS_PAUSE_6_36_PORTRAIT_RUNTIME.png",
  "./assets/visual-6.36/references/LOS_PAUSE_6_36_ULTRAWIDE_RUNTIME.png",

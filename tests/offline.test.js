@@ -13,7 +13,8 @@ const ROOT=path.resolve(__dirname,"..");
 const GAMEPLAY_RUNTIME_FILES=["YOURE_UP","QUESTION","CORRECT","WRONG","TIMES_UP","CURRENT_STANDINGS","ELIMINATED","FINAL_SHOWDOWN_MATCHUP","PAUSE","WINNER"].flatMap(screen=>["LANDSCAPE","PORTRAIT","ULTRAWIDE"].map(format=>`assets/visual-6.36/references/LOS_${screen}_6_36_${format}_RUNTIME.png`));
 const WEST_COAST_RUNTIME_FILES=[
  "assets/west-coast/runtime/final-showdown-question/Final_Showdown_Landscape_LOCKED.png","assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_LOCKED.png","assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_LOCKED.png",
- "assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Landscape_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Portrait_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Ultrawide_Runtime_LOCKED.png"
+ "assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Landscape_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Portrait_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Ultrawide_Runtime_LOCKED.png",
+ "assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png","assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png","assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png"
 ];
 const REQUIRED_FILES=[
  "index.html","app.css","app.js","assets/visual-6.36/references/LOS_HOME_6_36_LANDSCAPE_FINAL.png","assets/visual-6.36/references/LOS_HOME_6_36_PORTRAIT_FINAL.png","assets/visual-6.36/references/LOS_HOME_6_36_ULTRAWIDE_FINAL.png","assets/visual-6.36/los-avatar-atlas-v2.png","assets/visual-6.36/los-avatar-style-expansion-v3.png","host-provider.js","service-worker-register.js","question-bank-data.js",
