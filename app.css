@@ -1800,6 +1800,46 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-showtime-live{gap:4px;width:94%}.wc-showtime-kicker{font-size:.55rem}.wc-showtime-live h1 span{font-size:1.25rem}.wc-showtime-live h1 strong{font-size:2.5rem}.wc-showtime-players{font-size:1rem}.wc-showtime-rule{font-size:.6rem}.wc-showtime-summary,.wc-showtime-status{font-size:.5rem}.wc-showtime-start{min-width:60%;min-height:44px;font-size:.8rem;padding:3px 8px;border-radius:10px}
 }
 
+/* West Coast Master Runtime: the single live Player-Up / handoff state. */
+.wc-master-handoff .wc-master-stage{background:none}
+.wc-master-handoff .wc-master-stage::before{content:"";position:absolute;z-index:0;inset:-5.5%;background:center/cover no-repeat url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png");pointer-events:none}
+.wc-master-handoff .wc-master-board{z-index:1;left:15.72%;top:18.5%;width:69.31%;height:70.06%;padding:clamp(24px,2vw,40px);display:grid;place-items:center}
+.wc-master-handoff .wc-global-controls{z-index:45;top:2.4%;right:5.25%;left:2.35%}
+.wc-master-handoff .wc-global-tools{margin-left:auto}
+.wc-master-handoff .wc-global-tools .wc-settings-gear{width:clamp(64px,4.4vw,82px);height:clamp(64px,7.4vh,82px);min-width:64px;min-height:64px}
+.wc-master-handoff .wc-settings-gear-art{width:88%;height:88%;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))}
+.wc-master-handoff .wc-settings-gear-teeth,.wc-master-handoff .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}.wc-master-handoff .wc-settings-gear-ring{stroke-width:2.2}
+.wc-handoff-live{position:static;width:90%;height:78%;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(14px,2vh,26px);margin:0;padding:clamp(12px,1.6vh,22px) 0;overflow:visible;text-align:center}
+.wc-handoff-live .handoff-intro{position:static;width:100%;height:auto;min-height:0;display:grid;place-items:center;align-content:center;gap:clamp(12px,1.6vh,22px);margin:0;padding:clamp(8px,1vh,14px) 2%;border:0;background:transparent;overflow:visible}
+.wc-handoff-live .handoff-hype{margin:0;padding:.14em .34em;overflow:visible;background:linear-gradient(180deg,#fffbd0 0%,#ffe56a 20%,#f4b927 48%,#8d4900 72%,#ffd954 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font:italic 900 clamp(4rem,7.2vw,8rem)/.98 Impact,"Arial Narrow",sans-serif;letter-spacing:.035em;text-shadow:none;filter:drop-shadow(0 4px 0 #2a1200) drop-shadow(0 0 18px rgba(255,190,35,.45));white-space:nowrap}
+.wc-handoff-live .handoff-player-name{width:90%;max-width:none;margin:0;padding:.12em .25em;overflow:visible;color:#f8f8fa;font:italic 900 clamp(3.6rem,6.8vw,8rem)/1 Impact,"Arial Narrow",sans-serif;letter-spacing:.025em;white-space:nowrap;overflow-wrap:normal;text-overflow:clip;text-shadow:0 4px 0 #19151f,0 0 2px #fff,0 0 18px rgba(196,49,255,.42);-webkit-text-stroke:clamp(1px,.08vw,2px) #38343d;text-wrap:balance}
+.wc-handoff-live .handoff-player-name.name-long{font-size:clamp(2.4rem,4.15vw,5.2rem);line-height:1.02;white-space:normal;overflow-wrap:anywhere}
+.wc-handoff-live .handoff-sub{min-height:1.1em;color:#d54cff;font:900 clamp(.9rem,1.35vw,1.4rem)/1 "Arial Narrow",Impact,sans-serif;letter-spacing:.22em;text-shadow:0 0 10px rgba(200,43,255,.8)}
+.wc-handoff-live .handoff-count{position:static;flex:0 0 auto;min-width:1.2em;min-height:1.05em;margin:0;padding:.04em .2em;display:grid;place-items:center;overflow:visible;background:none;color:#ff334a!important;-webkit-text-fill-color:#ff334a!important;font:900 clamp(5rem,min(18vw,20vh),10rem)/.9 Impact,"Arial Narrow",sans-serif;text-shadow:0 3px 0 #360008,0 0 5px rgba(255,255,255,.45);filter:drop-shadow(0 0 15px rgba(255,35,62,.82))}
+@media (orientation:portrait){
+ .wc-master-handoff .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png")}
+ .wc-master-handoff .wc-master-board{left:17.25%;top:18.42%;width:65.5%;height:59.16%;padding:clamp(22px,3.2vw,36px)}
+ .wc-master-handoff .wc-global-controls{top:2.1%;right:6.5%;left:2.6%}
+ .wc-master-handoff .wc-global-tools .wc-settings-gear{width:clamp(62px,8vw,78px);height:clamp(62px,4.4vh,78px)}
+ .wc-handoff-live{width:92%;height:80%;gap:clamp(16px,1.6vh,28px)}
+ .wc-handoff-live .handoff-intro{gap:clamp(16px,1.6vh,28px)}
+ .wc-handoff-live .handoff-hype{font-size:clamp(3.8rem,12vw,7rem)}
+ .wc-handoff-live .handoff-player-name{width:94%;font-size:clamp(3.2rem,10.5vw,6.4rem)}
+ .wc-handoff-live .handoff-player-name.name-long{font-size:clamp(2.1rem,6.6vw,4rem)}
+ .wc-handoff-live .handoff-count{font-size:clamp(5rem,min(18vw,20vh),10rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .wc-master-handoff .wc-master-stage::before{background-image:url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png")}
+ .wc-master-handoff .wc-master-board{left:18.83%;top:24.14%;width:62.22%;height:61.66%;padding:clamp(18px,1.4vw,30px)}
+ .wc-master-handoff .wc-global-controls{top:2.25%;right:4.6%;left:2.3%}
+ .wc-handoff-live{width:92%;height:80%;gap:clamp(10px,1.4vh,18px)}
+ .wc-handoff-live .handoff-intro{gap:clamp(12px,1.6vh,22px);padding-block:clamp(10px,1.3vh,18px)}
+ .wc-handoff-live .handoff-hype{font-size:clamp(3.8rem,5.6vw,7.5rem)}
+ .wc-handoff-live .handoff-player-name{font-size:clamp(3rem,5vw,7rem)}
+ .wc-handoff-live .handoff-player-name.name-long{font-size:clamp(2.1rem,3.35vw,4.6rem)}
+ .wc-handoff-live .handoff-count{font-size:clamp(5rem,min(18vw,20vh),10rem)}
+}
+
 /* Keep the West Coast roster geometry authoritative over earlier reusable
    roster/picker containment rules. */
 .los-west-coast-whos-in .los-selected-players{display:grid;flex-wrap:nowrap;justify-content:stretch;padding:0;pointer-events:none}
