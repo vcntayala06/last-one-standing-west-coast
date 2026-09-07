@@ -147,6 +147,28 @@ test("finish is idempotent when duplicate recognition results arrive", withHarne
   assert.equal(state.game.players[0].correct, 1);
 }));
 
+test("West Coast Correct uses the approved screen-specific Runtime and preserves the successful-turn flow", withHarness(h => {
+  const state=setupQuestion(h),player=state.game.players[0];
+  player.name="Alexandria Montgomery-Washington";player.avatar="wc-a1";
+  state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});
+  state.game.startingCount=2;
+  h.api.finish("correct");
+  assert.equal(state.screen,"result");
+  assert.equal(player.correct,1);
+  assert.ok(h.document.querySelector(".wc-master-correct"));
+  assert.ok(h.document.querySelector(".los-correct-art .los-gameplay-plate"));
+  assert.equal(h.document.querySelector(".wc-result-player-name").textContent,player.name);
+  assert.equal(h.document.querySelector(".wc-correct-live .answer-big").textContent,"Mars");
+  assert.equal(h.document.querySelectorAll(".wc-correct-mark,.wc-correct-affirmation,.wc-correct-live .result-word,.wc-correct-live .answer-label").length,0);
+  assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);
+  assert.equal(h.document.querySelectorAll(".wc-mic-control,.phase-heading,.standings").length,0);
+  h.api.finish("correct");
+  assert.equal(player.correct,1);
+  h.timers.advance(3200);
+  assert.equal(state.screen,"handoff");
+  assert.equal(state.game.idx,1);
+}));
+
 test("wrong Result includes one immediate non-interactive game-show X", withHarness(h => {
   const state=setupQuestion(h);
   h.api.finish("wrong");
@@ -877,12 +899,12 @@ test("Build 6.30 reveals the preserved Music filters through the approved Entert
 test("Build 6.29 persists Music filters and defaults older saves to All Music",()=>{const h=createHarness();try{const state=h.api.getState();state.screen="setup";state.contentPacks=["music"];state.musicSubcategories=["hip-hop","1990s"];h.api.saveSetupState("setup");const saved=h.api.loadSetupState();assert.deepEqual(Array.from(saved.musicSubcategories),["hip-hop","1990s"]);state.players=[{id:"p1",name:"Alex"}];state.game={players:[{id:"p1",name:"Alex",strikes:0}],idx:0,used:[]};h.api.saveActiveGame();assert.deepEqual(Array.from(h.api.loadActiveGame().musicSubcategories),["hip-hop","1990s"])}finally{h.close()}const old=createHarness({storage:{los5_active_game:JSON.stringify({version:1,mode:"original",contentPacks:["music"],players:[{id:"p1",name:"Alex"}],game:{players:[{id:"p1",name:"Alex",strikes:0}],idx:0,used:[]}})}});try{old.api.resumeSavedGame();assert.deepEqual(Array.from(old.api.getState().musicSubcategories),[])}finally{old.close()}});
 
 test("earned category knowledge and fast answers select one contextual host reaction",()=>{
- const street=createHarness();try{street.window.Math.random=()=>0;const state=setupQuestion(street),player=state.game.players[0],host=street.api.getHostSystem();state.game.current={id:"street-reaction",q:"Which artist recorded The Chronic?",a:"Dr. Dre",cat:"Music",packs:["street","music"]};state.game.questionStartedWith=15;state.game.questionRemaining=13;const before=host.history.length;street.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(host.history.at(-1).event,"streetKnowledge");assert.equal(host.history.at(-1).context.name,player.name);assert.equal(street.document.querySelectorAll(".host-reaction-callout").length,1);assert.equal(street.document.querySelector(".host-reaction-callout").textContent,host.history.at(-1).text);street.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(street.document.querySelectorAll(".host-reaction-callout").length,1);street.timers.advance(3200);assert.equal(street.document.querySelector(".host-reaction-callout"),null)}finally{street.close()}
- const fast=createHarness();try{fast.window.Math.random=()=>0;const state=setupQuestion(fast),host=fast.api.getHostSystem();state.game.current={id:"fast-reaction",q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"]};state.game.questionStartedWith=15;state.game.questionRemaining=14;const before=host.history.length;fast.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(host.history.at(-1).event,"fastCorrect");assert.ok(fast.document.querySelector(".host-reaction-callout"))}finally{fast.close()}
+ const street=createHarness();try{street.window.Math.random=()=>0;const state=setupQuestion(street),player=state.game.players[0],host=street.api.getHostSystem();state.game.current={id:"street-reaction",q:"Which artist recorded The Chronic?",a:"Dr. Dre",cat:"Music",packs:["street","music"]};state.game.questionStartedWith=15;state.game.questionRemaining=13;const before=host.history.length;street.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(host.history.at(-1).event,"streetKnowledge");assert.equal(host.history.at(-1).context.name,player.name);assert.equal(street.document.querySelectorAll(".host-reaction-callout").length,0);street.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(street.document.querySelectorAll(".host-reaction-callout").length,0);street.timers.advance(3200);assert.equal(street.document.querySelector(".host-reaction-callout"),null)}finally{street.close()}
+ const fast=createHarness();try{fast.window.Math.random=()=>0;const state=setupQuestion(fast),host=fast.api.getHostSystem();state.game.current={id:"fast-reaction",q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"]};state.game.questionStartedWith=15;state.game.questionRemaining=14;const before=host.history.length;fast.api.finish("correct");assert.equal(host.history.length,before+1);assert.equal(host.history.at(-1).event,"fastCorrect");assert.equal(fast.document.querySelector(".host-reaction-callout"),null)}finally{fast.close()}
 });
 
 test("a three-answer streak earns one visible callout",withHarness(h=>{
- h.window.Math.random=()=>0;const state=setupQuestion(h),player=state.game.players[0],host=h.api.getHostSystem();player.hostCorrectStreak=2;state.game.current={id:"streak-reaction",q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"]};state.game.questionStartedWith=15;state.game.questionRemaining=9;h.api.finish("correct");assert.equal(host.history.at(-1).event,"streak");const callout=h.document.querySelector(".host-reaction-callout");assert.ok(callout);assert.equal(callout.textContent,host.history.at(-1).text);assert.equal(h.document.querySelectorAll(".host-reaction-callout").length,1)
+ h.window.Math.random=()=>0;const state=setupQuestion(h),player=state.game.players[0],host=h.api.getHostSystem();player.hostCorrectStreak=2;state.game.current={id:"streak-reaction",q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"]};state.game.questionStartedWith=15;state.game.questionRemaining=9;h.api.finish("correct");assert.equal(host.history.at(-1).event,"streak");assert.equal(h.document.querySelector(".host-reaction-callout"),null)
 }));
 
 test("ordinary correct answers remain restrained instead of forcing a reaction",withHarness(h=>{
@@ -891,7 +913,7 @@ test("ordinary correct answers remain restrained instead of forcing a reaction",
 }));
 
 test("visible reactions remain safe with Voice Off in Kids and Work games",()=>{
- for(const pack of ["kids","work"]){const h=createHarness();try{h.window.Math.random=()=>0;const state=setupQuestion(h);state.voiceOn=false;state.contentPacks=[pack];state.game.current={id:`${pack}-reaction`,q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"],kidsSafe:true,workSafe:true};state.game.questionStartedWith=15;state.game.questionRemaining=14;h.api.finish("correct");const callout=h.document.querySelector(".host-reaction-callout");assert.ok(callout,pack);assert.doesNotMatch(callout.textContent,/damn|homie|perro|compa/i,pack);assert.equal(h.api.getHostSystem().history.at(-1).result,"voice-disabled")}finally{h.close()}}
+ for(const pack of ["kids","work"]){const h=createHarness();try{h.window.Math.random=()=>0;const state=setupQuestion(h);state.voiceOn=false;state.contentPacks=[pack];state.game.current={id:`${pack}-reaction`,q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"],kidsSafe:true,workSafe:true};state.game.questionStartedWith=15;state.game.questionRemaining=14;h.api.finish("correct");assert.equal(h.document.querySelector(".host-reaction-callout"),null,pack);assert.doesNotMatch(h.api.getHostSystem().history.at(-1).text,/damn|homie|perro|compa/i,pack);assert.equal(h.api.getHostSystem().history.at(-1).result,"voice-disabled")}finally{h.close()}}
 });
 
 test("Stage 6.23 stable interim answer reacts early once and ignores the trailing final",withHarness(h=>{

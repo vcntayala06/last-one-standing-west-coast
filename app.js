@@ -1637,12 +1637,12 @@ function fitQuestionText(){
 }
 function fitResultAnswer(){
  const body=document.querySelector(".result-body"),answer=document.querySelector(".answer-big");if(!body||!answer)return;
- const tiers=["result-fit-1","result-fit-2","result-fit-3","result-fit-4"],fits=()=>body.scrollHeight<=body.clientHeight+1&&answer.scrollWidth<=answer.clientWidth+1;
- answer.classList.remove(...tiers);const result=fitFocalText(answer,{container:body,minPx:18,multiline:true,fits});answer.dataset.fitTier=String(result?.fontPx<result?.maxPx?1:0);return result
+ const tiers=["result-fit-1","result-fit-2","result-fit-3","result-fit-4"],correct=body.classList.contains("wc-correct-live"),container=correct?answer.parentElement:body,fits=()=>{if(!correct)return body.scrollHeight<=body.clientHeight+1&&answer.scrollWidth<=answer.clientWidth+1;const a=answer.getBoundingClientRect(),c=container.getBoundingClientRect();return answer.scrollWidth<=answer.clientWidth+1&&answer.scrollHeight<=answer.clientHeight+1&&a.left>=c.left-1&&a.right<=c.right+1&&a.top>=c.top-1&&a.bottom<=c.bottom+1};
+ answer.classList.remove(...tiers);const result=fitFocalText(answer,{container,minPx:18,multiline:true,fits});answer.dataset.fitTier=String(result?.fontPx<result?.maxPx?1:0);return result
 }
 function showHostReaction(event){
  const visibleEvents=new Set(["fastCorrect","tough","streak","categoryRun","comeback","lead","tie","streetKnowledge","movieKnowledge","musicKnowledge","transitKnowledge","disneyKnowledge"]),entry=hostSystem?.history.at(-1);if(!visibleEvents.has(event)||entry?.event!==event||!entry.text||["frequency-skip","no-safe-line"].includes(entry.result))return false;
- const body=document.querySelector(".result-body");if(!body||body.querySelector(".host-reaction-callout"))return false;const callout=document.createElement("div");callout.className="host-reaction-callout";callout.setAttribute("role","status");callout.setAttribute("aria-live","polite");callout.textContent=entry.text;body.querySelector(".result-word")?.insertAdjacentElement("afterend",callout);fitResultAnswer();return true
+ const body=document.querySelector(".result-body");if(!body||body.querySelector(".host-reaction-callout"))return false;if(body.classList.contains("wc-correct-live"))return true;const callout=document.createElement("div");callout.className="host-reaction-callout";callout.setAttribute("role","status");callout.setAttribute("aria-live","polite");callout.textContent=entry.text;body.querySelector(".result-word")?.insertAdjacentElement("afterend",callout);fitResultAnswer();return true
 }
 function refitActiveText(){if(state.screen==="question")fitQuestionText();else if(state.screen==="result")fitResultAnswer()}
 let textFitFrame=0;function scheduleActiveTextFit(){if(textFitFrame&&typeof cancelAnimationFrame==="function")cancelAnimationFrame(textFitFrame);textFitFrame=typeof requestAnimationFrame==="function"?requestAnimationFrame(()=>{textFitFrame=0;refitActiveText()}):0
@@ -1652,7 +1652,11 @@ function result(outcome,resumeDelay=null,revealAnswer=false){
  const label=outcome==="correct"?"CORRECT!":outcome==="pass"?(g.lastOutcomeDetail==="skip"?"SKIP":"PASS"):outcome==="timeout"?"TIME’S UP!":"NOT QUITE";
  const strike=outcome!=="correct", eliminated=strike&&p.eliminated;
  const phase=g.showdown?"FINAL SHOWDOWN":"CURRENT STANDINGS";
- app.innerHTML=`<section class="screen"><div class="game-shell">${gamebar(true)}
+ if(outcome==="correct"){
+  const playerName=String(p?.name||"PLAYER"),playerNameSize=playerName.length>16?"name-long":"name-regular";
+  app.innerHTML=`<section class="screen wc-master-screen wc-master-correct los-gameplay-art-screen los-correct-art"><div class="wc-correct-runtime-stage"><div class="los-gameplay-plate" aria-hidden="true"></div>${westCoastGlobalControlsMarkup({showMic:false})}<header class="wc-result-player" aria-label="Current player: ${esc(playerName)}"><div class="wc-result-avatar">${avatarArt(p?.avatar)}</div><strong class="wc-result-player-name ${playerNameSize}">${esc(playerName)}</strong></header><main class="result-body wc-correct-live"><div class="answer-panel"><div class="answer-big answer-${String(q?.a||"").length>16?"long":String(q?.a||"").length>10?"medium":"short"}">${esc(displayAnswer(q?.a||""))}</div></div></main></div></section>`;
+  document.getElementById("back").onclick=pauseGame;
+ }else app.innerHTML=`<section class="screen"><div class="game-shell">${gamebar(true)}
  <div class="result-body">
    <div class="result-word result-${outcome}">${label}</div>
    <div class="answer-panel">
@@ -1663,7 +1667,7 @@ function result(outcome,resumeDelay=null,revealAnswer=false){
    <div class="phase-heading">${phase}</div>
    ${standings()}
  </div></div></section>`;
- bindGamebar();fitResultAnswer();if(typeof requestAnimationFrame==="function")requestAnimationFrame(()=>{if(state.screen==="result"&&document.querySelector(".answer-big")?.isConnected)fitResultAnswer()});startVoice("result");
+ if(outcome!=="correct")bindGamebar();fitResultAnswer();if(typeof requestAnimationFrame==="function")requestAnimationFrame(()=>{if(state.screen==="result"&&document.querySelector(".answer-big")?.isConnected)fitResultAnswer()});startVoice("result");
  const delay=resumeDelay??(g.showdown?(eliminated?5200:3900):eliminated?5200:strike?4200:3200),scheduleAdvance=()=>{if(state.screen!=="result"||runtimeSessionId!==session)return;resultDelayRemaining=delay;flowTimer=setTimeout(()=>{if(state.screen==="result"&&runtimeSessionId===session)advance()},delay)};
  g.lastOutcome=outcome;
  if(revealAnswer){hostSystem?.emit("answerReveal",{answer:q?.a||"",name:p.name,mode:state.mode});if(hostSystem?.isSpeaking())hostSystem.whenIdle().then(scheduleAdvance);else scheduleAdvance()}else scheduleAdvance()

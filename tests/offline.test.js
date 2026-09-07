@@ -153,9 +153,10 @@ test("installed game reloads and reaches a Champion through manual play with net
   await offlinePage.locator("#typedAnswer").fill(correctAnswer);
   await offlinePage.locator("#lockAnswer").click();
   mark("answer-submitted",{answer:correctAnswer});
-  await offlinePage.locator(".result-correct").waitFor({state:"visible"});
+  await offlinePage.locator(".wc-master-correct").waitFor({state:"visible"});
   mark("correct-result-reached");
-  assert.match(await offlinePage.locator(".standing-row").filter({hasText:"Alex"}).textContent(),/✓\s*1/);
+  const savedCorrect=await offlinePage.evaluate(()=>JSON.parse(localStorage.getItem("los5_active_game")||"null")?.game?.players?.find(player=>player.name==="Alex")?.correct);
+  assert.equal(savedCorrect,1,"offline Correct persists the active player's point without exposing standings");
   await offlinePage.locator(".champion-name").waitFor({state:"visible",timeout:25000});
   mark("champion-reached",diagnostics);
   assert.equal(await offlinePage.locator(".champion-name").textContent(),"Alex");
