@@ -14,6 +14,11 @@ const GAMEPLAY_RUNTIME_FILES=["YOURE_UP","QUESTION","CORRECT","WRONG","TIMES_UP"
 const WEST_COAST_RUNTIME_FILES=[
  "assets/west-coast/runtime/final-showdown-question/Final_Showdown_Landscape_LOCKED.png","assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_LOCKED.png","assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_LOCKED.png",
  "assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Landscape_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Portrait_Runtime_LOCKED.png","assets/west-coast/runtime/choose-your-game/Choose_Your_Game_Ultrawide_Runtime_LOCKED.png",
+ "assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_LANDSCAPE_RUNTIME_LOCKED.png","assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_PORTRAIT_RUNTIME_LOCKED.png","assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_ULTRAWIDE_RUNTIME_LOCKED.png",
+ "assets/west-coast/runtime/LOS_TIMES_UP_LANDSCAPE_CLEAN.png","assets/west-coast/runtime/LOS_TIMES_UP_PORTRAIT_CLEAN.png","assets/west-coast/runtime/LOS_TIMES_UP_ULTRAWIDE_CLEAN.png",
+ "assets/west-coast/runtime/LOS_PASS_SKIP_LANDSCAPE_RUNTIME_LOCKED.png","assets/west-coast/runtime/LOS_PASS_SKIP_PORTRAIT_RUNTIME_LOCKED.png","assets/west-coast/runtime/LOS_PASS_SKIP_ULTRAWIDE_RUNTIME_LOCKED.png",
+ "assets/west-coast/runtime/LOS_CURRENT_STANDINGS_LANDSCAPE_NO_LOGO.png","assets/west-coast/runtime/LOS_CURRENT_STANDINGS_PORTRAIT_NO_LOGO.png","assets/west-coast/runtime/LOS_CURRENT_STANDINGS_ULTRAWIDE_RUNTIME_LOCKED.png",
+ "assets/west-coast/runtime/LOS_ELIMINATED_LANDSCAPE_NO_LOGO_NO_CIRCLE.png","assets/west-coast/runtime/LOS_ELIMINATED_PORTRAIT_NO_LOGO_NO_CIRCLE.png","assets/west-coast/runtime/LOS_ELIMINATED_ULTRAWIDE_NO_LOGO_NO_CIRCLE.png",
  "assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png","assets/west-coast/master-runtime/West_Coast_Master_Runtime_Portrait.png","assets/west-coast/master-runtime/West_Coast_Master_Runtime_Ultrawide.png"
 ];
 const REQUIRED_FILES=[

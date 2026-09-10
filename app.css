@@ -3,8 +3,26 @@
   --bg:#070b16;--panel:#101628;--panel2:#161e35;--text:#f6f7fb;--muted:#aab3c8;
   --gold:#ffd04f;--gold2:#ffb92e;--red:#ff3f55;--green:#52db91;--line:rgba(255,255,255,.12);
   --app-h:100dvh;--app-w:100vw;
+  --wc-answer-font-size:clamp(1.55rem,2.6vw,1.8rem);
   --los-safe-top:env(safe-area-inset-top,0px);--los-safe-right:env(safe-area-inset-right,0px);
   --los-safe-bottom:env(safe-area-inset-bottom,0px);--los-safe-left:env(safe-area-inset-left,0px);
+}
+
+/* West Coast Final Showdown matchup runtime. Gameplay reuses the approved Question composition. */
+.los-showdown-matchup-art,.los-showdown-matchup-art button,.los-showdown-matchup-art .showdown-name{font-family:"Times New Roman",Times,serif}
+.los-showdown-matchup-art .wc-global-controls{position:absolute;z-index:45;inset:0!important}
+.los-showdown-matchup-art .wc-global-back{position:absolute;left:2.35%;bottom:2.4%}
+.los-showdown-matchup-art .wc-global-tools{position:absolute;right:5.25%;top:2.4%}
+.los-showdown-matchup-art .showdown-name{color:#fff;font-weight:700;text-shadow:0 2px 0 #17131a,0 0 12px rgba(192,48,255,.34)}
+@media (orientation:portrait){
+ .los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_CLEAN.png")}
+ .los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_PORTRAIT_CLEAN.png")}
+ .los-showdown-matchup-art .wc-global-back{left:2.6%;bottom:2.1%}.los-showdown-matchup-art .wc-global-tools{right:6.5%;top:2.1%}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_CLEAN.png")}
+ .los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_ULTRAWIDE_CLEAN.png")}
+ .los-showdown-matchup-art .wc-global-back{left:2.3%;bottom:2.25%}.los-showdown-matchup-art .wc-global-tools{right:4.6%;top:2.25%}
 }
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;overflow:hidden}
@@ -713,6 +731,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 
 .los-overlay{position:fixed;inset:0;z-index:300;background:rgba(1,1,4,.82);display:grid;place-items:center;padding:max(16px,var(--los-safe-top)) max(16px,var(--los-safe-right)) max(16px,var(--los-safe-bottom)) max(16px,var(--los-safe-left));backdrop-filter:blur(13px)}
 .los-sheet{width:min(560px,100%);max-height:100%;overflow:auto;border:1px solid rgba(246,196,83,.28);border-radius:var(--los-radius-lg);background:radial-gradient(circle at 90% 0%,rgba(138,67,255,.18),transparent 35%),linear-gradient(145deg,#15121e,#08080d);box-shadow:0 35px 110px rgba(0,0,0,.72),var(--los-glow);padding:clamp(18px,4vw,30px);display:grid;gap:16px}.los-sheet header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.los-sheet h2{font-size:clamp(2rem,6vw,3.3rem);margin-bottom:0}.los-close{width:46px;height:46px;flex:none;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(255,255,255,.05);color:#fff;font-size:1.5rem;cursor:pointer}.los-player-sheet label{display:grid;gap:7px;color:var(--los-silver);font-size:.72rem;font-weight:950;letter-spacing:.11em}.los-player-sheet label small{color:var(--muted);font-size:.58rem}.los-player-sheet input{width:100%;min-height:52px;border:1px solid rgba(255,255,255,.17);border-radius:12px;background:#08080d;color:#fff;padding:12px 14px;font-size:1rem}.los-player-sheet input:focus{outline:2px solid var(--los-gold);border-color:transparent}.los-player-avatar-edit{justify-self:center;display:grid;place-items:center;gap:7px;border:0;background:transparent;color:var(--los-gold);font-size:.67rem;font-weight:950;letter-spacing:.1em;cursor:pointer}
+.los-player-editor-actions,.los-player-delete-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.los-player-editor-actions .los-action:only-child{grid-column:1/-1}.los-action-danger{border-color:rgba(255,64,88,.72);background:linear-gradient(180deg,#8f2639,#4d111e);color:#fff}.los-player-delete-confirm{width:min(520px,100%);text-align:center}.los-player-delete-confirm p{margin:8px 0;font-size:clamp(1.2rem,3vw,1.7rem);color:#fff}
 .los-avatar-sheet{width:min(1120px,100%);height:min(94vh,900px);max-height:100%;overflow:hidden;grid-template-rows:auto auto minmax(0,1fr) auto;background:radial-gradient(circle at 50% -20%,rgba(138,67,255,.30),transparent 42%),linear-gradient(145deg,#15121e,#050507 72%);border-color:rgba(246,196,83,.42)}.los-avatar-sheet header{padding-bottom:2px;border-bottom:1px solid rgba(246,196,83,.12)}.los-avatar-sheet header p{margin:5px 0 10px;color:var(--los-silver);font-size:.8rem;letter-spacing:.02em}.los-avatar-sheet h2{text-shadow:0 0 24px rgba(138,67,255,.24)}.los-avatar-tabs{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:2px;flex:none}.los-tab{min-height:44px;flex:1;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));color:#fff;padding:9px;font-size:.7rem;font-weight:950;letter-spacing:.12em;cursor:pointer}.los-tab.selected{background:linear-gradient(180deg,#ffe184,var(--los-gold));color:#171006;border-color:var(--los-gold);box-shadow:0 0 24px rgba(246,196,83,.16)}.los-avatar-grid{min-height:0;display:grid;grid-template-columns:repeat(6,minmax(104px,1fr));grid-auto-rows:max-content;align-content:start;gap:9px;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;padding:4px 6px 8px}.los-avatar-option{position:relative;min-height:145px;display:grid;grid-template-rows:1fr auto;place-items:stretch;gap:0;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:linear-gradient(165deg,rgba(45,36,62,.8),rgba(7,7,11,.96));color:#fff;padding:0;overflow:hidden;cursor:pointer;box-shadow:0 9px 22px rgba(0,0,0,.28)}.los-avatar-option::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,transparent 48%,rgba(3,3,6,.08) 60%,rgba(3,3,6,.96) 100%)}.los-avatar-option .los-avatar-art{width:100%;height:auto;aspect-ratio:1/1;border:0;border-radius:0;background-color:#100d17;box-shadow:none}.los-avatar-option small{position:relative;z-index:1;min-height:34px;display:grid;place-items:center;text-align:center;color:var(--los-silver);font-size:.6rem;font-weight:850;line-height:1.05;letter-spacing:.025em;padding:5px 6px;background:#08080d}.los-avatar-selected{position:absolute;z-index:2;top:9px;right:9px;width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:var(--los-gold);color:#171006;font-weight:1000;box-shadow:0 3px 15px rgba(0,0,0,.55);opacity:0;transform:scale(.75);transition:.16s ease}.los-avatar-option.selected{border-color:var(--los-gold);background:rgba(246,196,83,.09);box-shadow:0 0 0 2px rgba(246,196,83,.2),0 0 30px rgba(138,67,255,.26),0 18px 36px rgba(0,0,0,.4);transform:translateY(-2px)}.los-avatar-option.selected .los-avatar-selected{opacity:1;transform:scale(1)}.los-avatar-option:hover{border-color:rgba(246,196,83,.58);transform:translateY(-2px)}.los-save-avatar{width:min(460px,100%);justify-self:center;box-shadow:0 0 30px rgba(246,196,83,.16)}
 
 @media (orientation:portrait){
@@ -1411,12 +1430,15 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 }
 
 /* Build 6.36 final sunset visual test: baked controls and cover-aligned hit areas. */
-.los-home-final .los-home-plate{background-image:url("./assets/visual-6.36/references/LOS_HOME_6_36_LANDSCAPE_FINAL.png");background-position:85% center;background-size:cover}
+.los-home-final .los-home-plate{--los-home-runtime:url("./assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_LANDSCAPE_RUNTIME_LOCKED.png");background-image:var(--los-home-runtime);background-position:center;background-size:0 0;background-repeat:no-repeat;overflow:hidden}
+.los-home-final .los-home-plate::before,.los-home-final .los-home-plate::after{content:"";position:absolute;pointer-events:none;background-image:var(--los-home-runtime);background-position:center;background-repeat:no-repeat}
+.los-home-final .los-home-plate::before{inset:-4%;background-size:cover;filter:blur(clamp(12px,2vw,32px)) brightness(.84) saturate(.9);transform:scale(1.04)}
+.los-home-final .los-home-plate::after{inset:0;background-size:var(--los-home-art-width) var(--los-home-art-height);background-position:var(--los-home-art-x) var(--los-home-art-y)}
 .los-home-final .los-home-controls{position:absolute;z-index:3;inset:0;display:block;padding:0;pointer-events:none}
 .los-home-hotspot{position:absolute;display:block;min-width:44px;min-height:44px;margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:transparent;pointer-events:auto;touch-action:manipulation;cursor:pointer}
 .los-home-hotspot:focus-visible{outline:4px solid #fff;outline-offset:3px;box-shadow:0 0 0 7px #8f20d7}
-@media (orientation:portrait){.los-home-final .los-home-plate{background-image:url("./assets/visual-6.36/references/LOS_HOME_6_36_PORTRAIT_FINAL.png");background-position:85% center}}
-@media (orientation:landscape) and (min-aspect-ratio:2/1){.los-home-final .los-home-plate{background-image:url("./assets/visual-6.36/references/LOS_HOME_6_36_ULTRAWIDE_FINAL.png");background-position:center center}}
+@media (orientation:portrait){.los-home-final .los-home-plate{--los-home-runtime:url("./assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_PORTRAIT_RUNTIME_LOCKED.png")}}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){.los-home-final .los-home-plate{--los-home-runtime:url("./assets/west-coast/runtime/home/LOS_HOME_WEST_COAST_ULTRAWIDE_RUNTIME_LOCKED.png")}}
 
 /* Approved Visual 6.36 Player-Up composition with live game-state overlays. */
 .los-player-up-screen{position:relative;padding:0!important;overflow:hidden;background:#030205!important;isolation:isolate}
@@ -1515,13 +1537,14 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 .los-gameplay-art-screen::before,.los-gameplay-art-screen::after{display:none!important}
 .los-gameplay-plate{position:absolute;z-index:0;inset:0;background-image:var(--los-art-landscape);background-position:center;background-size:cover;background-repeat:no-repeat;pointer-events:none}
 .los-question-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_QUESTION_6_36_LANDSCAPE_RUNTIME.png")}
-.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Landscape_LOCKED.png")}
+.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Landscape_CLEAN.png")}
 .los-correct-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CORRECT_6_36_LANDSCAPE_RUNTIME.png")}
 .los-wrong-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WRONG_6_36_LANDSCAPE_RUNTIME.png")}
-.los-times-up-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_TIMES_UP_6_36_LANDSCAPE_RUNTIME.png")}
-.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/visual-6.36/references/LOS_ELIMINATED_6_36_LANDSCAPE_RUNTIME.png")}
-.los-result-art.show-standings{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CURRENT_STANDINGS_6_36_LANDSCAPE_RUNTIME.png")}
-.los-showdown-matchup-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_FINAL_SHOWDOWN_MATCHUP_6_36_LANDSCAPE_RUNTIME.png")}
+.los-times-up-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_TIMES_UP_LANDSCAPE_CLEAN.png")}
+.los-pass-skip-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_PASS_SKIP_LANDSCAPE_RUNTIME_LOCKED.png")}
+.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/west-coast/runtime/LOS_ELIMINATED_LANDSCAPE_NO_LOGO_NO_CIRCLE.png")}
+.los-result-art.show-standings{--los-art-landscape:url("./assets/west-coast/runtime/LOS_CURRENT_STANDINGS_LANDSCAPE_NO_LOGO.png")}
+.los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_LANDSCAPE_CLEAN.png")}
 .los-winner-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WINNER_6_36_LANDSCAPE_RUNTIME.png")}
 .los-pause-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_PAUSE_6_36_LANDSCAPE_RUNTIME.png")}
 .los-gameplay-pause{position:absolute;z-index:20;right:4.3%;top:18%;min-width:82px;min-height:44px;padding:7px 14px;border:1px solid #d12cff;border-radius:999px;background:rgba(3,2,7,.82);box-shadow:0 0 14px rgba(178,33,255,.48);color:#fff;font:900 clamp(.72rem,1vw,1rem)/1 Impact,"Arial Narrow",sans-serif;letter-spacing:.08em;cursor:pointer;pointer-events:auto}
@@ -1564,7 +1587,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 .los-winner-art .complete-stage{position:absolute;z-index:2;inset:0;max-width:none;margin:0;padding:var(--los-safe-top) var(--los-safe-right) var(--los-safe-bottom) var(--los-safe-left);background:transparent}.los-winner-art .complete-kicker,.los-winner-art .champion-label{display:none}.los-winner-art .champion-box{position:absolute;left:32%;top:39%;width:36%;height:48%;min-height:0!important;padding:0;border:0;background:transparent;box-shadow:none}.los-winner-art .champion-name{position:absolute;left:0;bottom:0;width:100%;color:#fff;font:900 clamp(3rem,7vw,8rem)/1 Impact,"Arial Narrow",sans-serif;text-align:center}.los-winner-avatar{position:absolute;z-index:3;left:38%;top:40%;width:24%;aspect-ratio:1;border-radius:8%;overflow:hidden}.los-winner-art .champion-actions{position:absolute;left:37%;bottom:2.5%;width:26%;height:8%;margin:0}.los-winner-art #playAgain{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important}.los-winner-art #home{position:absolute;inset:0;width:100%;height:100%;opacity:.01}.los-winner-art .los-winner-mic{right:2%;top:3%;width:15%;height:7%}
 
 @media (orientation:portrait){
- .los-question-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_QUESTION_6_36_PORTRAIT_RUNTIME.png")}.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_LOCKED.png")}.los-correct-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CORRECT_6_36_PORTRAIT_RUNTIME.png")}.los-wrong-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WRONG_6_36_PORTRAIT_RUNTIME.png")}.los-times-up-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_TIMES_UP_6_36_PORTRAIT_RUNTIME.png")}.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/visual-6.36/references/LOS_ELIMINATED_6_36_PORTRAIT_RUNTIME.png")}.los-result-art.show-standings{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CURRENT_STANDINGS_6_36_PORTRAIT_RUNTIME.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_FINAL_SHOWDOWN_MATCHUP_6_36_PORTRAIT_RUNTIME.png")}.los-winner-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WINNER_6_36_PORTRAIT_RUNTIME.png")}.los-pause-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_PAUSE_6_36_PORTRAIT_RUNTIME.png")}
+ .los-question-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_QUESTION_6_36_PORTRAIT_RUNTIME.png")}.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_LOCKED.png")}.los-correct-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CORRECT_6_36_PORTRAIT_RUNTIME.png")}.los-wrong-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WRONG_6_36_PORTRAIT_RUNTIME.png")}.los-times-up-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_TIMES_UP_PORTRAIT_CLEAN.png")}.los-pass-skip-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_PASS_SKIP_PORTRAIT_RUNTIME_LOCKED.png")}.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/west-coast/runtime/LOS_ELIMINATED_PORTRAIT_NO_LOGO_NO_CIRCLE.png")}.los-result-art.show-standings{--los-art-landscape:url("./assets/west-coast/runtime/LOS_CURRENT_STANDINGS_PORTRAIT_NO_LOGO.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_FINAL_SHOWDOWN_MATCHUP_6_36_PORTRAIT_RUNTIME.png")}.los-winner-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WINNER_6_36_PORTRAIT_RUNTIME.png")}.los-pause-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_PAUSE_6_36_PORTRAIT_RUNTIME.png")}
  .los-gameplay-avatar{left:5.5%;top:2.2%;width:22%}.los-gameplay-identity{left:28%;top:4%;width:33%}.los-gameplay-identity span{font-size:clamp(.9rem,3.8vw,2rem)}.los-gameplay-identity strong{font-size:clamp(1.7rem,7vw,4.5rem)}.los-gameplay-mic,.showdown-mic{right:4.5%;top:5%;width:34%;height:5.5%;font-size:clamp(.8rem,3.4vw,1.8rem)}
  .los-gameplay-art-screen .question-area{inset:0!important}.los-gameplay-art-screen .question-text{left:17%;top:39%;width:66%;height:24%;font-size:clamp(1.7rem,7vw,4.2rem)}.los-gameplay-art-screen .timer{top:74%!important;width:24%;font-size:clamp(2.7rem,11vw,5.5rem)}.los-question-art .question-inputs{left:21%;right:auto;top:64.5%;bottom:auto;width:58%;height:7%}
  .los-question-art-control{bottom:7.5%;height:6.1%}.los-pass-control{left:11.5%;width:27.5%}.los-lock-control{left:60.9%;width:31%}.los-gameplay-pause{right:4.5%;top:11%;min-width:72px}
@@ -1576,7 +1599,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .los-winner-avatar{left:27%;top:41%;width:46%}.los-winner-art .champion-box{left:17%;top:39%;width:66%;height:46%}.los-winner-art .champion-name{font-size:clamp(3rem,14vw,7rem)}.los-winner-art .champion-actions{left:23%;bottom:3%;width:54%;height:7%}.los-winner-art .los-winner-mic{right:4%;top:3%;width:34%;height:5%}
 }
 @media (orientation:landscape) and (min-aspect-ratio:2/1){
- .los-question-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_QUESTION_6_36_ULTRAWIDE_RUNTIME.png")}.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_LOCKED.png")}.los-correct-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CORRECT_6_36_ULTRAWIDE_RUNTIME.png")}.los-wrong-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WRONG_6_36_ULTRAWIDE_RUNTIME.png")}.los-times-up-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_TIMES_UP_6_36_ULTRAWIDE_RUNTIME.png")}.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/visual-6.36/references/LOS_ELIMINATED_6_36_ULTRAWIDE_RUNTIME.png")}.los-result-art.show-standings{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CURRENT_STANDINGS_6_36_ULTRAWIDE_RUNTIME.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_FINAL_SHOWDOWN_MATCHUP_6_36_ULTRAWIDE_RUNTIME.png")}.los-winner-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WINNER_6_36_ULTRAWIDE_RUNTIME.png")}.los-pause-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_PAUSE_6_36_ULTRAWIDE_RUNTIME.png")}
+ .los-question-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_QUESTION_6_36_ULTRAWIDE_RUNTIME.png")}.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_LOCKED.png")}.los-correct-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_CORRECT_6_36_ULTRAWIDE_RUNTIME.png")}.los-wrong-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WRONG_6_36_ULTRAWIDE_RUNTIME.png")}.los-times-up-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_TIMES_UP_ULTRAWIDE_CLEAN.png")}.los-pass-skip-art{--los-art-landscape:url("./assets/west-coast/runtime/LOS_PASS_SKIP_ULTRAWIDE_RUNTIME_LOCKED.png")}.los-eliminated-art,.los-result-art.show-eliminated{--los-art-landscape:url("./assets/west-coast/runtime/LOS_ELIMINATED_ULTRAWIDE_NO_LOGO_NO_CIRCLE.png")}.los-result-art.show-standings{--los-art-landscape:url("./assets/west-coast/runtime/LOS_CURRENT_STANDINGS_ULTRAWIDE_RUNTIME_LOCKED.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_FINAL_SHOWDOWN_MATCHUP_6_36_ULTRAWIDE_RUNTIME.png")}.los-winner-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_WINNER_6_36_ULTRAWIDE_RUNTIME.png")}.los-pause-art{--los-art-landscape:url("./assets/visual-6.36/references/LOS_PAUSE_6_36_ULTRAWIDE_RUNTIME.png")}
  .los-question-art .question-inputs{left:35%;top:64%;width:30%;height:7.5%}.los-question-art .los-question-art-control{bottom:1.2%;height:8.6%}.los-question-art .los-pass-control{left:15.1%;width:13.7%}.los-question-art .los-lock-control{left:68.1%;width:15.2%}
  .los-final-question-art .question-inputs{left:25.5%;top:66.5%;width:47.8%;height:9.5%}.los-final-question-art .los-question-art-control{top:79.8%;bottom:auto;height:10.3%}.los-final-question-art .los-pass-control{left:25.5%;width:20.5%}.los-final-question-art .los-lock-control{left:51.5%;width:21.7%}
 }
@@ -1749,6 +1772,66 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-roster-list{height:auto!important;max-height:100%!important}
 }
 
+/* Final cascade for the audited West Coast live UI. */
+.los-west-coast-game-type .topbar-title,
+.los-west-coast-game-type .btn,
+.los-west-coast-game-type .persistent-mic strong,
+.los-west-coast-choose-game .pack-subcategory-panel,
+.los-west-coast-choose-game .pack-subcategory-panel button,
+.los-west-coast-choose-game .pack-summary,
+.los-west-coast-choose-game [data-audience="general"]:not(.selected)::before,
+.los-west-coast-choose-game .persistent-mic.is-off::after,
+.wc-master-whos-in .wc-roster-heading p,
+.wc-master-whos-in .wc-roster-row>strong,
+.wc-master-whos-in .wc-roster-edit,
+.wc-master-whos-in .wc-live-button,
+.wc-master-whos-in .roster-error,
+.wc-master-whos-in .los-selected-empty strong,
+.wc-master-whos-in .los-selected-empty span,
+.wc-showtime-kicker,
+.wc-showtime-rule,
+.wc-showtime-summary,
+.wc-showtime-status,
+.wc-showtime-start,
+.wc-handoff-live .handoff-hype,
+.wc-handoff-live .handoff-player-name,
+.wc-handoff-live .handoff-sub,
+.wc-handoff-live .handoff-count,
+.wc-settings-panel h2,
+.wc-settings-row,
+.wc-settings-volume,
+.wc-settings-toggle,
+.wc-settings-action,
+.los-home-resume,
+.los-home-dialog,
+.los-home-dialog button,
+.los-home-dialog input,
+.los-sheet-kicker,
+.los-player-picker h2,
+.los-player-picker header p,
+.los-player-search,
+.los-player-search input,
+.los-saved-player-toggle span,
+.los-saved-player-toggle strong,
+.los-saved-player-toggle small,
+.los-saved-player-toggle em,
+.los-saved-player-actions .los-mini-action,
+.los-picker-empty,
+.los-picker-done,
+.los-player-sheet h2,
+.los-player-sheet label,
+.los-player-sheet input,
+.los-player-avatar-edit span,
+.los-player-sheet .los-action,
+.los-avatar-sheet h2,
+.los-avatar-sheet header p,
+.los-avatar-tabs .los-tab,
+.los-avatar-option small,
+.los-save-avatar,
+.voice-diagnostic{
+ font-family:"Times New Roman",Times,serif!important
+}
+
 /* Who's In refinement: enlarge the master artwork without scaling live
    controls, keep one premium Settings gear, and expose more roster entries. */
 .wc-master-whos-in .wc-master-stage{background:none}
@@ -1846,7 +1929,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 /* West Coast Master Runtime: the single live Player-Up / handoff state. */
 .wc-master-handoff .wc-master-stage{background:none}
 .wc-master-handoff .wc-master-stage::before{content:"";position:absolute;z-index:0;inset:-5.5%;background:center/cover no-repeat url("./assets/west-coast/master-runtime/West_Coast_Master_Runtime_Landscape.png");pointer-events:none}
-.wc-master-handoff .wc-master-board{z-index:1;left:15.72%;top:18.5%;width:69.31%;height:70.06%;padding:clamp(24px,2vw,40px);display:grid;place-items:center}
+.wc-master-handoff .wc-master-board{z-index:1;left:15.72%;top:18.5%;width:69.31%;height:70.06%;padding:clamp(24px,2vw,40px);display:grid;place-items:center;overflow:visible}
 .wc-master-handoff .wc-global-controls{z-index:45;top:2.4%;right:5.25%;left:2.35%}
 .wc-master-handoff .wc-global-tools{margin-left:auto}
 .wc-master-handoff .wc-global-tools .wc-settings-gear{width:clamp(64px,4.4vw,82px);height:clamp(64px,7.4vh,82px);min-width:64px;min-height:64px}
@@ -1882,6 +1965,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 .wc-master-question .wc-settings-gear-art{width:88%;height:88%;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))}
 .wc-master-question .wc-settings-gear-teeth,.wc-master-question .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}.wc-master-question .wc-settings-gear-ring{stroke-width:2.2}
 .wc-master-screen,.wc-master-screen button,.wc-master-screen input,.wc-master-screen select,.wc-master-screen textarea{font-family:"Times New Roman",Times,serif}
+.wc-final-showdown-label{position:absolute;z-index:4;left:10%;top:.75%;width:80%;pointer-events:none;color:#f4c84c;font-family:"Times New Roman",Times,serif;font-size:clamp(1.15rem,1.75vw,2rem);font-weight:900;line-height:1;letter-spacing:.11em;text-align:center;white-space:nowrap;background:linear-gradient(180deg,#fff9cf 0%,#ffe36e 20%,#f5c42e 48%,#b97808 74%,#ffe16a 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 1px 0 #4a2300,0 2px 1px rgba(36,14,0,.76),0 0 7px rgba(245,187,38,.24)}
 .wc-question-live{position:static;width:100%;height:100%;min-height:0;padding:0!important;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto auto auto;align-items:center;justify-items:center;gap:clamp(7px,1.15vh,14px);overflow:visible}
 .wc-question-player{position:absolute;z-index:3;left:50%;top:3.5%;transform:translateX(-50%);width:min(68%,1320px);min-width:0;display:flex;align-items:center;justify-content:center;gap:clamp(20px,2vw,40px);color:#f3bf31;text-align:left;pointer-events:none}
 .wc-question-avatar{flex:0 0 clamp(93px,8.1vw,141px);width:clamp(93px,8.1vw,141px);aspect-ratio:1;border:clamp(4px,.42vw,7px) solid transparent;border-radius:50%;padding:4px;overflow:hidden;background:linear-gradient(#08070b,#08070b) padding-box,linear-gradient(135deg,#fff4ae 0%,#d99a16 28%,#7a3c00 52%,#ffe678 76%,#ae6208 100%) border-box;box-shadow:inset 0 0 0 2px rgba(255,241,164,.28),0 0 14px rgba(255,185,30,.48),0 0 18px rgba(180,36,255,.24)}
@@ -1909,6 +1993,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-master-question .wc-global-controls{top:2.1%;right:6.5%;left:2.6%}
  .wc-master-question .wc-global-tools .wc-settings-gear{width:clamp(62px,8vw,78px);height:clamp(62px,4.4vh,78px)}
  .wc-question-live{gap:clamp(12px,1.2vh,22px)}
+ .wc-final-showdown-label{top:0;font-size:clamp(1.25rem,3.6vw,2rem)}
  .wc-question-player{top:6.5%;width:78%;gap:clamp(15px,3vw,30px)}
  .wc-question-avatar{flex-basis:clamp(93px,15vw,129px);width:clamp(93px,15vw,129px)}
  .wc-question-player-copy{max-width:82%}
@@ -1955,6 +2040,7 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-master-question .wc-master-board{left:18.83%;top:24.14%;width:62.22%;height:61.66%;padding:clamp(18px,1.55vw,34px)}
  .wc-master-question .wc-global-controls{top:2.25%;right:4.6%;left:2.3%}
  .wc-question-live{gap:clamp(5px,.85vh,10px)}
+ .wc-final-showdown-label{top:.5%;font-size:clamp(1.1rem,1.45vw,1.8rem)}
  .wc-question-player-name{font-size:clamp(1.8rem,3vw,3.7rem)}
  .wc-question-player-name.name-long{font-size:clamp(1.35rem,2.1vw,2.7rem)}
  .wc-question-presentation{width:90%;padding-bottom:30px}
@@ -2192,4 +2278,777 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-roster-heading{flex:0 0 auto}
  .wc-roster-live{flex:1 1 0;width:100%;min-height:0;overflow:hidden}
  .wc-roster-list{height:auto!important;max-height:100%!important}
+}
+
+.wc-master-whos-in .wc-roster-heading p,
+.wc-master-whos-in .wc-roster-row>strong,
+.wc-master-whos-in .wc-roster-edit,
+.wc-master-whos-in .wc-live-button,
+.wc-master-whos-in .roster-error,
+.wc-master-whos-in .los-selected-empty strong,
+.wc-master-whos-in .los-selected-empty span,
+.wc-showtime-kicker,
+.wc-showtime-rule,
+.wc-showtime-summary,
+.wc-showtime-status,
+.wc-showtime-start,
+.wc-handoff-live .handoff-hype,
+.wc-handoff-live .handoff-player-name,
+.wc-handoff-live .handoff-sub,
+.wc-handoff-live .handoff-count,
+.wc-settings-panel h2,
+.wc-settings-row,
+.wc-settings-volume,
+.wc-settings-toggle,
+.wc-settings-action{
+ font-family:"Times New Roman",Times,serif!important
+}
+
+/* Choose Your Game PLAY remains live-rendered; Home uses its locked baked control. */
+.los-west-coast-choose-game #continuePacks{
+ box-sizing:border-box;
+ display:grid;
+ place-items:center;
+ padding:.25em .8em;
+ border:clamp(2px,.18vw,4px) solid #ffe98d;
+ border-radius:clamp(14px,1.15vw,24px);
+ background:linear-gradient(180deg,#fff2a0 0%,#f6ca3e 28%,#b96905 62%,#6e3000 100%);
+ box-shadow:inset 0 2px 0 rgba(255,255,255,.78),inset 0 -6px 12px rgba(57,15,0,.72),0 0 0 3px #6f178d,0 0 18px rgba(221,52,255,.72),0 9px 20px rgba(0,0,0,.58);
+ color:#140900;
+ font-family:"Times New Roman",Times,serif!important;
+ font-size:clamp(2rem,min(4.2vw,6vh),4rem);
+ font-weight:900;
+ line-height:1;
+ letter-spacing:.045em;
+ text-shadow:0 1px 0 rgba(255,255,255,.65);
+ opacity:1;
+ overflow:hidden;
+ cursor:pointer;
+ pointer-events:auto;
+ touch-action:manipulation
+}
+.los-west-coast-choose-game #continuePacks{font-size:clamp(1.6rem,min(2.5vw,4.5vh),3rem)}
+.los-west-coast-choose-game #continuePacks:hover{filter:brightness(1.08)}
+.los-west-coast-choose-game #continuePacks:active{filter:brightness(.96)}
+
+/* Keep the functional Settings controls visually singular and clear of the
+   decorative gear pixels in the approved background plates. */
+.los-west-coast-choose-game .wc-settings-gear{
+ isolation:isolate;
+ border-radius:50%;
+ background:radial-gradient(circle at 50% 45%,#16091f 0 52%,#08030d 72%,#030106 100%);
+ box-shadow:0 0 0 2px rgba(238,145,255,.46),0 0 18px rgba(190,43,255,.62)
+}
+.los-west-coast-choose-game .wc-settings-gear{
+ left:auto;
+ right:max(2.4%,env(safe-area-inset-right));
+ top:max(2.4%,env(safe-area-inset-top));
+ width:clamp(64px,5vw,88px);
+ height:clamp(64px,5vw,88px);
+ overflow:hidden
+}
+.los-west-coast-choose-game .wc-settings-gear-art{width:76%;height:76%}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .wc-settings-gear{left:auto;right:max(3%,env(safe-area-inset-right));top:calc(1.8% + var(--wc-portrait-lift));width:clamp(64px,9vw,86px);height:clamp(64px,9vw,86px)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .los-west-coast-choose-game .wc-settings-gear{left:auto;right:max(2%,env(safe-area-inset-right));top:max(2.2%,env(safe-area-inset-top));width:clamp(64px,4vw,86px);height:clamp(64px,4vw,86px)}
+}
+
+/* Choose Your Game uses live Times New Roman typography over neutralized
+   runtime labels, plus canonical difficulty and question-time state. */
+.los-west-coast-choose-game,
+.los-west-coast-choose-game button,
+.los-west-coast-choose-game input,
+.los-west-coast-choose-game .topbar-title,
+.los-west-coast-choose-game .pack-instruction,
+.los-west-coast-choose-game .pack-summary,
+.los-west-coast-choose-game .pack-subcategory-screen,
+.los-west-coast-choose-game .pack-subcategory-screen *{
+ font-family:"Times New Roman",Times,serif!important
+}
+.los-west-coast-choose-game .pack-choice{
+ z-index:4;
+ display:grid;
+ grid-template-columns:auto 1fr;
+ align-items:center;
+ gap:clamp(10px,1vw,18px);
+ padding:0 clamp(18px,2vw,34px);
+ border:1px solid #4c5060;
+ border-radius:clamp(10px,.8vw,16px);
+ background:linear-gradient(180deg,#151923 0%,#07090e 62%,#030407 100%);
+ box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -6px 13px rgba(0,0,0,.72),0 0 0 6px #020305;
+ color:#fff;
+ font-size:clamp(1rem,1.45vw,1.7rem);
+ font-weight:700;
+ line-height:1;
+ letter-spacing:.015em;
+ text-align:left
+}
+.los-west-coast-choose-game .pack-choice.selected{border:2px solid #ffd43c;background:linear-gradient(180deg,#7a5607,#342100);box-shadow:inset 0 1px rgba(255,255,255,.25),inset 0 -7px 14px rgba(25,8,0,.72),0 0 0 6px #020305,0 0 17px rgba(255,196,42,.5)}
+.los-west-coast-choose-game .pack-choice>*{opacity:1}
+.los-west-coast-choose-game .pack-choice::before,
+.los-west-coast-choose-game .pack-choice::after{content:none!important}
+.los-west-coast-choose-game .pack-check{position:static;width:clamp(22px,2vw,34px);height:clamp(22px,2vw,34px);display:grid;place-items:center;border:2px solid #c33cff;border-radius:5px;color:#ffd43c;font-size:1em;box-shadow:0 0 8px rgba(195,60,255,.42)}
+.los-west-coast-choose-game .pack-choice.selected .pack-check{border-color:#ffd43c;background:rgba(125,82,0,.72)}
+.los-west-coast-choose-game .pack-art-label-mask{position:absolute;z-index:3;left:0;width:100%;background:#020305;pointer-events:none}
+.los-west-coast-choose-game .pack-art-label-mask-audience{top:14%;height:15%}
+.los-west-coast-choose-game .pack-art-label-mask-topics{top:32%;height:15%}
+.los-west-coast-choose-game .pack-instruction{
+ position:absolute;
+ z-index:5;
+ width:52%;
+ height:8%;
+ margin:0;
+ display:grid;
+ place-items:center;
+ overflow:visible;
+ clip:auto;
+ background:#020305;
+ color:#cbb3e7;
+ font-size:clamp(.9rem,1.4vw,1.55rem);
+ font-weight:700;
+ line-height:1;
+ letter-spacing:.035em;
+ white-space:nowrap
+}
+.los-west-coast-choose-game .hierarchy-panel:first-of-type .pack-instruction{left:24%;top:15.5%}
+.los-west-coast-choose-game .hierarchy-panel:nth-of-type(2) .pack-instruction{left:24%;top:34%}
+.los-west-coast-choose-game .pack-setup-controls{position:absolute;z-index:7;left:16%;top:65%;width:68%;height:17%;display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2vw,34px);padding:clamp(8px,1vh,14px) clamp(12px,1.2vw,22px);border:1px solid rgba(176,55,255,.38);border-radius:clamp(12px,1vw,20px);background:linear-gradient(180deg,rgba(9,7,14,.99),rgba(2,3,5,.99));box-shadow:0 0 0 7px #020305,0 0 22px rgba(154,37,222,.2)}
+.los-west-coast-choose-game .pack-setup-group{min-width:0;display:grid;grid-template-rows:auto 1fr;gap:clamp(5px,.7vh,9px)}
+.los-west-coast-choose-game .pack-setup-label{display:grid;place-items:center;color:#cbb3e7;font-size:clamp(.78rem,1.15vw,1.25rem);font-weight:700;line-height:1;letter-spacing:.045em;white-space:nowrap}
+.los-west-coast-choose-game .pack-setup-options{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:clamp(7px,.75vw,13px)}
+.los-west-coast-choose-game .pack-setup-choice{min-width:0;min-height:44px;padding:.35em .55em;border:1px solid #a53bcd;border-radius:clamp(9px,.7vw,14px);background:linear-gradient(180deg,#25102e,#08050d);box-shadow:inset 0 1px rgba(255,255,255,.14);color:#f8efff;font-size:clamp(.82rem,1.15vw,1.25rem);font-weight:700;line-height:1;cursor:pointer;touch-action:manipulation}
+.los-west-coast-choose-game .pack-setup-choice.selected{border:2px solid #ffe077;background:linear-gradient(180deg,#fff09a,#d49719 48%,#663000);box-shadow:inset 0 2px rgba(255,255,255,.62),0 0 13px rgba(255,193,42,.48);color:#160b01}
+.los-west-coast-choose-game .pack-summary{z-index:7;left:24%;top:83%;width:52%;height:4%;display:grid;place-items:center;background:#020305;color:#cdb6e8;font-size:clamp(.72rem,1vw,1.08rem);font-weight:700;line-height:1;letter-spacing:.04em;white-space:nowrap}
+.los-west-coast-choose-game #back{left:34%;top:88%;width:14%;height:8%;z-index:8;border:2px solid #ae3ee0;border-radius:clamp(12px,.9vw,18px);background:linear-gradient(180deg,#23102b,#08050d);box-shadow:inset 0 1px rgba(255,255,255,.16),0 0 0 7px #020305,0 0 14px rgba(174,50,224,.35);color:#fff;font-size:clamp(1.2rem,1.7vw,2rem);font-weight:700}
+.los-west-coast-choose-game #continuePacks{left:50%;top:88%;width:16%;height:8%;border-radius:clamp(12px,.9vw,18px);box-shadow:inset 0 2px 0 rgba(255,255,255,.78),inset 0 -6px 12px rgba(57,15,0,.72),0 0 0 clamp(7px,.55vw,12px) #020305,0 0 20px rgba(221,52,255,.66)}
+.los-west-coast-choose-game .pack-subcategory-panel,.los-west-coast-choose-game .pack-subcategory-choice,.los-west-coast-choose-game .pack-subcategory-back,.los-west-coast-choose-game .pack-subcategory-clear{font-family:"Times New Roman",Times,serif!important}
+.wc-master-handoff .wc-master-board{overflow:visible!important}
+.wc-handoff-live .handoff-count{position:static;top:auto}
+@media (orientation:landscape) and (min-width:1600px) and (max-aspect-ratio:11/5){
+ .wc-handoff-live{--wc-countdown-shift:clamp(58px,6.5vh,76px);--wc-countdown-half:clamp(29px,3.25vh,38px);height:calc(78% + var(--wc-countdown-shift) + 20px);margin-bottom:calc(-20px - var(--wc-countdown-shift))}
+ .wc-handoff-live .handoff-intro{transform:translateY(calc(-190px - var(--wc-countdown-half)))}
+ .wc-handoff-live .handoff-count{position:relative;top:calc(var(--wc-countdown-half) - 30px)}
+}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .pack-choice{padding:0 clamp(18px,4vw,34px);font-size:clamp(1.05rem,3vw,1.7rem)}
+ .los-west-coast-choose-game .pack-check{width:clamp(23px,5vw,34px);height:clamp(23px,5vw,34px)}
+ .los-west-coast-choose-game .pack-art-label-mask-audience{top:13%;height:30%}
+ .los-west-coast-choose-game .pack-art-label-mask-topics{top:38%;height:11%}
+ .los-west-coast-choose-game .pack-instruction{width:76%;height:8%;font-size:clamp(.9rem,2.7vw,1.45rem)}
+ .los-west-coast-choose-game .hierarchy-panel:first-of-type .pack-instruction{left:12%;top:14%}
+ .los-west-coast-choose-game .hierarchy-panel:nth-of-type(2) .pack-instruction{left:12%;top:39%}
+ .los-west-coast-choose-game .pack-setup-controls{left:8.7%;top:calc(75.6% + var(--wc-portrait-lift));width:81.9%;height:10.6%;grid-template-columns:1fr;gap:6px;padding:7px 9px}
+ .los-west-coast-choose-game .pack-setup-group{grid-template-columns:34% 1fr;grid-template-rows:1fr;align-items:center;gap:6px}
+ .los-west-coast-choose-game .pack-setup-label{justify-items:start;padding-left:5%;font-size:clamp(.7rem,2vw,1rem)}
+ .los-west-coast-choose-game .pack-setup-choice{min-height:44px;font-size:clamp(.72rem,2.2vw,1.05rem)}
+ .los-west-coast-choose-game .pack-summary{left:12%;top:calc(86.8% + var(--wc-portrait-lift));width:76%;height:2.5%;font-size:clamp(.62rem,1.9vw,.9rem)}
+ .los-west-coast-choose-game #back{left:8.7%;top:calc(89.5% + var(--wc-portrait-lift));width:39.6%;height:5.1%}
+ .los-west-coast-choose-game #continuePacks{left:51.7%;top:calc(89.5% + var(--wc-portrait-lift));width:39.6%;height:5.1%}
+ .wc-handoff-live .handoff-count{position:static;top:auto}
+}
+@media (orientation:portrait) and (min-width:900px){
+ .wc-handoff-live{--wc-countdown-shift:clamp(62px,4.2vh,82px);--wc-countdown-half:clamp(31px,2.1vh,41px);height:calc(80% + var(--wc-countdown-shift) + 20px);margin-bottom:calc(-20px - var(--wc-countdown-shift))}
+ .wc-handoff-live .handoff-intro{transform:translateY(calc(-310px - var(--wc-countdown-half)))}
+ .wc-handoff-live .handoff-count{position:relative;top:calc(var(--wc-countdown-half) - 42px)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .los-west-coast-choose-game .pack-setup-controls{left:20%;top:64%;width:60%;height:18%}
+ .los-west-coast-choose-game .pack-summary{left:29%;top:83%;width:42%}
+ .los-west-coast-choose-game #back{left:36%;top:88%;width:12%;height:8%}
+ .los-west-coast-choose-game #continuePacks{left:50%;top:88%;width:14%;height:8%}
+ .wc-handoff-live{--wc-countdown-shift:clamp(56px,6vh,72px);--wc-countdown-half:clamp(28px,3vh,36px);height:calc(78% + var(--wc-countdown-shift) + 20px);margin-bottom:calc(-20px - var(--wc-countdown-shift))}
+ .wc-handoff-live .handoff-intro{transform:translateY(calc(-190px - var(--wc-countdown-half)))}
+ .wc-handoff-live .handoff-count{position:relative;top:calc(var(--wc-countdown-half) - 7px)}
+}
+
+/* Compact Choose Your Game selectors: retain the canonical controls and
+   selected treatments while returning clear space to status and navigation. */
+.los-west-coast-choose-game .pack-setup-controls{
+ left:21%;
+ top:67%;
+ width:58%;
+ height:13%;
+ align-items:center;
+ gap:clamp(12px,1.4vw,24px);
+ padding:clamp(6px,.65vh,10px) clamp(10px,.9vw,17px)
+}
+.los-west-coast-choose-game .pack-setup-group{align-content:center;gap:clamp(3px,.4vh,6px)}
+.los-west-coast-choose-game .pack-setup-label{min-height:1em;font-size:clamp(.8rem,1vw,1.1rem)}
+.los-west-coast-choose-game .pack-setup-options{align-items:center;justify-content:center;gap:clamp(6px,.55vw,10px)}
+.los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,clamp(150px,8.3vw,170px));grid-auto-columns:auto}
+.los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,clamp(180px,10vw,210px));grid-auto-columns:auto}
+.los-west-coast-choose-game .pack-setup-choice{width:100%;height:clamp(58px,6vh,68px);min-height:58px;padding:.22em .45em}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .pack-setup-controls{left:8.7%;top:calc(76% + var(--wc-portrait-lift));width:81.9%;height:9.2%;gap:3px;padding:5px 7px}
+ .los-west-coast-choose-game .pack-setup-group{gap:4px}
+ .los-west-coast-choose-game .pack-setup-label{font-size:clamp(.68rem,1.9vw,.95rem)}
+ .los-west-coast-choose-game .pack-setup-options{gap:5px}
+ .los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:.18em .32em}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .los-west-coast-choose-game .pack-setup-controls{left:23%;top:66%;width:54%;height:14%}
+}
+
+/* The complete lower composition shares one responsive rhythm. The opaque
+   mask removes only the obsolete baked status and Back/Play artwork. */
+.los-west-coast-choose-game{
+ --wc-lower-top:66%;
+ --wc-selector-height:clamp(96px,12.5vh,135px);
+ --wc-lower-gap:clamp(6px,1vh,11px);
+ --wc-status-height:clamp(22px,3vh,32px);
+ --wc-action-height:clamp(58px,7vh,76px)
+}
+.los-west-coast-choose-game .pack-art-bottom-mask{position:absolute;z-index:3;left:0;right:0;top:62%;bottom:0;background:#020305;pointer-events:none}
+.los-west-coast-choose-game .pack-setup-controls{left:14%;top:var(--wc-lower-top);width:72%;height:var(--wc-selector-height);grid-template-columns:minmax(0,1fr) minmax(0,.82fr);align-items:center;gap:clamp(16px,1.5vw,28px);padding:clamp(7px,.75vh,12px) clamp(12px,1.1vw,22px)}
+.los-west-coast-choose-game .pack-setup-group{min-width:0;height:100%;align-content:center}
+.los-west-coast-choose-game .pack-setup-options{min-width:0}
+.los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,170px))}
+.los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,210px))}
+.los-west-coast-choose-game .pack-summary{left:20%;top:calc(var(--wc-lower-top) + var(--wc-selector-height) + var(--wc-lower-gap));width:60%;height:var(--wc-status-height);background:#020305}
+.los-west-coast-choose-game #back,.los-west-coast-choose-game #continuePacks{top:calc(var(--wc-lower-top) + var(--wc-selector-height) + var(--wc-lower-gap) + var(--wc-status-height) + var(--wc-lower-gap));height:var(--wc-action-height)}
+.los-west-coast-choose-game #back{left:34%;width:14%}
+.los-west-coast-choose-game #continuePacks{left:50%;width:16%}
+@media (orientation:portrait){
+ .los-west-coast-choose-game{--wc-lower-top:calc(73.5% + var(--wc-portrait-lift));--wc-selector-height:clamp(170px,10vh,205px);--wc-lower-gap:clamp(7px,.65vh,12px);--wc-status-height:clamp(24px,2vh,34px);--wc-action-height:clamp(72px,4.8vh,94px)}
+ .los-west-coast-choose-game .pack-art-bottom-mask{top:70.5%}
+ .los-west-coast-choose-game .pack-setup-controls{left:8.7%;top:var(--wc-lower-top);width:81.9%;height:var(--wc-selector-height);grid-template-columns:1fr;gap:4px;padding:6px 8px}
+ .los-west-coast-choose-game .pack-setup-group{height:auto;grid-template-columns:34% 1fr;grid-template-rows:1fr}
+ .los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-summary{left:12%;top:calc(var(--wc-lower-top) + var(--wc-selector-height) + var(--wc-lower-gap));width:76%;height:var(--wc-status-height)}
+ .los-west-coast-choose-game #back,.los-west-coast-choose-game #continuePacks{top:calc(var(--wc-lower-top) + var(--wc-selector-height) + var(--wc-lower-gap) + var(--wc-status-height) + var(--wc-lower-gap));height:var(--wc-action-height)}
+ .los-west-coast-choose-game #back{left:8.7%;width:39.6%}
+ .los-west-coast-choose-game #continuePacks{left:51.7%;width:39.6%}
+}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){
+ .los-west-coast-choose-game{--wc-lower-top:65.5%}
+ .los-west-coast-choose-game .pack-setup-controls{left:16%;width:68%;grid-template-columns:minmax(0,1fr) minmax(0,.78fr)}
+ .los-west-coast-choose-game #back{left:36%;width:12%}
+ .los-west-coast-choose-game #continuePacks{left:50%;width:14%}
+}
+
+/* Final selector-scale refinement: only the five live setup choices become
+   lighter; the approved panel, status, and navigation geometry stays fixed. */
+.los-west-coast-choose-game .pack-setup-options{gap:clamp(5px,.45vw,8px)}
+.los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,150px))}
+.los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,185px))}
+.los-west-coast-choose-game .pack-setup-choice{height:58px;min-height:58px;padding:.18em .38em}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .pack-setup-options{width:88%;justify-self:center;gap:4px}
+ .los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:.14em .28em}
+}
+
+/* Reduce only the selectable Choose Your Game tiles while retaining each
+   approved tile center and every surrounding control position. */
+.los-west-coast-choose-game .pack-choice{transform:scale(.8);transform-origin:center}
+.los-west-coast-choose-game .pack-setup-options{gap:clamp(4px,.36vw,6px)}
+.los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,120px))}
+.los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,148px))}
+.los-west-coast-choose-game .pack-setup-choice{height:46px;min-height:46px;padding:.12em .3em}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .pack-setup-options{width:70.4%;gap:3px}
+ .los-west-coast-choose-game .pack-setup-group:first-child .pack-setup-options{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-group:last-child .pack-setup-options{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:.1em .22em}
+}
+
+/* The live screen title is anchored to the viewport center, independently of
+   the category geometry and upper-right Settings control. */
+.los-west-coast-choose-game .topbar-title{
+ left:50%;
+ top:clamp(24px,3.2vh,42px);
+ width:min(70vw,1100px);
+ height:clamp(64px,9vh,98px);
+ transform:translateX(-50%);
+ font-family:"Times New Roman",Times,serif!important;
+ font-size:clamp(2.8rem,4.6vw,5.35rem);
+ font-weight:700;
+ letter-spacing:.025em;
+ color:#ffd85a;
+ background:linear-gradient(180deg,#fff2a6 4%,#ffd65a 38%,#d99313 72%,#fff0a0 100%);
+ -webkit-background-clip:text;
+ background-clip:text;
+ -webkit-text-fill-color:transparent;
+ text-shadow:0 3px 0 rgba(91,44,0,.72),0 0 14px rgba(255,190,32,.6)
+}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .topbar-title{top:calc(var(--wc-portrait-lift) + clamp(32px,3vh,58px));width:78vw;height:clamp(72px,7vh,108px);font-size:clamp(2.8rem,6.2vw,4.6rem)}
+}
+
+/* Approved Choose Your Game target: the upper choices are genuine centered
+   live grids. Their opaque local beds neutralize obsolete baked tile plates
+   without covering the surrounding West Coast artwork. */
+.los-west-coast-choose-game .audience-grid,
+.los-west-coast-choose-game .topic-grid{
+ position:absolute;
+ z-index:4;
+ left:50%;
+ display:grid;
+ justify-content:center;
+ align-items:center;
+ padding:10px;
+ transform:translateX(-50%);
+ background:#020305;
+ box-shadow:0 0 0 10px #020305;
+ pointer-events:none
+}
+.los-west-coast-choose-game .audience-grid{
+ top:25.5%;
+ width:min(72vw,920px);
+ grid-template-columns:repeat(3,minmax(0,280px));
+ gap:clamp(12px,1.2vw,20px)
+}
+.los-west-coast-choose-game .topic-grid{
+ top:42.5%;
+ width:min(88vw,1160px);
+ grid-template-columns:repeat(4,minmax(0,260px));
+ gap:clamp(10px,1vw,18px)
+}
+.los-west-coast-choose-game .pack-art-label-mask-audience{top:22%;height:16%}
+.los-west-coast-choose-game .pack-art-label-mask-topics{top:39%;height:25%}
+.los-west-coast-choose-game .pack-grid .pack-choice{
+ position:relative;
+ inset:auto;
+ width:100%;
+ height:70px;
+ min-height:44px;
+ transform:none;
+ padding:0 clamp(14px,1.4vw,24px);
+ border:1px solid #8d34bd;
+ border-radius:14px;
+ background:linear-gradient(180deg,#1c1026 0%,#0b0711 62%,#040306 100%);
+ box-shadow:inset 0 1px rgba(255,255,255,.12),inset 0 -6px 13px rgba(0,0,0,.72),0 0 12px rgba(178,47,235,.34);
+ color:#fff;
+ pointer-events:auto
+}
+.los-west-coast-choose-game .topic-grid .pack-choice{font-size:clamp(.88rem,.95vw,1.1rem)}
+.los-west-coast-choose-game .pack-grid .pack-choice.selected{
+ border:2px solid #ffe47b;
+ background:linear-gradient(180deg,#fff0a0 0%,#d79a21 42%,#734200 72%,#2c1600 100%);
+ box-shadow:inset 0 2px rgba(255,255,255,.62),inset 0 -7px 14px rgba(35,13,0,.68),0 0 17px rgba(255,196,42,.52);
+ color:#160b01
+}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .topbar-title{width:70vw;font-size:clamp(44px,5.2vw,56px)!important}
+ .los-west-coast-choose-game .pack-art-label-mask-audience{top:18%;height:23%}
+ .los-west-coast-choose-game .pack-art-label-mask-topics{top:40%;height:36%}
+ .los-west-coast-choose-game .audience-grid,
+ .los-west-coast-choose-game .topic-grid{left:50%;width:84%;padding:8px;box-shadow:0 0 0 8px #020305}
+ .los-west-coast-choose-game .audience-grid{top:calc(21.5% + var(--wc-portrait-lift));grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+ .los-west-coast-choose-game .topic-grid{top:calc(42% + var(--wc-portrait-lift));grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+ .los-west-coast-choose-game .pack-grid .pack-choice{height:72px;padding:0 clamp(10px,2vw,18px);font-size:clamp(.9rem,2.5vw,1.35rem)}
+ .los-west-coast-choose-game .pack-grid .pack-check{width:clamp(22px,4vw,30px);height:clamp(22px,4vw,30px)}
+}
+
+/* Final approved heading polish: retain all established geometry while making
+   the supporting Topics line quieter and the title distinctly bright gold. */
+.los-west-coast-choose-game .hierarchy-panel:nth-of-type(2) .pack-instruction{
+ font-size:clamp(.72rem,.95vw,1rem)
+}
+.los-west-coast-choose-game .topbar-title{
+ color:#efbd36;
+ background:linear-gradient(180deg,#f8dc78 0%,#eebd38 24%,#d99a16 51%,#f0c94f 74%,#bd7607 100%);
+ -webkit-background-clip:text;
+ background-clip:text;
+ -webkit-text-fill-color:transparent;
+ text-shadow:0 1px 0 rgba(255,238,159,.24),0 3px 0 rgba(101,54,0,.58),0 0 8px rgba(230,164,25,.34);
+ filter:drop-shadow(0 2px 1px rgba(91,48,0,.28))
+}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .hierarchy-panel:nth-of-type(2) .pack-instruction{font-size:clamp(.7rem,1.8vw,.9rem)}
+}
+
+/* Replace the broad art masks with exact, local neutralizers for only the
+   obsolete baked labels and tile plates. */
+.los-west-coast-choose-game .pack-art-label-mask{box-shadow:none}
+.los-west-coast-choose-game .pack-art-label-mask-audience{left:38%;top:23%;width:24%;height:3%}
+.los-west-coast-choose-game .pack-art-label-mask-topics{left:38%;top:39.5%;width:24%;height:4.5%}
+.los-west-coast-choose-game .pack-legacy-tile-mask{position:absolute;z-index:3;display:block;background:#020305;box-shadow:0 0 0 12px #020305;pointer-events:none}
+.los-west-coast-choose-game .pack-legacy-audience-general{left:calc(var(--wc-art-w)*.066 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.248 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-audience-work{left:calc(var(--wc-art-w)*.355 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.248 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-audience-kids{left:calc(var(--wc-art-w)*.644 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.248 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-topic-culture{left:calc(var(--wc-art-w)*.066 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.43 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-topic-transit{left:calc(var(--wc-art-w)*.355 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.43 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-topic-entertainment{left:calc(var(--wc-art-w)*.644 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.43 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-topic-brain{left:calc(var(--wc-art-w)*.066 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.55 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.28);height:calc(var(--wc-art-h)*.095)}
+.los-west-coast-choose-game .pack-legacy-audience-kids,
+.los-west-coast-choose-game .pack-legacy-topic-entertainment{width:calc(var(--wc-art-w)*.28 + 24px)}
+.los-west-coast-choose-game .pack-setup-controls::after{content:"";position:absolute;left:50%;top:14%;bottom:14%;width:1px;background:linear-gradient(transparent,rgba(178,62,225,.52),transparent);pointer-events:none}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .pack-art-label-mask-audience{left:24%;top:15.5%;width:52%;height:5%}
+ .los-west-coast-choose-game .pack-art-label-mask-topics{left:30%;top:46.3%;width:40%;height:4%}
+ .los-west-coast-choose-game .pack-legacy-audience-general{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.238 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-audience-work{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.306 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-audience-kids{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.374 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-topic-culture{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.481 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-topic-transit{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.55 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-topic-entertainment{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.618 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-topic-brain{left:calc(var(--wc-art-w)*.086 - var(--wc-crop-x));top:calc(var(--wc-art-h)*.687 - var(--wc-crop-y) + var(--wc-upper-shift));width:calc(var(--wc-art-w)*.82);height:calc(var(--wc-art-h)*.062)}
+ .los-west-coast-choose-game .pack-legacy-audience-kids,
+ .los-west-coast-choose-game .pack-legacy-topic-entertainment{width:calc(var(--wc-art-w)*.82)}
+ .los-west-coast-choose-game .pack-setup-controls::after{left:4%;right:4%;top:50%;bottom:auto;width:auto;height:1px}
+}
+
+/* Balanced vertical rhythm for the six approved Choose Your Game row groups. */
+.los-west-coast-choose-game{
+ --wc-lower-top:54.2%;
+ --wc-lower-gap:clamp(48px,6vh,65px)
+}
+.los-west-coast-choose-game .topic-grid{top:40%}
+@media (orientation:portrait){
+ .los-west-coast-choose-game{
+  --wc-lower-top:calc(49.5% + var(--wc-portrait-lift));
+  --wc-lower-gap:clamp(130px,7.8vh,150px)
+ }
+ .los-west-coast-choose-game .topic-grid{top:calc(34% + var(--wc-portrait-lift))}
+}
+
+/* West Coast Current Standings: live game state on the approved runtime art. */
+.los-result-art.show-standings .wc-timeout-player{display:none}
+.los-result-art.show-standings .result-body{position:absolute;z-index:5;inset:42.5% 22% 19%;width:auto!important;height:auto!important;overflow:visible!important}
+.los-result-art.show-standings .standings.los-current-standings-live{position:static;display:grid;left:auto;top:auto;width:100%;height:100%;margin:0;padding:0;grid-template-columns:1fr;grid-auto-rows:minmax(0,1fr);gap:clamp(3px,.55vh,8px);background:rgba(2,3,2,.98);border:0;box-shadow:0 0 24px 18px rgba(2,3,2,.98);overflow:hidden}
+.los-result-art.show-standings .standings.los-current-standings-live.multi,.los-result-art.show-standings .standings.los-current-standings-live.dense{grid-template-columns:repeat(2,minmax(0,1fr))}
+.los-result-art.show-standings .standings.los-current-standings-live.standard{grid-auto-rows:clamp(72px,9vh,100px);align-content:start}
+.los-result-art.show-standings .wc-standing-card{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:clamp(8px,.8vw,16px);min-width:0;min-height:0;padding:clamp(2px,.35vh,5px) clamp(8px,1vw,18px);border:1px solid rgba(112,210,14,.38);border-radius:clamp(7px,.7vw,12px);background:linear-gradient(90deg,rgba(4,9,3,.96),rgba(1,2,2,.88));color:#fff;font-family:"Times New Roman",Times,serif;box-shadow:inset 0 0 12px rgba(101,204,9,.06)}
+.los-result-art.show-standings .wc-standing-avatar{width:clamp(34px,3.3vw,58px);aspect-ratio:1;border:2px solid #79d30e;border-radius:50%;overflow:hidden;background:#090d08;box-shadow:0 0 8px rgba(119,226,10,.6)}
+.los-result-art.show-standings .wc-standing-avatar .los-avatar-art{width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background-size:500% 600%}.los-result-art.show-standings .wc-standing-avatar .los-avatar-art.atlas-v3{background-size:600% 300%}
+.los-result-art.show-standings .wc-standing-name{min-width:0;font:700 clamp(1rem,1.55vw,1.75rem)/.95 "Times New Roman",Times,serif;white-space:normal;overflow-wrap:anywhere;text-align:left;text-shadow:0 2px 3px #000}.los-result-art.show-standings .wc-standing-name.name-medium{font-size:clamp(.88rem,1.25vw,1.45rem)}.los-result-art.show-standings .wc-standing-name.name-long{font-size:clamp(.76rem,1.05vw,1.2rem)}
+.los-result-art.show-standings .standing-strikes{color:#ff293f;font:700 clamp(1.05rem,1.65vw,1.85rem)/1 "Times New Roman",Times,serif;letter-spacing:.08em;white-space:nowrap;text-align:right;text-shadow:0 0 8px rgba(255,25,50,.55)}
+.los-result-art.show-standings .wc-standing-out{position:absolute;right:clamp(7px,.7vw,12px);bottom:2px;color:#ff7180;font:700 clamp(.55rem,.62vw,.7rem)/1 "Times New Roman",Times,serif;letter-spacing:.12em}
+.los-result-art.show-standings .wc-standing-card.out{border-color:rgba(255,45,65,.55);background:linear-gradient(90deg,rgba(24,2,5,.94),rgba(3,1,2,.9));opacity:.76}.los-result-art.show-standings .wc-standing-card.out .wc-standing-avatar{border-color:#ff334a;filter:grayscale(.7)}.los-result-art.show-standings .wc-standing-card.out .wc-standing-name{text-decoration:line-through;text-decoration-color:#ff334a}
+.los-result-art.show-standings .los-next-up{display:none!important}
+@media (orientation:portrait){
+ .los-result-art.show-standings .result-body{inset:42% 17% 40%}
+ .los-result-art.show-standings .standings.los-current-standings-live{gap:clamp(2px,.28vh,5px);box-shadow:0 0 16px 12px rgba(2,3,2,.98)}
+ .los-result-art.show-standings .wc-standing-card{gap:clamp(5px,1vw,10px);padding:2px clamp(5px,1.1vw,10px);border-radius:7px}
+ .los-result-art.show-standings .wc-standing-avatar{width:clamp(27px,5vw,44px)}
+ .los-result-art.show-standings .wc-standing-name{font-size:clamp(.78rem,2.5vw,1.35rem)}.los-result-art.show-standings .wc-standing-name.name-medium{font-size:clamp(.68rem,2vw,1.05rem)}.los-result-art.show-standings .wc-standing-name.name-long{font-size:clamp(.61rem,1.7vw,.9rem)}
+ .los-result-art.show-standings .standing-strikes{font-size:clamp(.78rem,2.7vw,1.4rem)}.los-result-art.show-standings .wc-standing-out{font-size:clamp(.45rem,1.15vw,.62rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .los-result-art.show-standings .result-body{inset:41.5% 29% 13.5%}
+ .los-result-art.show-standings .wc-standing-avatar{width:clamp(32px,2.5vw,52px)}
+ .los-result-art.show-standings .wc-standing-name{font-size:clamp(.95rem,1.22vw,1.55rem)}.los-result-art.show-standings .wc-standing-name.name-medium{font-size:clamp(.82rem,1vw,1.25rem)}.los-result-art.show-standings .wc-standing-name.name-long{font-size:clamp(.72rem,.86vw,1.05rem)}
+ .los-result-art.show-standings .standing-strikes{font-size:clamp(1rem,1.3vw,1.65rem)}
+}
+
+/* Showtime is the single visual source of truth for every live West Coast
+   Settings control. Screen rules may position its hit area, but never restyle it. */
+.wc-settings-gear,
+.los-west-coast-choose-game .wc-settings-gear,
+.los-west-coast-whos-in .wc-settings-gear{
+ border:0!important;
+ border-radius:0!important;
+ background:transparent!important;
+ box-shadow:none!important;
+ overflow:visible!important;
+ isolation:auto!important
+}
+.wc-settings-gear::before{content:none!important}
+.wc-settings-gear .wc-settings-gear-art{width:88%!important;height:88%!important;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))!important}
+.wc-settings-gear .wc-settings-gear-teeth,
+.wc-settings-gear .wc-settings-gear-ring{filter:none!important;stroke:#f3adff!important;stroke-width:1.7!important}
+.wc-settings-gear .wc-settings-gear-ring{stroke-width:2.2!important}
+.los-west-coast-choose-game .wc-settings-gear{left:auto!important;right:5.25%!important;top:2.4%!important;width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important}
+.wc-master-correct .wc-global-controls,
+.wc-master-standings .wc-global-controls{inset:auto!important;top:2.4%!important;right:5.25%!important;left:2.35%!important}
+@media (orientation:portrait){
+ .los-west-coast-choose-game .wc-settings-gear{right:6.5%!important;top:2.1%!important;width:78px!important;height:78px!important;min-width:78px!important;min-height:78px!important}
+ .wc-master-correct .wc-global-controls,
+ .wc-master-standings .wc-global-controls{top:2.1%!important;right:6.5%!important;left:2.6%!important}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .los-west-coast-choose-game .wc-settings-gear{right:4.6%!important;top:2.25%!important;width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important}
+ .wc-master-correct .wc-global-controls,
+ .wc-master-standings .wc-global-controls{top:2.25%!important;right:4.6%!important;left:2.3%!important}
+}
+
+/* West Coast Eliminated: live identity over the dedicated cleaned Runtime. */
+.wc-master-eliminated,.wc-master-eliminated button,.wc-eliminated-player-name{font-family:"Times New Roman",Times,serif}
+.wc-master-eliminated .wc-global-controls{z-index:45;inset:0!important}
+.wc-master-eliminated .wc-global-back{position:absolute;left:2.35%;bottom:2.4%}
+.wc-master-eliminated .wc-global-tools{position:absolute;right:5.25%;top:2.4%}
+.wc-eliminated-live{position:absolute;z-index:5;inset:0;pointer-events:none}
+.wc-eliminated-player-name{position:absolute;left:23%;top:42%;width:54%;height:17%;padding:.08em .14em;display:grid;place-items:center;overflow:visible;color:#fff;font-size:clamp(4rem,min(8vw,13vh),9rem);font-weight:700;line-height:.94;letter-spacing:.01em;text-align:center;white-space:nowrap;text-overflow:clip;text-shadow:0 3px 0 #17131a,0 0 3px #fff,0 0 14px rgba(205,212,230,.38)}
+.wc-eliminated-player-name.name-medium{font-size:clamp(3.1rem,min(6.3vw,10.5vh),7rem)}.wc-eliminated-player-name.name-long{font-size:clamp(2rem,min(3.8vw,7vh),4.5rem);white-space:normal;overflow-wrap:anywhere}
+@media (orientation:portrait){
+ .wc-master-eliminated .wc-global-back{left:2.6%;bottom:2.1%}.wc-master-eliminated .wc-global-tools{right:6.5%;top:2.1%}
+ .wc-eliminated-player-name{left:18%;top:39%;width:64%;height:12%;font-size:clamp(4rem,min(13vw,7.5vh),8rem)}.wc-eliminated-player-name.name-medium{font-size:clamp(3rem,min(10vw,6vh),6rem)}.wc-eliminated-player-name.name-long{font-size:clamp(2rem,min(5.8vw,4.2vh),3.8rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .wc-master-eliminated .wc-global-back{left:2.3%;bottom:2.25%}.wc-master-eliminated .wc-global-tools{right:4.6%;top:2.25%}
+ .wc-eliminated-player-name{left:28%;top:42%;width:44%;height:18%;font-size:clamp(4rem,min(7vw,13vh),8.5rem)}.wc-eliminated-player-name.name-medium{font-size:clamp(3rem,min(5.5vw,10vh),6.5rem)}.wc-eliminated-player-name.name-long{font-size:clamp(2rem,min(3.4vw,7vh),4.2rem)}
+}
+
+/* West Coast Time's Up: dedicated live overlays on the approved runtime art. */
+.wc-master-timeout,.wc-master-timeout button,.wc-master-timeout .wc-timeout-player-name,.wc-master-timeout .answer-big,.wc-master-timeout .wc-timeout-strike{font-family:"Times New Roman",Times,serif}
+.wc-master-timeout .wc-global-controls{z-index:45;top:2.4%;right:5.25%;left:2.35%}
+.wc-master-timeout .wc-global-tools .wc-settings-gear{width:clamp(64px,4.4vw,82px);height:clamp(64px,7.4vh,82px);min-width:64px;min-height:64px}
+.wc-master-timeout .wc-settings-gear-art{width:88%;height:88%;filter:drop-shadow(0 0 4px #ef8cff) drop-shadow(0 0 11px rgba(191,42,255,.92))}
+.wc-master-timeout .wc-settings-gear-teeth,.wc-master-timeout .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}.wc-master-timeout .wc-settings-gear-ring{stroke-width:2.2}
+.wc-timeout-player{position:absolute;z-index:4;left:3.8%;top:12.2%;width:31%;height:12%;display:flex;align-items:center;justify-content:flex-start;gap:clamp(14px,1.35vw,28px);color:#fff;text-align:left;pointer-events:none}
+.wc-timeout-avatar{flex:0 0 auto;width:clamp(80px,7.2vw,138px);aspect-ratio:1;border:clamp(3px,.25vw,5px) solid #f2c445;border-radius:50%;overflow:hidden;background:#100819;box-shadow:0 0 0 3px rgba(92,23,126,.8),0 0 19px rgba(211,52,255,.56)}
+.wc-timeout-avatar .los-avatar-art{width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background-size:500% 600%}.wc-timeout-avatar .los-avatar-art.atlas-v3{background-size:600% 300%}
+.wc-timeout-player-name{min-width:0;max-width:calc(100% - clamp(94px,8.6vw,166px));font-size:clamp(2rem,3.15vw,4.1rem);font-weight:700;line-height:.95;overflow-wrap:anywhere;text-shadow:0 3px 4px #000,0 0 16px #000}
+.wc-timeout-player-name.name-long{font-size:clamp(1.45rem,2.25vw,3rem)}
+.wc-master-timeout .wc-timeout-live{position:absolute;z-index:4;inset:0;width:100%!important;height:100%!important;padding:0!important;display:block!important;overflow:visible!important;pointer-events:none}
+.wc-master-timeout .wc-timeout-live .answer-panel{position:absolute;left:23%;top:67.3%;width:54%;height:10%;padding:0!important;display:grid;place-items:center;border:0!important;background:none!important;box-shadow:none!important;overflow:visible}
+.wc-master-timeout .wc-timeout-live .answer-big{width:100%;max-width:100%;max-height:100%;padding:.06em .18em;color:#fff;font-weight:700;line-height:1;text-align:center;white-space:normal;overflow-wrap:anywhere;text-shadow:0 3px 0 #17131a,0 0 3px #fff,0 0 12px rgba(210,214,225,.25)}
+.wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(3.2rem,min(7.6vw,10.5vh),8rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(2.8rem,min(6.5vw,9.5vh),7rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2rem,min(4.8vw,7.2vh),5.2rem)!important}
+.wc-timeout-strike{position:absolute;left:31%;top:79.5%;width:38%;min-height:7%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:clamp(.9rem,1.35vw,1.45rem);font-weight:700;line-height:1.05;letter-spacing:.035em;text-align:center;text-shadow:0 2px 3px #000,0 0 9px #000}
+.wc-timeout-strike strong{color:#ff344c;font-size:1.28em}.wc-timeout-strike span{margin-top:.22em}
+@media (orientation:portrait){
+ .wc-master-timeout .wc-global-controls{top:2.1%;right:6.5%;left:2.6%}.wc-master-timeout .wc-global-tools .wc-settings-gear{width:clamp(62px,8vw,78px);height:clamp(62px,4.4vh,78px)}
+ .wc-timeout-player{left:5%;top:19%;width:60%;height:10%;gap:clamp(12px,2.4vw,24px)}
+ .wc-timeout-avatar{width:clamp(82px,13vw,132px)}.wc-timeout-player-name{max-width:calc(100% - clamp(96px,16vw,156px));font-size:clamp(2rem,6.4vw,4rem)}.wc-timeout-player-name.name-long{font-size:clamp(1.45rem,4.6vw,2.9rem)}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:18%;top:61.1%;width:64%;height:5.3%}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(3rem,min(10.8vw,6.4vh),6.4rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(2.5rem,min(9.2vw,5.7vh),5.6rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(1.75rem,min(6.8vw,4.5vh),4.4rem)!important}
+ .wc-timeout-strike{left:22%;top:73.5%;width:56%;min-height:5%;font-size:clamp(.85rem,2.8vw,1.35rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .wc-master-timeout .wc-global-controls{top:2.25%;right:4.6%;left:2.3%}
+ .wc-timeout-player{left:4%;top:11.6%;width:28%;height:13%}.wc-timeout-avatar{width:clamp(78px,5.5vw,132px)}.wc-timeout-player-name{max-width:calc(100% - clamp(94px,6.8vw,160px));font-size:clamp(2rem,2.55vw,4rem)}.wc-timeout-player-name.name-long{font-size:clamp(1.4rem,1.9vw,2.9rem)}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:28%;top:66.8%;width:44%;height:10%}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(3.2rem,min(6.2vw,10.5vh),7.6rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(2.8rem,min(5.4vw,9.2vh),6.5rem)!important}.wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2rem,min(4vw,7vh),5rem)!important}
+ .wc-timeout-strike{left:34%;top:79%;width:32%;min-height:7%;font-size:clamp(.85rem,1.05vw,1.35rem)}
+}
+.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Landscape_CLEAN.png")}
+.los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_LANDSCAPE_CLEAN.png")}
+@media (orientation:portrait){.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Portrait_CLEAN.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_PORTRAIT_CLEAN.png")}}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){.los-final-question-art{--los-art-landscape:url("./assets/west-coast/runtime/final-showdown-question/Final_Showdown_Ultrawide_CLEAN.png")}.los-showdown-matchup-art{--los-art-landscape:url("./assets/west-coast/runtime/FINAL_SHOWDOWN_MATCHUP_ULTRAWIDE_CLEAN.png")}}
+
+/* Question entry remains locked; result answers begin at roughly twice its visual size. */
+.wc-question-live #typedAnswer{font-size:var(--wc-answer-font-size)!important}
+.wc-master-screen .result-body .answer-panel .answer-big{font-family:"Times New Roman",Times,serif!important;color:#fff;font-weight:700;line-height:1;text-align:center;white-space:normal;overflow-wrap:anywhere;text-overflow:clip;text-shadow:0 3px 0 #17131a,0 0 3px #fff,0 0 12px rgba(210,214,225,.26)}
+.wc-master-screen .result-body .answer-panel .answer-big.answer-short{font-size:clamp(4.8rem,min(9vw,13vh),9rem)!important}
+.wc-master-screen .result-body .answer-panel .answer-big.answer-medium{font-size:clamp(4rem,min(7.5vw,11vh),7.5rem)!important}
+.wc-master-screen .result-body .answer-panel .answer-big.answer-long{font-size:clamp(2.7rem,min(5.5vw,8.5vh),5.8rem)!important}
+.wc-question-live #typedAnswer::placeholder{font-size:.82em}
+.wc-final-showdown-label{top:0;font-size:clamp(1.55rem,2.35vw,2.65rem)}
+@media (orientation:portrait){.wc-final-showdown-label{top:0;font-size:clamp(1.65rem,4.8vw,2.65rem)}}
+@media (orientation:landscape) and (min-aspect-ratio:11/5){.wc-final-showdown-label{top:0;font-size:clamp(1.5rem,1.95vw,2.4rem)}}
+
+/* Pass/Skip uses dedicated clean artwork with the approved Time's Up geometry. */
+.wc-master-pass-skip .wc-pass-skip-live .answer-panel,.wc-master-pass-skip .wc-pass-skip-strike{z-index:2}
+.wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:56%;height:16%}
+.wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-short{font-size:clamp(7rem,min(11vw,16vh),11rem)!important}
+.wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-medium{font-size:clamp(5.5rem,min(9vw,13vh),9rem)!important}
+.wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-long{font-size:clamp(3.4rem,min(6.5vw,10vh),7rem)!important}
+.wc-master-pass-skip .wc-pass-skip-strike{top:73%}
+.wc-master-pass-skip .wc-pass-skip-strike strong{color:#ff2038;font-size:clamp(6rem,min(9vw,14vh),9rem);font-weight:700;line-height:.72;text-shadow:0 3px 0 #56000b,0 0 7px #ff9aaa,0 0 20px rgba(255,20,48,.78)}
+@media (orientation:portrait){
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-short{font-size:clamp(4.5rem,min(14vw,8vh),8rem)!important}
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-medium{font-size:clamp(3.6rem,min(11vw,6.8vh),6.8rem)!important}
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-long{font-size:clamp(2.35rem,min(7.5vw,5.2vh),5rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:42%;height:14%}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-short{font-size:clamp(7rem,min(16vw,9vh),10rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-medium{font-size:clamp(5.2rem,min(13vw,7.5vh),8.5rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-big.answer-long{font-size:clamp(3.2rem,min(9vw,5.8vh),6.5rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-strike{top:56%}
+ .wc-master-pass-skip .wc-pass-skip-strike strong{font-size:clamp(6rem,min(14vw,9vh),9rem)}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-short{font-size:clamp(4.8rem,min(7.2vw,13vh),8.5rem)!important}
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-medium{font-size:clamp(4rem,min(6.2vw,11vh),7.2rem)!important}
+ .wc-master-screen .result-body .answer-panel .answer-big.answer-long{font-size:clamp(2.7rem,min(4.5vw,8.3vh),5.6rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:56%;height:16%}
+ .wc-master-pass-skip .wc-pass-skip-strike{top:73%}
+}
+
+/* West Coast Winner: live champion data over the approved dedicated runtime. */
+.los-winner-art{--los-art-landscape:url("./assets/west-coast/runtime/Winner_Landscape_Runtime_REFINED.png")}
+.wc-master-winner,.wc-master-winner button,.wc-master-winner .champion-name{font-family:"Times New Roman",Times,serif}
+.wc-master-winner .wc-global-controls{z-index:45;top:3.1%;right:3.8%;left:3.8%}
+.wc-master-winner .wc-global-tools{margin-left:auto}
+.wc-master-winner .wc-global-tools .wc-settings-gear{width:clamp(58px,4vw,76px);height:clamp(58px,7vh,76px);min-width:58px;min-height:58px}
+.wc-master-winner .wc-settings-gear-art{opacity:0}
+.wc-master-winner .wc-settings-gear-teeth,.wc-master-winner .wc-settings-gear-ring{filter:none;stroke:#f3adff;stroke-width:1.7}.wc-master-winner .wc-settings-gear-ring{stroke-width:2.2}
+.wc-master-winner .complete-stage{overflow:hidden!important;contain:size layout paint}
+.wc-master-winner .champion-box{left:35%;top:67.6%;width:30%;height:9.4%}
+.wc-master-winner .los-winner-avatar{position:absolute;z-index:4;left:39.7%;top:41.3%;width:20.7%;height:25.5%;aspect-ratio:auto;border:0;border-radius:7%;background:#120b05;box-shadow:none;overflow:hidden}
+.wc-master-winner .los-winner-avatar .los-avatar-art{width:100%;height:100%;border:0;border-radius:0;box-shadow:none;background-size:500% 600%}.wc-master-winner .los-winner-avatar .los-avatar-art.atlas-v3{background-size:600% 300%}
+.wc-master-winner .champion-name{bottom:0;width:100%;padding:0 .04em;color:#fff;font-size:clamp(3.4rem,min(7vw,12vh),8rem);font-weight:700;line-height:.92;white-space:nowrap;overflow-wrap:normal;text-overflow:clip;text-shadow:0 4px 2px #160b00,0 0 4px #fff,0 0 16px rgba(255,225,106,.24)}
+.wc-master-winner .champion-name.name-medium{font-size:clamp(2.8rem,min(5.6vw,10vh),6.5rem)}
+.wc-master-winner .champion-name.name-long{font-size:clamp(2rem,min(4.1vw,7.8vh),4.9rem);white-space:normal;overflow-wrap:anywhere}
+@media (orientation:portrait){
+.los-winner-art{--los-art-landscape:url("./assets/west-coast/runtime/Winner_Portrait_Runtime_REFINED_V2.png")}
+ .wc-master-winner .wc-global-controls{top:2.4%;right:5.2%;left:5.2%}.wc-master-winner .wc-global-tools .wc-settings-gear{width:clamp(60px,8vw,76px);height:clamp(60px,4.6vh,76px)}
+ .wc-master-winner .los-winner-avatar{left:26.9%;top:34.4%;width:46.4%;height:27.8%}
+ .wc-master-winner .champion-box{left:15%;top:63.5%;width:70%;height:8%}
+ .wc-master-winner .champion-actions{left:23.4%;top:81.8%;bottom:auto;width:53.2%;height:7.5%}
+ .wc-master-winner .champion-name{font-size:clamp(3.2rem,min(14vw,7.4vh),7rem)}.wc-master-winner .champion-name.name-medium{font-size:clamp(2.7rem,min(11vw,6.3vh),5.8rem)}.wc-master-winner .champion-name.name-long{font-size:clamp(2rem,min(8vw,4.9vh),4.4rem)}
+ .wc-master-winner .champion-box:has(.champion-name.name-long){top:58.7%;height:12.8%}
+ .wc-master-winner .champion-name.name-long{font-size:clamp(1.75rem,min(6vw,3.2vh),3.5rem);line-height:.86}
+}
+@media (orientation:portrait) and (max-width:500px){.wc-master-winner .los-winner-avatar{left:21.8%;width:56.4%}.wc-master-winner .champion-box{left:8%;width:84%}}
+@media (orientation:portrait) and (min-width:600px) and (max-width:900px) and (min-aspect-ratio:2/3){.wc-master-winner .los-gameplay-plate{background-size:100% 100%}}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ .los-winner-art{--los-art-landscape:url("./assets/west-coast/runtime/Winner_Ultrawide_Runtime_REFINED.png")}
+ .wc-master-winner .wc-global-controls{top:3%;right:3.2%;left:3.2%}
+ .wc-master-winner .los-winner-avatar{left:42.1%;top:37.2%;width:15.6%;height:29.8%}
+ .wc-master-winner .champion-box{left:38.8%;top:69.4%;width:22%;height:8.8%}
+ .wc-master-winner .champion-actions{left:40.6%;top:84.2%;bottom:auto;width:18.6%;height:9.9%}
+ .wc-master-winner .champion-name{font-size:clamp(3.4rem,min(6vw,12vh),7.5rem)}.wc-master-winner .champion-name.name-medium{font-size:clamp(2.8rem,min(4.8vw,10vh),6rem)}.wc-master-winner .champion-name.name-long{font-size:clamp(2rem,min(3.5vw,7.6vh),4.6rem)}
+}
+@media (orientation:landscape) and (max-height:500px){.wc-master-winner .complete-stage{overflow:hidden!important}}
+@media (orientation:landscape) and (max-width:799px) and (max-height:430px){
+ .wc-master-winner .los-winner-avatar{left:39.7%;top:41.3%;width:20.7%;height:25.5%}
+ .wc-master-winner .champion-box{left:35%;top:67.6%;width:30%;height:9.4%}
+ .wc-master-winner .champion-name,.wc-master-winner .champion-name.name-medium,.wc-master-winner .champion-name.name-long{font-size:clamp(1.5rem,9vh,2rem);white-space:nowrap}
+ .wc-master-winner .champion-box:has(.champion-name.name-long){left:20%;top:64%;width:60%;height:18%}
+ .wc-master-winner .champion-name.name-long{font-size:clamp(1.75rem,9vh,2rem);white-space:normal;line-height:.86}
+ .wc-master-winner .champion-actions{left:38.5%;top:83%;bottom:auto;width:23.1%;height:9.2%}
+ .wc-master-winner .champion-actions .btn{min-height:44px;height:44px}
+}
+
+/* West Coast Settings gear: one shared viewport-safe geometry family. */
+:root{
+ --wc-settings-size:82px;
+ --wc-settings-top:26px;
+ --wc-settings-right:28px
+}
+.wc-global-tools{margin-left:auto!important}
+.wc-global-tools .wc-settings-gear,
+.los-west-coast-choose-game .wc-settings-gear{
+ width:var(--wc-settings-size)!important;
+ height:var(--wc-settings-size)!important;
+ min-width:var(--wc-settings-size)!important;
+ min-height:var(--wc-settings-size)!important
+}
+.los-west-coast-choose-game .wc-settings-gear{
+ left:auto!important;
+ top:max(var(--wc-settings-top),env(safe-area-inset-top))!important;
+ right:max(var(--wc-settings-right),env(safe-area-inset-right))!important
+}
+.los-west-coast-choose-game .wc-settings-gear{position:fixed!important}
+.wc-master-screen .wc-global-controls,
+.los-showdown-matchup-art .wc-global-controls{
+ top:max(var(--wc-settings-top),env(safe-area-inset-top))!important;
+ right:max(var(--wc-settings-right),env(safe-area-inset-right))!important
+}
+.wc-master-correct .wc-global-tools{
+ position:static!important;
+ inset:auto!important
+}
+.wc-master-eliminated .wc-global-tools,
+.los-showdown-matchup-art .wc-global-tools{
+ top:max(var(--wc-settings-top),env(safe-area-inset-top))!important;
+ right:max(var(--wc-settings-right),env(safe-area-inset-right))!important
+}
+.wc-master-eliminated .wc-global-controls,
+.los-showdown-matchup-art .wc-global-controls{top:0!important;right:0!important}
+.wc-master-winner .wc-global-tools{position:static!important;inset:auto!important}
+
+@media (orientation:portrait){
+ :root{--wc-settings-size:78px;--wc-settings-top:40px;--wc-settings-right:42px}
+ .los-west-coast-choose-game .wc-settings-gear{top:calc(var(--wc-settings-top) + var(--wc-portrait-lift))!important}
+}
+@media (orientation:portrait) and (max-width:500px){
+ :root{--wc-settings-size:64px;--wc-settings-top:18px;--wc-settings-right:18px}
+}
+@media (orientation:landscape) and (min-aspect-ratio:2/1){
+ :root{--wc-settings-size:82px;--wc-settings-top:26px;--wc-settings-right:32px}
+}
+@media (orientation:landscape) and (max-height:430px){
+ :root{--wc-settings-size:64px;--wc-settings-top:10px;--wc-settings-right:16px}
+}
+
+/* West Coast live typography: normal DOM text uses the shared serif family.
+   Baked runtime lettering and icon-only controls remain untouched. */
+.wc-master-whos-in .wc-roster-heading h1,
+#pauseOverlay .pause-card,
+#pauseOverlay .pause-card button,
+#pauseOverlay .pause-card span,
+#pauseOverlay .pause-card strong,
+.los-showdown-matchup-art .showdown-name,
+.los-player-picker-overlay .los-sheet,
+.los-player-picker-overlay button,
+.los-player-picker-overlay input,
+.los-overlay .los-player-sheet,
+.los-overlay .los-player-sheet button,
+.los-overlay .los-player-sheet input,
+.los-overlay .los-avatar-sheet,
+.los-overlay .los-avatar-sheet button,
+.wc-settings-overlay .wc-settings-panel,
+.wc-settings-overlay .wc-settings-panel button,
+.wc-settings-overlay .wc-settings-panel input{
+ font-family:"Times New Roman",Times,serif!important
+}
+
+/* Responsive containment cleanup for the audited compact viewports only. */
+@media (orientation:portrait) and (max-height:1100px){
+ .los-west-coast-choose-game{
+  --wc-lower-top:53.5%;
+  --wc-selector-height:155px;
+  --wc-lower-gap:8px;
+  --wc-status-height:24px;
+  --wc-action-height:64px
+ }
+ .los-west-coast-choose-game .pack-setup-controls{gap:2px;padding:4px 7px}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px}
+}
+
+@media (orientation:landscape) and (min-width:800px) and (max-height:430px){
+ .los-west-coast-choose-game{
+  --wc-lower-top:62%;
+  --wc-selector-height:52px;
+  --wc-lower-gap:4px;
+  --wc-status-height:18px;
+  --wc-action-height:52px
+ }
+ .los-west-coast-choose-game .pack-setup-controls{gap:8px;padding:3px 7px}
+ .los-west-coast-choose-game .pack-setup-group{height:100%;grid-template-columns:auto minmax(0,1fr);grid-template-rows:1fr;gap:5px}
+ .los-west-coast-choose-game .pack-setup-label{font-size:.68rem;white-space:nowrap}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:.12em .28em}
+
+ .los-overlay .los-player-sheet{
+  width:min(780px,calc(100% - 32px));
+  height:calc(100dvh - 24px);
+  max-height:calc(100dvh - 24px);
+  padding:10px 14px;
+  grid-template-columns:140px repeat(3,minmax(0,1fr));
+  grid-template-rows:auto minmax(0,1fr) auto;
+  gap:7px 10px;
+  overflow:hidden
+ }
+ .los-player-sheet header{grid-column:1/-1;align-items:center}
+ .los-player-sheet header h2{font-size:1.65rem}
+ .los-player-sheet .los-player-avatar-edit{grid-column:1;grid-row:2;align-self:center;gap:3px}
+ .los-player-sheet label{align-self:center;gap:4px}
+ .los-player-sheet label:nth-of-type(1){grid-column:2;grid-row:2}
+ .los-player-sheet label:nth-of-type(2){grid-column:3;grid-row:2}
+ .los-player-sheet label:nth-of-type(3){grid-column:4;grid-row:2}
+ .los-player-sheet input{min-height:44px;padding:8px 10px}
+ .los-player-sheet .roster-error{grid-column:1;grid-row:3;align-self:center;min-height:0}
+ .los-player-sheet .los-player-editor-actions{grid-column:2/-1;grid-row:3;gap:8px}
+ .los-player-sheet .los-action{min-height:48px}
+
+ .wc-settings-overlay{padding:12px 18px}
+ .wc-settings-panel{
+  width:min(700px,100%);
+  max-height:calc(100dvh - 24px);
+  padding:12px 16px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px 10px;
+  overflow:hidden
+ }
+ .wc-settings-panel header,.wc-settings-panel .wc-settings-volume{grid-column:1/-1}
+ .wc-settings-panel h2{font-size:1.8rem}
+ .wc-settings-panel .wc-settings-row{min-height:52px;padding:4px 10px}
+ .wc-settings-panel .wc-settings-volume{min-height:48px;padding:3px 10px}
+ .wc-settings-panel .wc-settings-action{min-height:48px}
+ .wc-settings-panel .wc-settings-close{width:44px;height:44px}
+
+ .wc-master-winner .complete-stage{overflow:hidden!important}
+ .wc-master-winner .los-winner-avatar{top:37%;height:31%}
+ .wc-master-winner .champion-box{top:69%;height:13%}
+ .wc-master-winner .champion-name.name-long{font-size:clamp(1.5rem,min(3vw,7vh),2.1rem)}
+ .wc-master-winner .champion-actions{bottom:2%;height:13%}
+ .wc-master-winner .champion-actions .btn{min-height:48px}
 }

@@ -133,12 +133,71 @@ test("Pass and Skip each produce one strike and distinct result detail", withHar
   state.game.current={q:"What planet?",a:"Mars"};h.api.question(true);h.api.centralQuestionIntent("pass", true, 1);
   assert.equal(state.game.players[0].strikes, 1);
   assert.equal(state.game.lastOutcomeDetail, "pass");
+  assert.ok(h.document.querySelector(".wc-master-pass-skip .wc-pass-skip-live"));
+  assert.equal(h.document.querySelector(".wc-pass-skip-title"),null);
+  assert.ok(h.document.querySelector(".wc-master-pass-skip.los-pass-skip-art .los-gameplay-plate"));
+  assert.equal(h.document.querySelector(".answer-big").textContent,"Mars");
+  assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);
+  assert.equal(h.document.querySelectorAll(".wc-global-mic").length,0);
 
   state = setupQuestion(h);
   state.game.current={q:"What planet?",a:"Mars"};h.api.question(true);h.api.centralQuestionIntent("skip", true, 1);
   assert.equal(state.game.players[0].strikes, 1);
   assert.equal(state.game.lastOutcomeDetail, "skip");
+  assert.ok(h.document.querySelector(".wc-master-pass-skip .wc-pass-skip-live"));
+  assert.equal(h.document.querySelector(".wc-pass-skip-title"),null);
+  assert.equal(h.document.querySelector(".wc-pass-skip-strike strong").textContent,"×");
+  assert.equal(h.document.querySelector(".wc-pass-skip-strike span"),null);
+  assert.equal(h.document.querySelector(".wc-master-pass-skip #back"),null);
 }));
+
+test("typed and spoken Pass and Skip converge on the unified result state",()=>{
+ const cases=[
+  {command:"Pass",source:"typed",detail:"pass"},
+  {command:"Skip",source:"typed",detail:"skip"},
+  {command:"pass",source:"voice",detail:"pass"},
+  {command:"skip",source:"voice",detail:"skip"}
+ ];
+ for(const {command,source,detail} of cases){
+  const h=createHarness();
+  try{
+   const state=setupQuestion(h),player=state.game.players[0];
+   state.voiceOn=source==="voice";
+   state.game.current={id:`${source}-${detail}`,q:"What planet?",a:"Mars",cat:"Science"};
+   h.api.question(true);
+   if(source==="voice")h.speak(command,{final:true,confidence:1});
+   else{
+    const input=h.document.getElementById("typedAnswer");
+    input.value=command;
+    input.dispatchEvent(new h.window.Event("input",{bubbles:true}));
+    h.click("#lockAnswer");
+   }
+   assert.equal(state.screen,"result",`${source} ${command}`);
+   assert.equal(state.game.lastOutcome,"pass",`${source} ${command} canonical outcome`);
+   assert.equal(state.game.lastOutcomeDetail,detail,`${source} ${command} diagnostic detail`);
+   assert.equal(player.strikes,1,`${source} ${command} strike`);
+   assert.equal(player.timeout,0,`${source} ${command} timeout`);
+   assert.ok(h.document.querySelector(".wc-master-pass-skip .wc-pass-skip-live"),`${source} ${command} unified screen`);
+   assert.equal(h.document.querySelector(".wc-pass-skip-title"),null);
+   assert.equal(h.document.querySelector(".answer-big").textContent,"Mars");
+   assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);
+   assert.equal(h.document.querySelectorAll(".wc-global-mic,.wc-mic-control").length,0);
+   h.api.finish("pass");
+   assert.equal(player.strikes,1,`${source} ${command} remains idempotent`);
+   h.timers.advance(4000);
+   assert.equal(state.screen,"result",`${source} ${command} does not time out before result delay`);
+   assert.equal(player.strikes,1);
+   assert.equal(player.timeout,0);
+  }finally{h.close()}
+ }
+});
+
+test("unified Pass or Skip result preserves strike elimination and Final Showdown routing",()=>{
+ for(const before of [0,1]){const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;state.game.players[0].strikes=before;state.game.lastOutcomeDetail=before?"skip":"pass";h.api.finish("pass");h.api.finish("pass");assert.equal(state.game.players[0].strikes,before+1);assert.ok(h.document.querySelector(".wc-master-pass-skip"));h.click(".wc-settings-gear");assert.ok(h.document.querySelector("#westCoastSettingsOverlay"));h.click("[data-wc-settings-close]");assert.equal(state.game.players[0].strikes,before+1);h.timers.advance(4200);assert.equal(state.screen,"result");assert.ok(h.document.querySelector(".show-standings .los-current-standings-live"));assert.equal(state.game.idx,0);h.timers.advance(3200);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1)}finally{h.close()}}
+ for(const [startingCount,expected] of [[4,"result"],[3,"showdown"],[2,"complete"]]){const h=createHarness();try{const state=setupQuestion(h);state.game.players=Array.from({length:startingCount},(_,i)=>({id:`p${i+1}`,name:`Player ${i+1}`,correct:0,wrong:0,timeout:0,strikes:i?0:2,eliminated:false}));state.game.startingCount=startingCount;state.game.idx=0;state.game.lastOutcomeDetail="pass";h.api.finish("pass");assert.equal(state.game.players[0].strikes,3);assert.equal(state.game.players[0].eliminated,true);assert.ok(h.document.querySelector(".wc-master-pass-skip"));h.timers.advance(5200);assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(5000);assert.equal(state.screen,expected);if(expected==="result")assert.ok(h.document.querySelector(".show-standings"));else assert.equal(h.document.querySelector(".show-standings"),null)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;state.game.showdown=true;state.game.lastOutcomeDetail="skip";h.api.finish("pass");assert.equal(state.game.players[0].strikes,1);assert.ok(h.document.querySelector(".wc-master-pass-skip"));assert.equal(h.document.querySelector(".show-standings"),null);h.timers.advance(3900);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;state.game.showdown=true;state.game.players[0].strikes=2;state.game.lastOutcomeDetail="pass";h.api.finish("pass");assert.ok(h.document.querySelector(".wc-master-pass-skip"));h.timers.advance(5200);assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(5000);assert.equal(state.screen,"complete");assert.equal(h.document.querySelector(".champion-name").textContent,"Blair")}finally{h.close()}}
+});
 
 test("finish is idempotent when duplicate recognition results arrive", withHarness(h => {
   const state = setupQuestion(h);
@@ -168,6 +227,57 @@ test("West Coast Correct uses the approved screen-specific Runtime and preserves
   assert.equal(state.screen,"handoff");
   assert.equal(state.game.idx,1);
 }));
+
+test("West Coast Time's Up applies one strike and shows Current Standings once", withHarness(h => {
+  const state=setupQuestion(h),player=state.game.players[0];
+  player.name="Alexandria Montgomery-Washington";player.avatar="wc-a1";
+  state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});
+  state.game.startingCount=2;
+  h.api.finish("timeout");
+  assert.equal(state.screen,"result");
+  assert.equal(player.correct,0);assert.equal(player.timeout,1);assert.equal(player.strikes,1);
+  assert.ok(h.document.querySelector(".wc-master-timeout.los-times-up-art .los-gameplay-plate"));
+  assert.equal(h.document.querySelector(".wc-master-timeout .wc-question-player-name").textContent,player.name);
+  assert.equal(h.document.querySelectorAll(".wc-master-timeout .wc-question-player").length,1);
+  assert.equal(h.document.querySelector(".wc-timeout-live .answer-big").textContent,"Mars");
+  assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);
+  assert.equal(h.document.querySelectorAll(".wc-global-mic,.wc-mic-control,.wc-timeout-live .answer-label,.wc-timeout-live .result-word").length,0);
+  h.click(".wc-settings-gear");assert.ok(h.document.querySelector(".wc-settings-panel"));assert.equal(player.timeout,1);assert.equal(player.strikes,1);h.click("[data-wc-settings-close]");
+  h.api.finish("timeout");
+  assert.equal(player.timeout,1);assert.equal(player.strikes,1);
+  h.timers.advance(4200);
+  assert.ok(h.document.querySelector(".show-standings .los-current-standings-live"));
+  assert.equal(h.document.querySelectorAll(".show-standings .los-current-standings-live").length,1);
+  assert.equal(state.screen,"result");assert.equal(state.game.idx,0);
+  h.timers.advance(3200);
+  assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1);
+}));
+
+test("West Coast Time's Up third strike shows Standings once before the existing elimination branch", withHarness(h => {
+ const state=setupQuestion(h),player=state.game.players[0];state.game.players=Array.from({length:4},(_,index)=>({id:`p${index+1}`,name:`Player ${index+1}`,avatar:index%2?"street-nightcap":"wc-a1",correct:0,wrong:0,timeout:0,strikes:index?0:2,eliminated:false}));state.game.startingCount=4;state.game.idx=0;state.game.current={id:"timeout-third",q:"What planet?",a:"Mars",cat:"Science"};
+ h.api.finish("timeout");h.api.finish("timeout");assert.equal(state.game.players[0].timeout,1);assert.equal(state.game.players[0].strikes,3);assert.equal(state.game.players[0].eliminated,true);
+ h.timers.advance(5200);assert.equal(state.screen,"result");assert.equal(h.document.querySelectorAll(".show-standings .los-current-standings-live").length,1);assert.ok(h.document.querySelector(".wc-standing-card.out"));
+ h.timers.advance(3200);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated"));
+ h.timers.advance(5000);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1);assert.equal(h.document.querySelector(".show-standings"),null)
+}));
+
+test("West Coast Current Standings renders live avatars and strike states for up to 14 players without Next Up", withHarness(h => {
+  const state=setupQuestion(h);state.game.players=Array.from({length:14},(_,index)=>({id:`p${index+1}`,name:index===13?"Alexandria Montgomery-Washington":`Player ${index+1}`,avatar:index%2?"street-nightcap":"wc-a1",correct:index,wrong:0,timeout:0,strikes:index%4,eliminated:index%4===3}));state.game.startingCount=14;
+  assert.equal(h.api.showCurrentStandings(state.game),true);
+  assert.equal(h.document.querySelector(".wc-master-standings .wc-question-player-name").textContent,"Player 1");assert.equal(h.document.querySelectorAll(".wc-master-standings .wc-question-player").length,1);
+  const cards=h.document.querySelectorAll(".wc-standing-card");assert.equal(cards.length,14);assert.equal(h.document.querySelectorAll(".wc-standing-avatar .los-avatar-art").length,14);assert.equal(h.document.querySelectorAll(".wc-standing-card.out").length,3);
+  assert.ok([...cards].some(card=>card.querySelector(".standing-strikes").textContent==="—"));assert.ok([...cards].some(card=>card.querySelector(".standing-strikes").textContent==="✕ ✕ ✕"&&card.querySelector(".wc-standing-out")));
+  assert.equal(h.document.querySelectorAll(".los-next-up").length,0);assert.equal(h.document.body.textContent.includes("NEXT UP"),false);assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);assert.equal(h.document.querySelectorAll(".wc-global-mic,.wc-mic-control").length,0)
+}));
+
+test("Pass shows Current Standings once while Correct continues directly to handoff", () => {
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;state.game.players[0].strikes=1;h.api.finish("pass");assert.equal(state.game.players[0].strikes,2);h.timers.advance(4200);assert.equal(state.screen,"result");assert.ok(h.document.querySelector(".show-standings .los-current-standings-live"));h.timers.advance(3200);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;h.api.finish("correct");h.timers.advance(3200);assert.equal(h.document.querySelector(".show-standings .los-current-standings-live"),null);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1)}finally{h.close()}}
+});
+
+test("post-elimination flow alone owns Current Standings and branches by active-player count",()=>{
+ for(const startingCount of [5,4,3,2]){const h=createHarness();try{const state=setupQuestion(h);state.game.players=Array.from({length:startingCount},(_,index)=>({id:`p${index+1}`,name:`Player ${index+1}`,avatar:index%2?"street-nightcap":"wc-a1",correct:index,wrong:0,timeout:0,strikes:index===0?2:0,eliminated:false}));state.game.startingCount=startingCount;state.game.idx=0;state.game.current={id:`flow-${startingCount}`,q:"What planet?",a:"Mars",cat:"Science"};state.game.answered=false;h.api.finish("wrong");assert.equal(state.game.players[0].strikes,3);assert.equal(state.game.players[0].eliminated,true);h.timers.advance(5200);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(4999);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(1);const remaining=startingCount-1;if(remaining>=3){assert.equal(state.screen,"result");assert.ok(h.document.querySelector(".show-standings .los-current-standings-live"));h.timers.advance(3200);assert.equal(state.screen,"handoff");assert.equal(state.game.idx,1)}else if(remaining===2){assert.equal(state.screen,"showdown");assert.equal(h.document.querySelector(".show-standings"),null)}else{assert.equal(state.screen,"complete");assert.equal(h.document.querySelector(".champion-name").textContent,"Player 2");assert.equal(h.document.querySelector(".show-standings"),null)}}finally{h.close()}}
+});
 
 test("wrong Result includes one immediate non-interactive game-show X", withHarness(h => {
   const state=setupQuestion(h);
@@ -743,6 +853,12 @@ test("Stage 6.19 strike awards are atomic, capped at three, and eliminate immedi
  const h=createHarness();try{const state=setupQuestion(h);const player=state.game.players[0];player.strikes=3;player.eliminated=true;h.api.finish("wrong");h.api.finish("timeout");assert.equal(player.strikes,3);assert.equal(player.wrong,0);assert.equal(player.timeout,0)}finally{h.close()}
 });
 
+test("West Coast Eliminated uses the dedicated Runtime and preserves the two-player endgame transition",withHarness(h=>{
+ const state=setupQuestion(h);state.game.players=[{id:"p1",name:"Alexandria Montgomery-Washington",avatar:"street-nightcap",correct:4,wrong:0,timeout:0,strikes:2,eliminated:false},{id:"p2",name:"Blair",avatar:"wc-a1",correct:3,wrong:0,timeout:0,strikes:0,eliminated:false},{id:"p3",name:"Casey",avatar:"senior-glasses",correct:2,wrong:0,timeout:0,strikes:1,eliminated:false}];state.game.startingCount=3;state.game.idx=0;state.game.current={id:"elim-q",q:"What planet?",a:"Mars"};state.game.answered=false;
+ h.api.finish("wrong");assert.equal(state.game.players[0].strikes,3);assert.equal(state.game.players[0].eliminated,true);h.timers.advance(5200);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated.los-eliminated-art"));assert.match(h.document.querySelector(".los-gameplay-plate").parentElement.className,/wc-master-eliminated/);assert.equal(h.document.querySelector(".wc-eliminated-player-name").textContent,"Alexandria Montgomery-Washington");assert.equal(h.document.querySelectorAll(".wc-eliminated-player-name").length,1);assert.equal(h.document.querySelectorAll(".wc-eliminated-identity,.wc-eliminated-avatar").length,0);assert.equal(h.document.body.textContent.includes("PLAYER"),false);assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);assert.equal(h.document.querySelectorAll(".wc-global-mic").length,0);
+ h.timers.advance(2000);h.click(".wc-settings-gear");assert.ok(h.document.querySelector("#westCoastSettingsOverlay"));h.click("[data-wc-settings-close]");assert.equal(state.game.players[0].strikes,3);h.timers.advance(2999);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(1);assert.equal(state.screen,"showdown");assert.deepEqual(Array.from(state.game.players,p=>p.name),["Blair","Casey"])
+}));
+
 test("eliminated players cannot receive another normal Player-Up turn",withHarness(h=>{
  const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.startingCount=2;state.game.players[0].strikes=3;state.game.players[0].eliminated=true;state.game.idx=0;h.api.handoff();assert.equal(state.game.idx,1);assert.match(h.document.querySelector(".handoff-player-name").textContent,/Blair/);assert.equal(h.document.querySelectorAll(".handoff").length,1)
 }));
@@ -755,8 +871,13 @@ test("completed matches clear active Resume and Play Again resets strikes",withH
  const state=setupQuestion(h);state.players=state.game.players.map(p=>({id:p.id,name:p.name}));state.game.players[0].strikes=2;h.api.champion(state.game.players[0]);assert.equal(h.window.localStorage.getItem("los5_active_game"),null);h.click("#playAgain");assert.equal(state.game,null);assert.equal(state.players[0].strikes,undefined);h.api.home();assert.equal(h.document.querySelector("#resumeSaved"),null)
 }));
 
-test("Final Showdown third strike reaches the correct Champion",withHarness(h=>{
- const state=setupQuestion(h);state.game.players=[{id:"p1",name:"Alex",correct:2,wrong:0,timeout:0,strikes:2,eliminated:false},{id:"p2",name:"Blair",correct:3,wrong:0,timeout:0,strikes:0,eliminated:false}];state.game.startingCount=2;state.game.showdown=true;state.game.idx=0;state.game.current={q:"What planet?",a:"Mars",cat:"Science"};state.game.answered=false;h.api.finish("wrong");assert.equal(state.game.players[0].eliminated,true);h.timers.advance(5200);assert.equal(state.screen,"complete");assert.equal(h.document.querySelector(".champion-name").textContent,"Blair");assert.equal(h.window.localStorage.getItem("los5_active_game"),null)
+test("Final Showdown third strike shows Eliminated before the correct Champion",withHarness(h=>{
+ const state=setupQuestion(h);state.game.players=[{id:"p1",name:"Alex",correct:2,wrong:0,timeout:0,strikes:2,eliminated:false},{id:"p2",name:"Blair",correct:3,wrong:0,timeout:0,strikes:0,eliminated:false}];state.game.startingCount=2;state.game.showdown=true;state.game.idx=0;state.game.current={q:"What planet?",a:"Mars",cat:"Science"};state.game.answered=false;h.api.finish("wrong");assert.equal(state.game.players[0].eliminated,true);h.timers.advance(5200);assert.equal(state.screen,"transition");assert.ok(h.document.querySelector(".wc-master-eliminated"));h.timers.advance(4999);assert.equal(state.screen,"transition");h.timers.advance(1);assert.equal(state.screen,"complete");assert.equal(h.document.querySelector(".champion-name").textContent,"Blair");assert.equal(h.document.querySelector(".show-standings"),null);assert.equal(h.window.localStorage.getItem("los5_active_game"),null)
+}));
+
+test("Final Showdown gameplay reuses Question UI and always starts at five seconds",withHarness(h=>{
+ const state=setupQuestion(h);state.questionSeconds=20;state.game.showdown=true;state.game.current=null;state.game.answered=false;h.api.handoff();assert.ok(h.document.querySelector(".wc-master-handoff"));assert.equal(h.document.body.textContent.includes("FINAL SHOWDOWN"),false);assert.equal(h.document.querySelector(".handoff-sub").textContent,"");h.timers.advance(3450);assert.equal(state.screen,"question");
+ assert.ok(h.document.querySelector(".wc-master-question.wc-final-showdown-question"));assert.equal(h.document.querySelector(".los-final-question-art"),null);assert.equal(h.document.querySelector(".wc-final-showdown-label").textContent,"FINAL SHOWDOWN");assert.ok(h.document.querySelector(".wc-question-player .wc-question-avatar"));assert.ok(h.document.querySelector(".wc-question-player-name"));assert.ok(h.document.querySelector(".wc-question-presentation .question-text"));assert.ok(h.document.querySelector(".wc-answer-console #typedAnswer"));assert.equal(h.document.querySelector("#lockAnswer").textContent,"LOCK IN");assert.equal(h.document.querySelector("#timer").textContent,"5");assert.ok(h.document.querySelector("#timer").classList.contains("urgent"));assert.equal(state.game.questionStartedWith,5);assert.equal(h.document.querySelectorAll(".wc-settings-gear").length,1);assert.equal(h.document.querySelectorAll(".wc-global-mic").length,0);assert.equal(h.document.body.textContent.includes("LAST ONE STANDING"),false)
 }));
 
 test("Game Setup voice repairs execute immediately once and preserve portrait scroll",withHarness(h=>{
