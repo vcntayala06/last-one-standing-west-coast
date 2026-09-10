@@ -16,7 +16,7 @@ const { chromium } = require("playwright");
  const smoke={};
  try{
   await page.click("#homeHow");smoke.how=await page.locator(".los-home-dialog").getByText("HOW TO PLAY",{exact:true}).isVisible();await page.click(".los-home-dialog [data-close]");
-  await page.click("#homeSettings");smoke.settings=await page.locator(".los-home-dialog").getByText("SETTINGS",{exact:true}).isVisible();const mic=page.locator("[data-settings-mic]");if(await mic.getAttribute("aria-pressed")==="true")await mic.click();await page.click(".los-home-dialog [data-close]");
+  await page.click("#homeSettings");smoke.settings=await page.locator(".wc-settings-panel").getByText("SETTINGS",{exact:true}).isVisible();const mic=page.locator("[data-wc-mic]");if(await mic.getAttribute("aria-pressed")==="true")await mic.click();await page.click("[data-wc-settings-close]");
   await page.click("#start");await page.waitForTimeout(250);smoke.chooseGame=await page.locator(".topbar-title").getByText("CHOOSE YOUR GAME",{exact:true}).isVisible();
   await page.click("#back");await page.waitForTimeout(250);smoke.back=await page.locator("#start").isVisible();
   await page.click("#start");await page.waitForTimeout(250);await page.click("#continuePacks");await page.waitForTimeout(250);smoke.whosIn=await page.getByText("WHO’S IN?",{exact:true}).isVisible();

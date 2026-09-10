@@ -8,7 +8,7 @@ function question(h){const state=h.api.getState();state.screen="question";state.
 
 test("onend temporary errors and recovery preserve Mic preference ON",()=>{const h=createHarness();try{const state=h.api.getState();assert.equal(state.voiceOn,true);let r=h.recognition();r.error("no-speech");r.end();assert.equal(state.voiceOn,true);h.timers.advance(25);r=h.recognition();assert.ok(r);assert.equal(state.voiceOn,true);r.error("network");r.end();h.timers.advance(100);assert.equal(state.voiceOn,true);assert.ok(h.recognition())}finally{h.close()}});
 
-test("Mic OFF stays OFF and explicit OFF to ON stays ON",()=>{const h=createHarness();try{h.click("#start");const state=h.api.getState();h.api.setState({voiceOn:false});h.api.stopVoice("focused-off");h.api.startVoice("players");assert.equal(state.voiceOn,false);h.click("[data-mic-toggle]");assert.equal(state.voiceOn,true);assert.ok(h.recognition())}finally{h.close()}});
+test("Mic OFF stays OFF and explicit OFF to ON stays ON",()=>{const h=createHarness();try{h.click("#start");const state=h.api.getState();h.api.setState({voiceOn:false});h.api.stopVoice("focused-off");h.api.startVoice("players");assert.equal(state.voiceOn,false);h.click("[data-west-coast-settings]");h.click("[data-wc-mic]");assert.equal(state.voiceOn,true);assert.ok(h.recognition())}finally{h.close()}});
 
 for(const phrase of ["skip","Skip!","skip it","skip this","pass","Pass!","I pass","I'll pass","pass it"]){test(`voice command ${phrase} passes immediately during presentation`,()=>{const h=createHarness();try{const state=question(h);h.speak(phrase,{final:false,confidence:.95});assert.equal(state.screen,"result");assert.equal(state.game.players[0].strikes,1);assert.match(state.game.lastOutcomeDetail,/^(skip|pass)$/)}finally{h.close()}})}
 

@@ -14,7 +14,7 @@ const {chromium}=require("playwright");
   await page.goto(process.env.LOS_BASE_URL||"http://127.0.0.1:8090/",{waitUntil:"networkidle"});
   const result=await page.evaluate(()=>{const plate=getComputedStyle(document.querySelector(".los-home-plate")),play=document.querySelector("#start").getBoundingClientRect();return{asset:plate.backgroundImage,play:{top:play.top,bottom:play.bottom,left:play.left,right:play.right},viewport:{width:innerWidth,height:innerHeight}}});
   await page.click("#homeHow");result.howToPlay=await page.locator(".los-home-dialog").getByText("HOW TO PLAY",{exact:true}).isVisible();await page.click(".los-home-dialog [data-close]");
-  await page.click("#homeSettings");result.settings=await page.locator(".los-home-dialog").getByText("SETTINGS",{exact:true}).isVisible();await page.click(".los-home-dialog [data-close]");
+  await page.click("#homeSettings");result.settings=await page.locator(".wc-settings-panel").getByText("SETTINGS",{exact:true}).isVisible();await page.click("[data-wc-settings-close]");
   await page.screenshot({path:output,animations:"disabled"});
   await page.click("#start");await page.waitForTimeout(250);result.destination=await page.locator(".topbar-title").innerText();result.errors=errors;
   console.log(JSON.stringify(result,null,2));
