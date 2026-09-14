@@ -118,6 +118,44 @@ test("protected question routing scores a high-confidence exact interim only onc
   assert.equal(state.game.players[0].correct, 1);
 }));
 
+test("West Coast Voice Lab answer layers score safe low-confidence interims immediately",()=>{
+ const cases=[
+  ["Pacific",{q:"What is the largest ocean on Earth?",a:"Pacific Ocean"},"meaningful-partial"],
+  ["Graham Bell",{q:"Who is credited with inventing the telephone?",a:"Alexander Graham Bell"},"meaningful-partial"],
+  ["Stanley",{q:"What trophy is awarded to the NHL champion?",a:"Stanley Cup"},"meaningful-partial"],
+  ["Wheelchair ramp",{q:"What device helps a wheelchair enter a vehicle?",a:"Ramp or lift"},"safe-alternative-specificity"],
+  ["Lift",{q:"What device helps a wheelchair enter a vehicle?",a:"Ramp or lift"},"safe-alternative-specificity"],
+  ["oceano pacifico",{q:"What is the largest ocean?",a:"Pacific Ocean",es:["océano pacífico"]},"accepted-spanish"]
+ ];
+ for(const [heard,question,method] of cases){const h=createHarness();try{const state=setupQuestion(h,question);h.api.question(true);assert.equal(h.api.centralQuestionIntent(heard,false,.1,0),true,heard);assert.equal(state.game.players[0].correct,1,heard);assert.equal(state.screen,"result",heard);assert.equal(state.game.answerAcceptedMatch,method,heard);assert.equal(state.game.answerAcceptedPlayerId,"p1",heard)}finally{h.close()}}
+});
+
+test("West Coast contextual transcription tolerance accepts Lyft only as wheelchair Lift",withHarness(h=>{
+ const wheelchair={q:"What device helps a wheelchair enter a vehicle?",a:"Ramp or lift"},match=h.api.answerMatchTrace("lyft",wheelchair);
+ assert.equal(match.accepted,true);assert.equal(match.method,"question-specific-transcription");assert.equal(match.matched,"Lift");assert.match(match.reason,/Lift/);
+ for(const question of [{q:"Name a ride-share company",a:"Uber"},{q:"What raises cargo?",a:"Lift"},{q:"What is the largest ocean?",a:"Pacific Ocean"}])assert.equal(h.api.answerMatchTrace("lyft",question).accepted,false,question.q);
+ assert.equal(h.api.answerMatchTrace("ramp",wheelchair).matched,"Ramp or lift");assert.equal(h.api.answerMatchTrace("lift",wheelchair).matched,"Ramp or lift")
+}));
+
+test("West Coast wrong and ambiguous interims remain unscored",()=>{
+ for(const heard of ["ocean","Atlantic Ocean","telephone","cup","wheelchair","stairs","evolution"]){const h=createHarness();try{const state=setupQuestion(h,{q:"What is the largest ocean on Earth?",a:"Pacific Ocean"});h.api.question(true);assert.equal(h.api.centralQuestionIntent(heard,false,.99,0),false,heard);assert.equal(state.screen,"question",heard);assert.equal(state.game.players[0].correct,0,heard)}finally{h.close()}}
+});
+
+test("West Coast interim acceptance locks timestamp score and player across trailing results",withHarness(h=>{
+ const state=setupQuestion(h,{q:"What device helps a wheelchair enter a vehicle?",a:"Ramp or lift"});state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});h.api.question(true);const r=h.recognition();r.emit("lyft",{final:false,confidence:.1});const acceptedAt=state.game.answerAcceptedAt;assert.equal(state.game.players[0].correct,1);assert.equal(state.game.players[1].correct,0);assert.ok(Number.isFinite(acceptedAt));r.emit("lift",{final:true,confidence:1});assert.equal(state.game.answerAcceptedAt,acceptedAt);assert.equal(state.game.players[0].correct,1);assert.equal(h.api.getVoiceDiagnostics().filter(x=>x.stage==="answer-accepted").length,1)
+}));
+
+test("West Coast pass timeout new player and pause boundaries clear or isolate answer state",()=>{
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.answerAcceptedAt=123;h.api.question(true);state.game.answerAcceptedAt=123;h.api.centralQuestionIntent("pass",true,1);assert.equal(state.game.answerAcceptedAt,null);assert.equal(state.game.players[0].strikes,1)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.answerAcceptedAt=123;h.api.finish("timeout");assert.equal(state.game.answerAcceptedAt,null);assert.equal(state.game.players[0].timeout,1)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h);state.game.players.push({id:"p2",name:"Blair",correct:0,wrong:0,timeout:0,strikes:0,eliminated:false});state.game.idx=1;state.game.answerAcceptedAt=123;h.api.question(false);assert.equal(state.game.answerAcceptedAt,null);assert.equal(state.game.answerAcceptedPlayerId,null)}finally{h.close()}}
+ {const h=createHarness();try{const state=setupQuestion(h,{q:"What planet?",a:"Mars"});h.api.question(true);h.api.pauseGame();h.speak("Mars",{final:false,confidence:1});assert.equal(state.game.players[0].correct,0);h.api.resumeGame();h.speak("Mars",{final:false,confidence:.1});assert.equal(state.game.players[0].correct,1);h.speak("Mars",{final:true,confidence:1});assert.equal(state.game.players[0].correct,1)}finally{h.close()}}
+});
+
+test("West Coast voice commands remain separate from trivia answers",withHarness(h=>{
+ const state=setupQuestion(h,{q:"What is the largest ocean?",a:"Pacific Ocean"});h.api.question(true);h.speak("pause",{final:true,confidence:1});assert.equal(state.screen,"paused");assert.equal(state.game.players[0].correct,0);h.speak("resume",{final:true,confidence:1});assert.equal(state.screen,"question");assert.equal(state.game.players[0].correct,0)
+}));
+
 test("protected question routing records a short final non-answer as a continuing attempt", withHarness(h => {
   const state = setupQuestion(h);
   state.game.current={q:"What planet?",a:"Mars"};h.api.question(true);
@@ -754,12 +792,12 @@ test("Build 6.35 safely accepts conversational and hesitation framing",withHarne
  ])assert.equal(h.api.accepted(heard,q),false,heard)
 }));
 
-test("Build 6.35 finalizes one accepted WebKit interim at a speech boundary",withHarness(h=>{
- const state=activeTimedQuestion(h);state.game.current={id:"webkit-boundary",q:"What planet is red?",a:"Mars"};const r=h.recognition();r.emit("Mars",{final:false,confidence:.4});assert.equal(state.screen,"question");r.speechEnd();h.timers.advance(239);assert.equal(state.screen,"question");h.timers.advance(1);assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1)
+test("West Coast accepts a safe WebKit interim before its speech boundary",withHarness(h=>{
+ const state=activeTimedQuestion(h);state.game.current={id:"webkit-boundary",q:"What planet is red?",a:"Mars"};const r=h.recognition();r.emit("Mars",{final:false,confidence:.4});assert.equal(state.screen,"result");const acceptedAt=state.game.answerAcceptedAt;r.speechEnd();h.timers.advance(240);assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1);assert.equal(state.game.answerAcceptedAt,acceptedAt)
 }));
 
-test("Build 6.35 finalizes an accepted interim when WebKit ends without a final",withHarness(h=>{
- const state=activeTimedQuestion(h);state.game.current={id:"webkit-end",q:"What planet is red?",a:"Mars"};const r=h.recognition();r.emit("Mars",{final:false,confidence:.4});assert.equal(state.screen,"question");r.end();assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1)
+test("West Coast keeps one accepted answer when WebKit ends without a final",withHarness(h=>{
+ const state=activeTimedQuestion(h);state.game.current={id:"webkit-end",q:"What planet is red?",a:"Mars"};const r=h.recognition();r.emit("Mars",{final:false,confidence:.4});assert.equal(state.screen,"result");const acceptedAt=state.game.answerAcceptedAt;r.end();assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1);assert.equal(state.game.answerAcceptedAt,acceptedAt)
 }));
 
 test("exact wrapper-like titles match before wrapper fallback",withHarness(h=>{
@@ -1037,8 +1075,8 @@ test("visible reactions remain safe with Voice Off in Kids and Work games",()=>{
  for(const pack of ["kids","work"]){const h=createHarness();try{h.window.Math.random=()=>0;const state=setupQuestion(h);state.voiceOn=false;state.contentPacks=[pack];state.game.current={id:`${pack}-reaction`,q:"What planet is red?",a:"Mars",cat:"Science & Nature",packs:["original"],kidsSafe:true,workSafe:true};state.game.questionStartedWith=15;state.game.questionRemaining=14;h.api.finish("correct");assert.equal(h.document.querySelector(".host-reaction-callout"),null,pack);assert.doesNotMatch(h.api.getHostSystem().history.at(-1).text,/damn|homie|perro|compa/i,pack);assert.equal(h.api.getHostSystem().history.at(-1).result,"voice-disabled")}finally{h.close()}}
 });
 
-test("Stage 6.23 stable interim answer reacts early once and ignores the trailing final",withHarness(h=>{
- const state=activeTimedQuestion(h);state.game.current={id:"red-light",q:"What does a flashing red light mean?",a:"A complete stop"};const r=h.recognition();r.speechStart();r.emit("stop",{final:false,confidence:.55});assert.equal(state.screen,"question");r.emit("stop",{final:false,confidence:.55});assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1);r.emit("stop",{final:true,confidence:.9});assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1);const rows=h.api.getVoiceDiagnostics();assert.equal(rows.filter(x=>x.stage==="answer-executed").length,1);assert.ok(rows.some(x=>x.stage==="answer-interim-evaluated"&&x.stable));assert.ok(rows.some(x=>x.stage==="ui-reaction-begins"));const attempt=h.window.__LOS_PLAYTEST_DIAGNOSTICS__.answers().at(-1);assert.equal(attempt.isFinal,false)
+test("West Coast safe core-concept interim reacts once and ignores the trailing final",withHarness(h=>{
+ const state=activeTimedQuestion(h);state.game.current={id:"red-light",q:"What does a flashing red light mean?",a:"A complete stop"};const r=h.recognition();r.speechStart();r.emit("stop",{final:false,confidence:.55});assert.equal(state.screen,"result");const acceptedAt=state.game.answerAcceptedAt;r.emit("stop",{final:false,confidence:.55});r.emit("stop",{final:true,confidence:.9});assert.equal(state.screen,"result");assert.equal(state.game.players[0].correct,1);assert.equal(state.game.answerAcceptedAt,acceptedAt);const rows=h.api.getVoiceDiagnostics();assert.equal(rows.filter(x=>x.stage==="answer-executed").length,1);assert.ok(rows.some(x=>x.stage==="answer-interim-evaluated"&&x.safeImmediate));assert.ok(rows.some(x=>x.stage==="ui-reaction-begins"));const attempt=h.window.__LOS_PLAYTEST_DIAGNOSTICS__.answers().at(-1);assert.equal(attempt.isFinal,false)
 }));
 
 test("Stage 6.23 high-confidence exact commands can react on interim while destructive commands wait",()=>{
