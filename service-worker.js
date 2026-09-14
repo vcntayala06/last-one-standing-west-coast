@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION="6.38-west-coast-warm-mic";
+const CACHE_VERSION="6.38-mobile-voice-nav";
 const CACHE_NAME=`last-one-standing-shell-${CACHE_VERSION}`;
 const APP_SHELL=[
  "./",

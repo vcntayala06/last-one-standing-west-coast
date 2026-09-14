@@ -429,6 +429,35 @@ function visibleVoiceTargets(){
      return {el,label,phrases:[label,...aliases].filter(Boolean)}
    })
 }
+function visibleNavigationAttempt(h,{isFinal=false,confidence=0}={}){
+ const spokenPhrase=commandKey(h),screenAtMatch=state.screen,sessionAtMatch=runtimeSessionId,renderAtMatch=renderGeneration,hostSpeaking=!!hostSystem?.isSpeaking(),gate=voiceCore?.answerGate||"disabled",duplicateSuppressed=false;
+ if(!spokenPhrase||screenAtMatch==="question")return false;
+ const targets=visibleVoiceTargets(),matches=[];
+ const add=(target,matchType,matchedPhrase)=>{if(!matches.some(x=>x.target.el===target.el))matches.push({target,matchType,matchedPhrase})};
+ const navigationLabel=/^(?:play|next|continue|start|start game|resume|back|done|exit|exit game|leave game|quit|quit game)$/;
+ for(const target of targets)for(const phrase of target.phrases){const key=commandKey(phrase);if(navigationLabel.test(key)&&(spokenPhrase===key||spokenPhrase===`click ${key}`||spokenPhrase===`press ${key}`||spokenPhrase===`choose ${key}`||spokenPhrase===`select ${key}`))add(target,spokenPhrase===key?"exact-label":"exact-instruction",key)}
+ const generic=/^(continue|start|begin|next|go|go ahead|lets go|let s go|lets begin|let s begin|im ready|i m ready|were ready|we re ready|move on)$/;
+ if(!matches.length&&generic.test(spokenPhrase)){
+  const primaries=targets.filter(({el})=>el.matches("button.primary,#continue,#cont,#start,#showtimeStart"));
+  if(primaries.length===1)add(primaries[0],"unique-primary-alias",spokenPhrase)
+ }
+ const destructive=/\b(?:exit|quit|end|delete|remove|clear|cancel|leave|home|reset)\b/;
+ let rejectionReason="no-visible-match";
+ if(matches.length>1)rejectionReason="ambiguous-visible-match";
+ else if(matches.length===1&&(!isFinal&&destructive.test(commandKey(matches[0].target.label))))rejectionReason="destructive-final-only";
+ else if(matches.length===1&&hostSpeaking)rejectionReason="host-speaking";
+ else if(matches.length===1&&(gate==="host-suppressed"||gate==="post-host-quarantine"))rejectionReason="answer-gate-suppressed";
+ const match=matches.length===1&&rejectionReason==="no-visible-match"?matches[0]:null;
+ const detail={transcript:String(h||""),spokenPhrase,normalizedPhrase:spokenPhrase,isFinal:!!isFinal,confidence,screen:screenAtMatch,session:sessionAtMatch,renderGeneration:renderAtMatch,visibleTargets:targets.map(x=>x.label),visibleTargetCount:targets.length,matchedTarget:match?.target.label||null,matchedTargetCount:matches.length,matchedLabels:matches.map(x=>x.target.label),matchType:match?.matchType||null,accepted:!!match,rejectionReason:match?null:rejectionReason,hostSpeaking,answerGate:gate,duplicateSuppressed};
+ voiceDiagnostic("visible-navigation-attempt",detail);
+ if(!match)return matches.length>0&&!(state.screen==="setup"&&/^(on|off)$/.test(spokenPhrase));
+ const {target}=match,key=`visible:${screenAtMatch}:${target.label}`;
+ if(navLock)return queueVoiceNavigation(h,isFinal,confidence);
+ return voiceOnce(key,()=>{
+  if(state.screen!==screenAtMatch||runtimeSessionId!==sessionAtMatch||!document.contains(target.el)||target.el.disabled){voiceDiagnostic("command-rejected",{command:spokenPhrase,reason:"stale-visible-navigation-context",fromScreen:screenAtMatch,currentScreen:state.screen,fromSession:sessionAtMatch,currentSession:runtimeSessionId});return}
+  voiceFeedback("✓ "+target.label,"action");target.el.click()
+ })
+}
 function fuzzyVisibleTarget(h){
  const n=commandKey(h);if(!n)return false;
  const generic=/^(continue|start|begin|next|go|go ahead|lets go|let s go|lets begin|let s begin|im ready|i m ready|were ready|we re ready|move on)$/;
@@ -437,7 +466,7 @@ function fuzzyVisibleTarget(h){
    if(primary){voiceFeedback("✓ "+(primary.textContent||"CONTINUE").trim(),"action");primary.click();return true}
  }
  const targets=visibleVoiceTargets();
- let best=null,bestScore=0;
+ let best=[],bestScore=0;
  for(const t of targets){
    for(const p of t.phrases){
      const k=commandKey(p);if(!k)continue;
@@ -446,15 +475,16 @@ function fuzzyVisibleTarget(h){
      else if(k==="add player"){
        if(/^(add player|add a player|add another player)$/.test(n))score=100;
      } else if(phraseMatch(n,k))score=70+Math.min(k.length,20);
-     if(score>bestScore){best=t;bestScore=score}
+     if(score>bestScore){best=[t];bestScore=score}else if(score===bestScore&&score>0&&!best.some(x=>x.el===t.el))best.push(t)
    }
  }
- if(best&&bestScore>=72){
-   const key=commandKey(best.label),now=Date.now();
+ if(best.length===1&&bestScore>=72){
+   const target=best[0],key=commandKey(target.label),now=Date.now();
    if(lastVoiceAction.key===key&&now-lastVoiceAction.at<700)return true;
    lastVoiceAction={key,at:now};
-   voiceFeedback("✓ "+best.label,"action");best.el.click();return true
+   voiceFeedback("✓ "+target.label,"action");target.el.click();return true
  }
+ if(best.length>1&&bestScore>=72)voiceDiagnostic("visible-navigation-attempt",{spokenPhrase:n,normalizedPhrase:n,isFinal:true,screen:state.screen,session:runtimeSessionId,visibleTargetCount:targets.length,matchedTargetCount:best.length,matchedLabels:best.map(x=>x.label),matchType:"fuzzy",accepted:false,rejectionReason:"ambiguous-visible-match"});
  return false
 }
 const voicePageHidden=()=>{try{return !document.defaultView||document.visibilityState==="hidden"}catch{return true}};
@@ -529,15 +559,10 @@ function voiceOnce(key,fn,windowMs=600){
  voiceCore.lastKey=k;voiceCore.lastAt=now;voiceCore.lastRoute=k;voiceDiagnostic("command-matched",{command:k});const executionStartedAt=performance.now();voiceDiagnostic("ui-reaction-begins",{command:k,monoAt:executionStartedAt});fn();voiceDiagnostic(String(key).startsWith("answer:")?"answer-executed":"command-executed",{command:k,monoAt:executionStartedAt,completedAt:performance.now()});return true
 }
 function exactVisibleTarget(h){
- const n=commandKey(h);if(!n)return false;
- for(const t of visibleVoiceTargets()){
-  for(const p of t.phrases){
-   if(commandKey(p)===n){
-    return voiceOnce("btn:"+t.label,()=>{voiceFeedback("✓ "+t.label,"action");t.el.click()})
-   }
-  }
- }
- return false
+ const n=commandKey(h);if(!n)return false;const matches=[];
+ for(const target of visibleVoiceTargets())if(target.phrases.some(phrase=>commandKey(phrase)===n)&&!matches.some(x=>x.el===target.el))matches.push(target);
+ if(matches.length!==1){if(matches.length>1)voiceDiagnostic("command-rejected",{command:n,reason:"ambiguous-visible-match",matchedLabels:matches.map(x=>x.label)});return false}
+ const target=matches[0];return voiceOnce("btn:"+target.label,()=>{voiceFeedback("✓ "+target.label,"action");target.el.click()})
 }
 function queueVoiceNavigation(h,isFinal,confidence){
  voiceCore.navQueued={h,isFinal,confidence,screen:state.screen,session:runtimeSessionId};
@@ -881,6 +906,7 @@ function endConfirmIntent(h){
 function routeVoiceCentral(h,{isFinal=false,confidence=0,resultIndex=-1}={}){
  h=(h||"").trim();if(!h)return false;
  pendingTransitionCause={trigger:"voice",reason:h};
+ if(state.screen!=="question"&&/^(?:click |press |choose |select )?(?:play|next|continue|start|start game|resume|back|done|exit|exit game|leave game|quit|quit game)$/i.test(commandKey(h))&&visibleNavigationAttempt(h,{isFinal,confidence}))return true;
  const reliableInterimCommand=confidence>=.9&&/^(?:start|start game|begin|begin game|pause|pause game|resume|resume game|keep playing|lock in)$/i.test(h);
  if(!isFinal&&!reliableInterimCommand&&/^(?:continue|next|done|go ahead|go on|move on|lets go|let s go|im ready|i m ready|ready|start|start game|begin|begin game|back|go back|previous|previous screen|exit|exit game|exit the game|leave|leave game|leave the game|cancel|cancel game|cancel setup|quit|quit game|quit setup|end game|stop game|go home|back to home|return home|pause|pause game|resume|resume game|keep playing)$/i.test(h)){voiceDiagnostic("command-rejected",{command:norm(h),reason:"navigation-final-only",screen:state.screen,session:runtimeSessionId});return false}
  voiceStatus(isFinal?`HEARD: ${h}`:`… ${h}`,isFinal?"heard":"listening");
