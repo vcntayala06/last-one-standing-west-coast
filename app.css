@@ -3364,15 +3364,24 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
 
 @media (orientation:landscape) and (max-width:900px) and (max-height:430px){
  .wc-master-handoff .wc-global-back{display:none!important;pointer-events:none!important}
- .wc-master-question .wc-master-board{top:20.5%;height:67.5%}
- .wc-master-timeout .wc-timeout-live .answer-panel{left:22%;top:56%;width:56%;height:19.2%}
- .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:42%}
+ .wc-master-question{--wc-phone-visible-board-top:20.5%}
+ .wc-master-question .wc-master-stage::after{content:"";position:absolute;z-index:.5;left:15%;top:10.5%;width:70%;height:calc(var(--wc-phone-visible-board-top) - 10.5%);background:#050507;pointer-events:none}
+ .wc-master-question .wc-master-board{top:var(--wc-phone-visible-board-top);height:67.5%}
+ .wc-master-question .wc-master-board::before{content:"";position:absolute;z-index:5;inset:0;border-top:3px solid #e8ae2d;border-radius:18px 18px 0 0;box-shadow:0 -2px 7px rgba(255,185,42,.72),inset 0 2px 4px rgba(255,225,133,.28);pointer-events:none}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:22%;top:69%;width:56%;height:16%}
+ .wc-master-timeout .wc-timeout-strike{top:88.25%}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{left:15%;top:58.5%;width:70%;height:17%}
+ .wc-master-pass-skip .wc-pass-skip-strike{top:80%}
  .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(4.8rem,min(9vw,13vh),9rem)!important}
- .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(4rem,min(7.5vw,11vh),7.5rem)!important}
- .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2.7rem,min(5.5vw,8.5vh),5.8rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(3.6rem,min(6.8vw,10.5vh),6.8rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(1.85rem,min(4.2vw,7.6vh),3.2rem)!important}
 }
 
 @media (orientation:landscape) and (max-width:700px) and (max-height:360px){
- .wc-master-question .wc-master-board{top:24%;height:64%}
+ .wc-master-question{--wc-phone-visible-board-top:24%}
+ .wc-master-question .wc-master-board{height:64%}
+ .wc-master-timeout .wc-timeout-live .answer-panel{top:67%;height:17%}
+ .wc-master-timeout .wc-timeout-strike{top:87%}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:58%;height:17%}
 }

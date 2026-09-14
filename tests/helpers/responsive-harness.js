@@ -11,7 +11,8 @@ async function launch(){
 }
 async function createPage(browser,viewport){
  const page=await browser.newPage({viewport:{width:viewport.width,height:viewport.height},deviceScaleFactor:1,reducedMotion:"reduce"});
- await page.setContent('<!doctype html><html lang="en"><head><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style></style></head><body><main id="app"></main></body></html>');
+ const assetBase=process.env.LOS_ASSET_BASE?`<base href="${process.env.LOS_ASSET_BASE}">`:"";
+ await page.setContent(`<!doctype html><html lang="en"><head>${assetBase}<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style></style></head><body><main id="app"></main></body></html>`);
  await page.locator("style").evaluate((el,css)=>el.textContent=css,fs.readFileSync(path.join(ROOT,"app.css"),"utf8"));
  await page.evaluate(viewport=>{const data=new Map([["los5_voice","false"]]);Object.defineProperty(window,"localStorage",{value:{getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,String(v)),removeItem:k=>data.delete(k),clear:()=>data.clear()}});if(viewport.usableHeight){const vv={width:viewport.width,height:viewport.usableHeight,offsetTop:viewport.usableOffsetTop??Math.max(0,(viewport.height-viewport.usableHeight)/2),offsetLeft:0,scale:1,pageTop:0,pageLeft:0,addEventListener(){},removeEventListener(){}};Object.defineProperty(window,"visualViewport",{configurable:true,value:vv})}class AC{constructor(){this.currentTime=0;this.state="running";this.destination={}}createOscillator(){return{type:"",frequency:{setValueAtTime(){}},connect(){},start(){},stop(){}}}createGain(){return{gain:{setValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){}}}resume(){}}window.AudioContext=AC;window.__RESPONSIVE__={}},viewport);
  await page.addScriptTag({content:fs.readFileSync(path.join(ROOT,"question-bank-data.js"),"utf8")});
