@@ -3239,3 +3239,40 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-handoff-live .handoff-intro{transform:translateY(-12px)!important}
  .wc-handoff-live .handoff-count{top:10px}
 }
+
+/* Phone-landscape Choose Your Game: shorten only the two upper tile rows so
+   the live cards no longer overlap one another or the lower control mask. */
+@media (orientation:landscape) and (max-width:900px) and (max-height:430px){
+ .los-west-coast-choose-game{
+  --wc-lower-top:62%;
+  --wc-selector-height:52px;
+  --wc-lower-gap:4px;
+  --wc-status-height:18px;
+  --wc-action-height:52px
+ }
+ .los-west-coast-choose-game .audience-grid,
+ .los-west-coast-choose-game .topic-grid{padding:6px;box-shadow:0 0 0 6px #020305}
+ .los-west-coast-choose-game .audience-grid{top:clamp(74px,23vh,90px);gap:10px}
+ .los-west-coast-choose-game .topic-grid{top:calc(clamp(74px,23vh,90px) + 66px);gap:8px}
+ .los-west-coast-choose-game .audience-grid .pack-choice{height:50px;min-height:44px;padding-block:0;font-size:clamp(.82rem,1.65vw,1rem)}
+ .los-west-coast-choose-game .topic-grid .pack-choice{height:54px;min-height:44px;padding-block:0;font-size:clamp(.72rem,1.45vw,.9rem)}
+ .los-west-coast-choose-game .pack-grid .pack-check{width:20px;height:20px;flex-basis:20px}
+ .los-west-coast-choose-game .pack-setup-controls{gap:8px;padding:3px 7px}
+ .los-west-coast-choose-game .pack-setup-group{height:100%;grid-template-columns:auto minmax(0,1fr);grid-template-rows:1fr;gap:5px}
+ .los-west-coast-choose-game .pack-setup-label{font-size:.68rem;white-space:nowrap}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:.12em .28em}
+}
+
+@media (orientation:landscape) and (max-width:700px) and (max-height:360px){
+ .los-west-coast-choose-game{--wc-lower-top:60%;--wc-selector-height:48px;--wc-lower-gap:2px;--wc-status-height:16px;--wc-action-height:44px}
+ .los-west-coast-choose-game .audience-grid,
+ .los-west-coast-choose-game .topic-grid{padding:4px;box-shadow:0 0 0 4px #020305}
+ .los-west-coast-choose-game .audience-grid{top:68px;gap:7px}
+ .los-west-coast-choose-game .topic-grid{top:124px;gap:6px}
+ .los-west-coast-choose-game .audience-grid .pack-choice{height:48px}
+ .los-west-coast-choose-game .topic-grid .pack-choice{height:50px}
+ .los-west-coast-choose-game .pack-grid .pack-check{width:18px;height:18px;flex-basis:18px}
+ .los-west-coast-choose-game .pack-setup-controls{left:6%;width:88%;gap:4px}
+ .los-west-coast-choose-game .pack-setup-label{font-size:.58rem}
+ .los-west-coast-choose-game .pack-setup-choice{font-size:.66rem}
+}
