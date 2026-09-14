@@ -3349,3 +3349,30 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-question-player-name.name-long,
  .wc-master-correct .wc-result-player-name.name-long{font-size:1.125rem}
 }
+
+/* Focused mobile gameplay polish: Player-Up has no Back target, Question gains
+   header clearance, and revealed-answer fitting uses Correct-sized regions. */
+@media (orientation:portrait) and (max-width:600px){
+ .wc-master-handoff .wc-global-back{display:none!important;pointer-events:none!important}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:17%;width:66%;height:16.5%}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:38%}
+ .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(4.25rem,22vw,6.2rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(3.15rem,15.5vw,4.8rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2.15rem,10.5vw,3.6rem)!important}
+}
+
+@media (orientation:landscape) and (max-width:900px) and (max-height:430px){
+ .wc-master-handoff .wc-global-back{display:none!important;pointer-events:none!important}
+ .wc-master-question .wc-master-board{top:20.5%;height:67.5%}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:22%;top:56%;width:56%;height:19.2%}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:42%}
+ .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(4.8rem,min(9vw,13vh),9rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(4rem,min(7.5vw,11vh),7.5rem)!important}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2.7rem,min(5.5vw,8.5vh),5.8rem)!important}
+}
+
+@media (orientation:landscape) and (max-width:700px) and (max-height:360px){
+ .wc-master-question .wc-master-board{top:24%;height:64%}
+}
