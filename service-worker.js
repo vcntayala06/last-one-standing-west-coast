@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION="6.38-landscape-tile-fit";
+const CACHE_VERSION="6.38-mobile-player-identity";
 const CACHE_NAME=`last-one-standing-shell-${CACHE_VERSION}`;
 const APP_SHELL=[
  "./",

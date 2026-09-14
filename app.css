@@ -3276,3 +3276,29 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .los-west-coast-choose-game .pack-setup-label{font-size:.58rem}
  .los-west-coast-choose-game .pack-setup-choice{font-size:.66rem}
 }
+
+/* Mobile active-player identity uses the approved Correct screen as its scale
+   reference. Individual screens retain their own composition and positioning. */
+@media (orientation:portrait) and (max-width:600px){
+ .wc-question-player{top:6.5%;width:78%;gap:15px}
+ .wc-question-avatar{flex-basis:93px;width:93px;padding:3px;border-width:3px}
+ .wc-question-player-name{font-size:2rem;line-height:.96}
+ .wc-question-player-name.name-long{font-size:1.45rem;line-height:1.02;white-space:normal;overflow-wrap:anywhere;transform:none}
+}
+
+@media (orientation:portrait) and (max-width:600px) and (max-height:700px){
+ .wc-master-question .wc-question-presentation{padding-top:14px}
+}
+
+@media (orientation:landscape) and (max-width:900px) and (max-height:430px){
+ .wc-question-player{top:3.2%;width:68%;gap:16px}
+ .wc-question-avatar{flex-basis:104px;width:104px;padding:3px;border-width:3px}
+ .wc-question-player-name{font-size:2.1rem;line-height:.96}
+ .wc-question-player-name.name-long{font-size:1.55rem;line-height:1.02;white-space:normal;overflow-wrap:anywhere}
+ .wc-master-question .wc-question-presentation{padding-top:44px}
+}
+
+@media (orientation:landscape) and (max-width:700px) and (max-height:360px){
+ .wc-question-avatar{flex-basis:82px;width:82px}
+ .wc-master-question .wc-question-presentation{padding-top:29px}
+}
