@@ -3357,22 +3357,40 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-master-timeout .wc-timeout-live .answer-panel{left:17%;width:66%;height:16.5%}
  .wc-master-pass-skip .wc-pass-skip-live .answer-panel{top:38%}
  .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center}
+ .wc-master-timeout .wc-timeout-live .answer-big{text-wrap:balance;line-height:.94!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(4.25rem,22vw,6.2rem)!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(3.15rem,15.5vw,4.8rem)!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(2.15rem,10.5vw,3.6rem)!important}
 }
 
-@media (orientation:landscape) and (max-width:900px) and (max-height:430px){
+@media (orientation:portrait) and (max-width:600px){
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:17%;top:63.75%;width:66%;height:6.5%}
+ .wc-master-timeout .wc-timeout-live .answer-panel:has(.answer-short),
+ .wc-master-timeout .wc-timeout-live .answer-panel:has(.answer-medium){left:12%;width:76%;height:11%}
+ .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center;text-wrap:balance;line-height:.94!important}
+ .wc-master-timeout .wc-timeout-strike{top:74%}
+ .wc-master-timeout .wc-timeout-live:has(.answer-short) .wc-timeout-strike,
+ .wc-master-timeout .wc-timeout-live:has(.answer-medium) .wc-timeout-strike{top:78%}
+ .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(3.6rem,15.5vw,4.8rem)!important}
+ .wc-master-pass-skip .wc-pass-skip-live .answer-panel{left:17%;top:43%;width:66%;height:12%}
+ .wc-master-pass-skip .wc-pass-skip-strike{top:59%}
+ .wc-timeout-player-name{text-wrap:balance;word-break:normal;overflow-wrap:break-word;line-height:.95}
+}
+
+@media (orientation:landscape) and (max-width:950px) and (max-height:450px){
  .wc-master-handoff .wc-global-back{display:none!important;pointer-events:none!important}
  .wc-master-question{--wc-phone-visible-board-top:20.5%}
  .wc-master-question .wc-master-stage::after{content:"";position:absolute;z-index:.5;left:15%;top:10.5%;width:70%;height:calc(var(--wc-phone-visible-board-top) - 10.5%);background:#050507;pointer-events:none}
  .wc-master-question .wc-master-board{top:var(--wc-phone-visible-board-top);height:67.5%}
  .wc-master-question .wc-master-board::before{content:"";position:absolute;z-index:5;inset:0;border-top:3px solid #e8ae2d;border-radius:18px 18px 0 0;box-shadow:0 -2px 7px rgba(255,185,42,.72),inset 0 2px 4px rgba(255,225,133,.28);pointer-events:none}
- .wc-master-timeout .wc-timeout-live .answer-panel{left:22%;top:69%;width:56%;height:16%}
- .wc-master-timeout .wc-timeout-strike{top:88.25%}
+ .wc-master-timeout .wc-timeout-live .answer-panel{left:22%;top:70%;width:56%;height:16%}
+ .wc-master-timeout .wc-timeout-strike{top:89.15%}
+ .wc-master-timeout .wc-timeout-strike::before{content:"\00d7";display:block;color:#ff2038;font:900 clamp(3.8rem,18vh,5.2rem)/.72 Impact,"Arial Narrow",sans-serif;text-shadow:0 3px 0 #56000b,0 0 7px #ff9aaa,0 0 20px rgba(255,20,48,.78)}
+ .wc-master-timeout .wc-timeout-strike:not([aria-label^="Third strike"]) strong,
+ .wc-master-timeout .wc-timeout-strike:not([aria-label^="Third strike"]) span{display:none}
  .wc-master-pass-skip .wc-pass-skip-live .answer-panel{left:15%;top:58.5%;width:70%;height:17%}
  .wc-master-pass-skip .wc-pass-skip-strike{top:80%}
- .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center}
+ .wc-master-timeout .wc-timeout-live .answer-big{height:100%;display:grid;place-items:center;text-wrap:balance;line-height:.9!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-short{font-size:clamp(4.8rem,min(9vw,13vh),9rem)!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-medium{font-size:clamp(3.6rem,min(6.8vw,10.5vh),6.8rem)!important}
  .wc-master-timeout .wc-timeout-live .answer-big.answer-long{font-size:clamp(1.85rem,min(4.2vw,7.6vh),3.2rem)!important}
