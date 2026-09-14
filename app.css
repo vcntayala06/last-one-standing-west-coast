@@ -3077,3 +3077,63 @@ radial-gradient(circle at 50% 0%,rgba(255,208,79,.09),transparent 28%),linear-gr
  .wc-handoff-live .handoff-player-name.name-long{font-size:clamp(1.3rem,6.8vw,2rem)}
  .wc-handoff-live .handoff-count{font-size:clamp(3.6rem,18vw,5rem)}
 }
+
+/* Screen-specific iPhone portrait compositions, based on the live 390x844
+   captures. These rules do not match tablet, laptop, or desktop layouts. */
+@media (orientation:portrait) and (max-width:600px){
+ .los-west-coast-choose-game{--wc-portrait-lift:0px;--wc-upper-shift:0px;overflow:hidden}
+ .los-west-coast-choose-game .shell{transform:none}
+ .los-west-coast-choose-game .topbar-title{left:18px;top:max(16px,var(--los-safe-top));width:calc(100% - 104px);height:58px;transform:none;font-size:clamp(1.55rem,7.2vw,1.85rem)!important;line-height:1;white-space:normal;text-align:left;text-wrap:balance}
+ .los-west-coast-choose-game .wc-settings-gear{top:max(12px,var(--los-safe-top))!important;right:max(14px,var(--los-safe-right))!important;width:54px!important;height:54px!important;min-width:54px!important;min-height:54px!important}
+ .los-west-coast-choose-game .hierarchy-panel:first-of-type .pack-instruction{left:8%;top:10.5%;width:84%;height:24px;font-size:.72rem}
+ .los-west-coast-choose-game .hierarchy-panel:nth-of-type(2) .pack-instruction{left:8%;top:24.5%;width:84%;height:24px;font-size:.72rem}
+ .los-west-coast-choose-game .pack-art-label-mask-audience{left:20%;top:20.5%;width:60%;height:4%;background:#020305}
+ .los-west-coast-choose-game .pack-art-label-mask-topics{left:20%;top:44%;width:60%;height:5%;background:#020305}
+ .los-west-coast-choose-game .audience-grid,
+ .los-west-coast-choose-game .topic-grid{left:7%;width:86%;padding:4px;transform:none;box-shadow:0 0 0 5px #020305}
+ .los-west-coast-choose-game .audience-grid{top:14%;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .los-west-coast-choose-game .topic-grid{top:28%;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 8px}
+ .los-west-coast-choose-game .pack-grid .pack-choice{height:50px;min-height:44px;padding:0 7px;border-radius:10px;font-size:clamp(.68rem,2.7vw,.82rem);line-height:1.05;transform:none}
+ .los-west-coast-choose-game .topic-grid .pack-choice{font-size:clamp(.65rem,2.55vw,.78rem)}
+ .los-west-coast-choose-game .pack-grid .pack-check{width:20px;height:20px;flex-basis:20px}
+ .los-west-coast-choose-game .pack-art-bottom-mask{top:51%}
+ .los-west-coast-choose-game .pack-setup-controls{left:7%;top:51%;width:86%;height:112px;grid-template-columns:1fr;gap:5px;padding:7px 9px;border-radius:12px}
+ .los-west-coast-choose-game .pack-setup-group{height:46px;grid-template-columns:31% minmax(0,1fr);grid-template-rows:1fr;gap:5px}
+ .los-west-coast-choose-game .pack-setup-label{padding-left:0;font-size:.62rem;line-height:1.05;white-space:normal;text-align:left}
+ .los-west-coast-choose-game .pack-setup-options{width:100%;gap:4px}
+ .los-west-coast-choose-game .pack-setup-choice{height:44px;min-height:44px;padding:2px 3px;font-size:.68rem}
+ .los-west-coast-choose-game .pack-setup-controls::after{left:4%;right:4%;top:50%;bottom:auto;width:auto;height:1px}
+ .los-west-coast-choose-game .pack-summary{left:7%;top:calc(51% + 118px);width:86%;height:24px;font-size:.6rem;white-space:normal}
+ .los-west-coast-choose-game #back,
+ .los-west-coast-choose-game #continuePacks{top:calc(51% + 148px);height:52px;font-size:1rem;border-radius:11px}
+ .los-west-coast-choose-game #back{left:7%;width:40%}
+ .los-west-coast-choose-game #continuePacks{left:53%;width:40%}
+
+ .wc-master-showtime .wc-master-board{padding:12px 14px}
+ .wc-showtime-live{width:100%;height:94%;gap:clamp(5px,1vh,9px)}
+ .wc-showtime-live h1{width:100%;gap:6px}
+ .wc-showtime-live h1 span{width:100%;font-size:clamp(1.25rem,5.4vw,1.5rem)}
+ .wc-showtime-live h1 strong{width:100%;padding:.08em .04em;font-size:clamp(2.2rem,10.5vw,2.7rem);line-height:.95;white-space:nowrap}
+ .wc-showtime-kicker{font-size:.62rem}
+ .wc-showtime-rule{font-size:.64rem}
+ .wc-showtime-summary,.wc-showtime-status{max-width:100%;font-size:.57rem;line-height:1.2}
+ .wc-showtime-start{min-height:46px;padding:5px 14px;font-size:.82rem}
+
+ .wc-master-question{--wc-answer-font-size:1rem}
+ .wc-master-question .wc-master-board{padding:8px 10px}
+ .wc-question-live{grid-template-rows:minmax(0,1fr) auto auto 72px;gap:4px;overflow:hidden}
+ .wc-question-presentation{width:100%;padding:0;overflow:hidden}
+ .wc-question-live .question-text{width:100%;padding:4px 1%;font-size:clamp(1.2rem,5.25vw,1.35rem);line-height:1.08;overflow:hidden}
+ .wc-master-question .question-area:has(.keyboard-answer) .question-text.question-medium{font-size:1.2rem!important}
+ .wc-master-question .question-area:has(.keyboard-answer) .question-text.question-long{font-size:1.08rem!important;line-height:1.06}
+ .wc-question-live .question-inputs{width:96%}
+ .wc-question-live .keyboard-answer{grid-template-columns:minmax(0,1fr) 82px;gap:0;padding:3px;border-radius:11px}
+ .wc-question-live #typedAnswer,
+ .wc-question-live #lockAnswer{width:auto;min-height:46px;height:46px;padding:.35em .5em;font-size:1rem}
+ .wc-question-live #typedAnswer{border-radius:8px 0 0 8px}
+ .wc-question-live #typedAnswer::placeholder{font-size:.72rem;letter-spacing:0}
+ .wc-question-live #lockAnswer{min-width:82px;border-top:0;border-left:2px solid #eec54b;border-radius:0 8px 8px 0;font-size:.74rem;padding-inline:4px}
+ .wc-question-live .answer-attempt-feedback{min-height:10px;font-size:.55rem}
+ .wc-question-timer-anchor{min-width:76px;min-height:72px;height:72px}
+ .wc-question-live .timer{font-size:clamp(3.6rem,16vw,4.25rem)!important}
+}
