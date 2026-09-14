@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION="6.38-iphone-screen-fix";
+const CACHE_VERSION="6.38-iphone-hierarchy";
 const CACHE_NAME=`last-one-standing-shell-${CACHE_VERSION}`;
 const APP_SHELL=[
  "./",
