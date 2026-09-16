@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_VERSION="6.38-winner-approved-baseline";
+const CACHE_VERSION="6.38-west-coast-mobile-approved-final";
 const CACHE_NAME=`last-one-standing-shell-${CACHE_VERSION}`;
 const APP_SHELL=[
  "./",
