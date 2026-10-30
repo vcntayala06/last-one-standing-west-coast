@@ -21,3 +21,6 @@ Optional settings are documented in `.env.example`. Use `window.__LOS_HOST_AUDIO
 - Each new full-sentence MP3 is saved **on this computer**, under `runtime-voice-cache/homie-handoff/`. Identical requested phrases are replayed from that recording after an app/server restart. Each of the six sentence variations has a different file. This cache is intentionally not committed to Git.
 - **Include `runtime-voice-cache/` when making the USB game backup** if you want the locally generated LOWLOW recordings. If the folder is omitted, the local server will regenerate missing clips when online.
 - New clips are samples for human listening review, not automatically approved pronunciation. The host voice, approved art and question banks have not been replaced.
+
+### Correct a name without renaming the player
+In **Who's In? → EDIT**, enter the optional **LOWLOW SAYS** field using the spoken spelling you want, and save the player. The profile and on-screen game keep the original name. Use **SELECT SAVED PLAYER → HEAR NAME** to preview until the pronunciation is right. This override remains on the player's saved profile and through replay.
