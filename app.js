@@ -152,6 +152,9 @@ function spokenNumber(s){
  const n=Number(s);return Number.isFinite(n)&&n>0?n:(map[norm(s)]||0)
 }
 function nameKey(s){return norm(s).replace(/\b(player|please|the)\b/g,"").replace(/\s+/g," ").trim()}
+// Preserve written player names; only spoken introductions use confirmed aliases.
+const LOWLOW_NAME_ALIASES=Object.freeze({"patricia":"Patty","david estrada":"David","isaac rodriguez":"Isaac"});
+function playerSpokenName(player){const display=String(player?.name||"").trim();return String(player?.spokenName||"").trim()||LOWLOW_NAME_ALIASES[norm(display)]||display||"player"}
 
 const GameAudio=(()=>{
  let ctx=null,activated=false,paused=false,music=null,musicTimer=null,generation=0,lastError=null,duckGain=1;
@@ -231,6 +234,16 @@ const HOST_LINES={
  ending:[{text:"That’s the game. Respect to everybody who stepped up.",workSafe:true}]
 };
 Object.assign(HOST_LINES,HOST_LINE_TUNING);
+// Approved LOWLOW "Homie Vibe": short, relaxed, one complete spoken sentence.
+// Separate from hype/reaction and gender-tagged Host banks.
+HOST_LINES.homieHandoff=[
+ {text:"Hey, {name}, you're up.",workSafe:true,family:"homie-hey"},
+ {text:"Alright, {name}, your turn.",workSafe:true,family:"homie-alright"},
+ {text:"Next up, we got {name}.",workSafe:true,family:"homie-next"},
+ {text:"Okay, {name}, let's see what you got.",workSafe:true,family:"homie-okay"},
+ {text:"Hey, {name}, it's your turn.",workSafe:true,family:"homie-turn"},
+ {text:"Alright, here comes {name}.",workSafe:true,family:"homie-here"}
+];
 const addHostLines=(event,texts,{workSafe=true,cultural=false,humor=true,...tags}={})=>{HOST_LINES[event]=[...(HOST_LINES[event]||[]),...texts.map(text=>({text,workSafe,cultural,humor,...tags}))]};
 addHostLines("turn",[
  "Alright, big dawg, you're up.","Okay {name}, show me something.","Aight, big homie, your turn.","{name}, lock in. Let's work.","Come on, compa. You're up.","The floor belongs to {name}.","{name}, bring that game-night confidence over here.","Alright {name}, make this one look easy.","Your turn, homie. Stay sharp.","Okay {name}, the room is watching.","Step right up, {name}.","{name}, this is your moment. Use it wisely.","Let's see what the big homie knows.","Come on {name}, give us something clean.","New turn, same pressure. You're up, {name}.","{name}, take the wheel.","Okay compa, time to earn it.","{name}, everybody got quiet for you.","Big dawg, the question is yours.","Alright {name}, no warm-up needed."
@@ -268,7 +281,7 @@ addHostLines("disneyKnowledge",["Okay {name}, that Disney knowledge is real.","Y
 addHostLines("turn",["Alright big dawg, show me something.","Big homie, your turn.","Okay homie, lock in.","{name}, handle your business.","Big dawg, the floor is yours.","Alright {name}, bring the pressure.","Homie, make this one count.","{name}, step up and work.","Big homie is on the clock.","Okay {name}, stay ready.","Your question, big dawg.","{name}, show the room what you know.","Alright homie, take your shot.","Big dawg, keep it clean.","{name}, time to earn that point.","Okay big homie, focus up.","The room is yours, {name}.","Big dawg, let us see that game.","{name}, come get this question.","Alright homie, no excuses."],{hostStyle:"masculine"});
 addHostLines("turn",["Alright {name}, show me something.","Your turn, {name}.","Okay, take the floor.","{name}, lock in and work.","The next question belongs to {name}.","Show us what you know.","{name}, make this one count.","Alright, stay sharp.","The room is ready for you, {name}.","Take your shot.","Okay {name}, bring that energy.","New question, fresh opportunity.","{name}, step up.","Let us see a clean answer.","Your clock, your question.","Alright {name}, focus up.","The floor is yours.","{name}, give us your best one.","Time to work.","Okay, show the room something."],{hostStyle:"neutral"});
 const SPANISH_PRONUNCIATION_REVIEWED=false;
-const HOST_EVENT_POLICY={showtime:["critical",1],showtimeSolo:["critical",1],firstTurn:["major",1],turn:["optional",1],soloTurn:["optional",1],lockIn:["critical",1],questionRead:["critical",1],answerReveal:["critical",1],opening:["critical",1],showdown:["critical",1],champion:["critical",1],elimination:["major",1],streak:["major",.9],categoryRun:["reaction",.55],streetKnowledge:["reaction",.68],movieKnowledge:["reaction",.58],musicKnowledge:["reaction",.58],transitKnowledge:["reaction",.58],disneyKnowledge:["reaction",.58],culturalCorrect:["optional",.42],lead:["major",.8],tie:["major",.65],comeback:["major",.85],fastCorrect:["reaction",.8],slowCorrect:["reaction",.75],easyMiss:["reaction",.75],misses:["reaction",.65],correct:["optional",.32],wrong:["optional",.45],tough:["reaction",.65],strike:["optional",.3],ending:["major",1]};
+const HOST_EVENT_POLICY={homieHandoff:["major",1],showtime:["critical",1],showtimeSolo:["critical",1],firstTurn:["major",1],turn:["optional",1],soloTurn:["optional",1],lockIn:["critical",1],questionRead:["critical",1],answerReveal:["critical",1],opening:["critical",1],showdown:["critical",1],champion:["critical",1],elimination:["major",1],streak:["major",.9],categoryRun:["reaction",.55],streetKnowledge:["reaction",.68],movieKnowledge:["reaction",.58],musicKnowledge:["reaction",.58],transitKnowledge:["reaction",.58],disneyKnowledge:["reaction",.58],culturalCorrect:["optional",.42],lead:["major",.8],tie:["major",.65],comeback:["major",.85],fastCorrect:["reaction",.8],slowCorrect:["reaction",.75],easyMiss:["reaction",.75],misses:["reaction",.65],correct:["optional",.32],wrong:["optional",.45],tough:["reaction",.65],strike:["optional",.3],ending:["major",1]};
 const HOST_PRIORITY={optional:1,reaction:2,major:3,critical:4};
 function defaultHostProvider(){
  const supplied=window.__LOS_HOST_PROVIDER__;
@@ -277,7 +290,7 @@ function defaultHostProvider(){
  return {name:"none",available:false,play:()=>Promise.resolve(),cancel(){},setVolume(){}}
 }
 function createHostSystem(provider=defaultHostProvider()){
- let token=0,eventSequence=0,speaking=false,currentPriority=0,hostGateActive=false,lastIds=[],lastFamilies=[],idleWaiters=[],currentEntry=null;
+ let token=0,eventSequence=0,speaking=false,currentPriority=0,hostGateActive=false,lastIds=[],lastFamilies=[],idleWaiters=[],currentEntry=null;const recentHandoffsByPlayer=new Map();
  const history=[];
  const settleIdle=outcome=>{if(speaking)return;const waiters=idleWaiters;idleWaiters=[];waiters.forEach(resolve=>resolve(outcome||currentEntry||history.at(-1)||{result:"idle"}))};
  const whenIdle=()=>speaking?new Promise(resolve=>idleWaiters.push(resolve)):Promise.resolve(currentEntry||history.at(-1)||{result:"idle"});
@@ -288,8 +301,16 @@ function createHostSystem(provider=defaultHostProvider()){
   const candidates=flavored.length&&Math.random()<.35?flavored:source;
   const phraseFamily=line=>line.family||norm(line.text).replace(/\b(?:name|player|big|dawg|homie|compa|perro|okay|alright|aight|orale)\b/g,"").split(" ").filter(Boolean).slice(0,3).join(" ");
   const pool=candidates.filter(line=>!lastIds.includes(event+":"+(HOST_LINES[event]||[]).indexOf(line))&&!lastFamilies.includes(phraseFamily(line)));
-  const usable=pool.length?pool:source;if(!usable.length)return null;
+  let usable=pool.length?pool:source;if(!usable.length)return null;
+  // Rotate independently for each player, even if others have taken turns.
+  const playerKey=event==="homieHandoff"?String(context.playerId||context.name||"").toLocaleLowerCase():"";
+  const prior=playerKey?recentHandoffsByPlayer.get(playerKey)||[]:[];
+  if(playerKey){const fresh=usable.filter(line=>!prior.includes((HOST_LINES[event]||[]).indexOf(line)));
+    if(fresh.length)usable=fresh;
+    else usable=source.filter(line=>!prior.includes((HOST_LINES[event]||[]).indexOf(line)));
+  }
   const line=usable[Math.floor(Math.random()*usable.length)],index=(HOST_LINES[event]||[]).indexOf(line),id=event+":"+index;
+  if(playerKey)recentHandoffsByPlayer.set(playerKey,[...prior,index].slice(-3));
   const replacements={name:context.name||"player",players:context.players||"Players, welcome to the game",seconds:context.seconds||state.questionSeconds||15,question:context.question||"",answer:context.answer||""};
   lastIds=[...lastIds,id].slice(-5);lastFamilies=[...lastFamilies,phraseFamily(line)].slice(-4);return {...line,id,text:line.text.replace(/\{(name|players|seconds|question|answer)\}/g,(_,key)=>String(replacements[key]))}
  };
@@ -1480,10 +1501,11 @@ function selectSavedPlayerByVoice(raw){
 function openSavedPlayerPicker(){
  let query="";const overlay=document.createElement("div");overlay.className="los-overlay los-player-picker-overlay";overlay.setAttribute("role","dialog");overlay.setAttribute("aria-modal","true");overlay.setAttribute("aria-label","Select saved players");
  const close=()=>{if(activeSavedPlayerPicker?.overlay===overlay)activeSavedPlayerPicker=null;overlay.remove();players();document.getElementById("selectPlayers")?.focus()};
- const draw=({scrollTop=null,focusPlayerId=null}={})=>{const previousList=overlay.querySelector(".los-saved-player-list"),preservedScroll=scrollTop??previousList?.scrollTop??0,profiles=savedProfiles(),selected=new Set(state.players.map(p=>p.id)),filtered=profiles.filter(p=>playerSearchText(p).includes(query.toLocaleLowerCase()));const rows=filtered.map(p=>{const chosen=selected.has(p.id),nickname=p.nickname&&nameKey(p.nickname)!==nameKey(p.name)?`<small>“${esc(p.nickname)}”</small>`:"";return `<article class="los-saved-player-row ${chosen?"selected":""}" data-saved-profile="${p.id}"><button type="button" class="los-saved-player-toggle" data-picker-player="${p.id}" aria-pressed="${chosen}" data-voice="${esc(playerDisplayName(p))}">${avatarArt(p.avatar)}<span><strong>${esc(playerDisplayName(p))}</strong>${nickname}<em>${chosen?"SELECTED FOR THIS GAME":"SELECT PLAYER"}</em></span><b aria-hidden="true">${chosen?"✓":"+"}</b></button><div class="los-saved-player-actions"><button type="button" class="los-mini-action" data-picker-avatar="${p.id}">AVATAR</button><button type="button" class="los-mini-action" data-picker-edit="${p.id}">EDIT</button></div></article>`}).join("");overlay.innerHTML=`<section class="los-sheet los-player-picker"><header><div><div class="los-sheet-kicker">SAVED PROFILES</div><h2>SELECT PLAYER</h2><p><strong>${selected.size}</strong> selected for this game</p></div><button type="button" class="los-close" data-picker-close aria-label="Close player picker">×</button></header><label class="los-player-search"><span>SEARCH PLAYERS</span><input type="search" value="${esc(query)}" autocomplete="off" placeholder="Name or nickname" aria-label="Search players"></label><div class="los-saved-player-list" aria-live="polite">${rows||`<div class="los-picker-empty"><strong>${profiles.length?"NO MATCHES":"NO SAVED PLAYERS YET"}</strong><span>${profiles.length?"Try another name.":"Close this picker and choose Add Player."}</span></div>`}</div><button type="button" class="los-action los-action-primary los-picker-done" data-picker-done>DONE</button></section>`;
+ const draw=({scrollTop=null,focusPlayerId=null}={})=>{const previousList=overlay.querySelector(".los-saved-player-list"),preservedScroll=scrollTop??previousList?.scrollTop??0,profiles=savedProfiles(),selected=new Set(state.players.map(p=>p.id)),filtered=profiles.filter(p=>playerSearchText(p).includes(query.toLocaleLowerCase()));const rows=filtered.map(p=>{const chosen=selected.has(p.id),nickname=p.nickname&&nameKey(p.nickname)!==nameKey(p.name)?`<small>“${esc(p.nickname)}”</small>`:"";return `<article class="los-saved-player-row ${chosen?"selected":""}" data-saved-profile="${p.id}"><button type="button" class="los-saved-player-toggle" data-picker-player="${p.id}" aria-pressed="${chosen}" data-voice="${esc(playerDisplayName(p))}">${avatarArt(p.avatar)}<span><strong>${esc(playerDisplayName(p))}</strong>${nickname}<em>${chosen?"SELECTED FOR THIS GAME":"SELECT PLAYER"}</em></span><b aria-hidden="true">${chosen?"✓":"+"}</b></button><div class="los-saved-player-actions"><button type="button" class="los-mini-action" data-picker-preview="${p.id}" aria-label="Hear LOWLOW introduce ${esc(playerDisplayName(p))}">HEAR NAME</button><button type="button" class="los-mini-action" data-picker-avatar="${p.id}">AVATAR</button><button type="button" class="los-mini-action" data-picker-edit="${p.id}">EDIT</button></div></article>`}).join("");overlay.innerHTML=`<section class="los-sheet los-player-picker"><header><div><div class="los-sheet-kicker">SAVED PROFILES</div><h2>SELECT PLAYER</h2><p><strong>${selected.size}</strong> selected for this game</p></div><button type="button" class="los-close" data-picker-close aria-label="Close player picker">×</button></header><label class="los-player-search"><span>SEARCH PLAYERS</span><input type="search" value="${esc(query)}" autocomplete="off" placeholder="Name or nickname" aria-label="Search players"></label><div class="los-saved-player-list" aria-live="polite">${rows||`<div class="los-picker-empty"><strong>${profiles.length?"NO MATCHES":"NO SAVED PLAYERS YET"}</strong><span>${profiles.length?"Try another name.":"Close this picker and choose Add Player."}</span></div>`}</div><button type="button" class="los-action los-action-primary los-picker-done" data-picker-done>DONE</button></section>`;
   const list=overlay.querySelector(".los-saved-player-list");if(list)list.scrollTop=preservedScroll;
   overlay.querySelector("[data-picker-close]").onclick=close;overlay.querySelector("[data-picker-done]").onclick=close;const search=overlay.querySelector("input[type=search]");search.oninput=e=>{query=e.target.value;draw({scrollTop:0});overlay.querySelector("input[type=search]")?.focus({preventScroll:true})};search.setSelectionRange?.(query.length,query.length);
   overlay.querySelectorAll("[data-picker-player]").forEach(button=>button.onclick=()=>{const p=profiles.find(x=>x.id===button.dataset.pickerPlayer);if(!p)return;if(selected.has(p.id)){state.players=state.players.filter(x=>x.id!==p.id);state.selectedIds=[...new Set(state.players.map(x=>x.id))]}else selectSavedProfileForGame(p);draw({focusPlayerId:p.id})});
+  overlay.querySelectorAll("[data-picker-preview]").forEach(button=>button.onclick=()=>{const player=profiles.find(x=>x.id===button.dataset.pickerPreview);if(!player)return;ensureAudio();hostSystem?.provider?.activate?.();hostSystem?.emit("homieHandoff",{name:playerSpokenName(player),displayName:player.name,playerId:player.id,preview:true})});
   overlay.querySelectorAll("[data-picker-edit]").forEach(button=>button.onclick=()=>openPlayerEditor(profiles.find(x=>x.id===button.dataset.pickerEdit),()=>draw()));overlay.querySelectorAll("[data-picker-avatar]").forEach(button=>button.onclick=()=>{const p=profiles.find(x=>x.id===button.dataset.pickerAvatar);openAvatarPicker(p,()=>{upsertProfile(p);const current=state.players.find(x=>x.id===p.id);if(current)current.avatar=p.avatar;draw()})})
   if(focusPlayerId)[...overlay.querySelectorAll("[data-picker-player]")].find(button=>button.dataset.pickerPlayer===focusPlayerId)?.focus({preventScroll:true});if(list){list.scrollTop=preservedScroll;requestAnimationFrame(()=>{if(list.isConnected)list.scrollTop=preservedScroll})}
  };
@@ -1594,6 +1616,8 @@ function playerUpCountdown(playerId,opening=false){
   if(countdownScheduled||countdownStarted||!valid())return;countdownScheduled=true;
   handoffTimers.push(setTimeout(()=>{countdownScheduled=false;beginCountdown()},postHostBeatMs))
  };
+ // One complete, naturally spoken sentence, not a spliced name clip.
+ hostSystem?.emit("homieHandoff",{name:playerSpokenName(p),displayName:p.name,playerId:p.id,preview:false});
  if(hostSystem?.isSpeaking()){
   hostSystem.whenIdle().then(outcome=>{const remaining=outcome?.result==="playback-completed"?0:Math.max(0,minFallbackVisibleMs-(Date.now()-enteredAt));if(remaining)handoffTimers.push(setTimeout(scheduleCountdown,remaining));else scheduleCountdown()});
   handoffTimers.push(setTimeout(()=>{if(!valid()||countdownStarted||countdownScheduled)return;hostSystem?.cancel("handoff-host-timeout");scheduleCountdown()},20000))
