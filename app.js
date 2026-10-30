@@ -1869,7 +1869,7 @@ function champion(p){
 }
 function resetMatchRuntime(){pausedRemaining=pausedFrom=pausedResultDelay=resultDelayRemaining=null;renamePending=null;state.game=null;clearActiveGame()}
 function replayGame(){
- if(state.screen!=="complete")return;const players=(state.game?.players||state.players).map(p=>({id:p.id||uid(),name:p.name,hostStyle:p.hostStyle||"neutral"}));
+ if(state.screen!=="complete")return;const players=(state.game?.players||state.players).map(p=>({...p,id:p.id||uid(),name:p.name,hostStyle:p.hostStyle||"neutral"}));
  clearRuntime();GameAudio.stopAll();resetMatchRuntime();state.players=players;state.selectedIds=players.map(p=>p.id);enterScreen("ready","play-again",pendingTransitionCause.trigger||"touch");ready()
 }
 function championHome(){clearRuntime();GameAudio.stopAll();resetMatchRuntime();home()}
