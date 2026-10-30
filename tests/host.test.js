@@ -63,7 +63,7 @@ test("natural Host playback failure keeps the warm microphone and releases its g
 });
 
 test("Showtime welcomes once and waits for Host completion before creating the game",async()=>{
- const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState(),host=h.api.getHostSystem();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];state.screen="ready";h.window.Math.random=()=>0;h.api.ready();assert.equal(provider.calls[0].event,"showtime");assert.match(provider.calls[0].text,/Alex, Blair/);assert.match(provider.calls[0].text,/15 seconds/);h.timers.advance(19999);assert.equal(state.screen,"ready");assert.equal(state.game,null);provider.finish();await settle();assert.equal(state.screen,"handoff");assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Alex");assert.ok(state.game);assert.equal(host.history.filter(x=>x.event==="showtime").length,1);assert.equal(provider.calls.filter(x=>x.event==="firstTurn"||x.event==="turn").length,0)}finally{h.close()}
+ const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState(),host=h.api.getHostSystem();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];state.screen="ready";h.window.Math.random=()=>0;h.api.ready();assert.equal(provider.calls[0].event,"showtime");assert.match(provider.calls[0].text,/Alex, Blair/);assert.match(provider.calls[0].text,/15 seconds/);h.timers.advance(19999);assert.equal(state.screen,"ready");assert.equal(state.game,null);provider.finish();await settle();assert.equal(state.screen,"handoff");assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Alex");assert.ok(state.game);assert.equal(host.history.filter(x=>x.event==="showtime").length,1);assert.equal(provider.calls.filter(x=>x.event==="homieHandoff").length,1);assert.equal(provider.calls.filter(x=>x.event==="firstTurn"||x.event==="turn").length,0)}finally{h.close()}
 });
 
 test("Showtime timeout degrades to explicit Start instead of treating Host failure as completion",async()=>{
@@ -79,7 +79,7 @@ test("Showtime Back cancels pending Host work and returns to Who's In",async()=>
 });
 
 test("first-player Host line protects the question clock and microphone recovery",async()=>{
- const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];state.screen="ready";h.window.Math.random=()=>0;h.api.ready();provider.finish();await settle();assert.equal(state.screen,"handoff");assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Alex");assert.equal(provider.calls.filter(x=>x.event==="firstTurn"||x.event==="turn").length,0);assert.equal(provider.calls.filter(x=>x.event==="lockIn").length,0);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"stopped");h.timers.advance(449);assert.equal(h.document.getElementById("handoffCount").textContent,"");h.timers.advance(1);assert.equal(h.document.getElementById("handoffCount").textContent,"3");h.timers.advance(3000);assert.equal(state.screen,"question");assert.equal(provider.calls.at(-1).event,"questionRead");assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().questionReading,true);provider.finish();await settle();assert.ok(h.recognition()?.started);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"stopped");h.timers.advance(200);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"running");assert.equal(state.game.questionRemaining,state.questionSeconds)}finally{h.close()}
+ const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];state.screen="ready";h.window.Math.random=()=>0;h.api.ready();provider.finish();await settle();assert.equal(state.screen,"handoff");assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Alex");assert.equal(provider.calls.filter(x=>x.event==="firstTurn"||x.event==="turn").length,0);assert.equal(provider.calls.filter(x=>x.event==="homieHandoff").length,1);assert.equal(provider.calls.filter(x=>x.event==="lockIn").length,0);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"stopped");provider.finish();await settle();h.timers.advance(449);assert.equal(h.document.getElementById("handoffCount").textContent,"");h.timers.advance(1);assert.equal(h.document.getElementById("handoffCount").textContent,"3");h.timers.advance(3000);assert.equal(state.screen,"question");assert.equal(provider.calls.at(-1).event,"questionRead");assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().questionReading,true);provider.finish();await settle();assert.ok(h.recognition()?.started);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"stopped");h.timers.advance(200);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().answerTimer,"running");assert.equal(state.game.questionRemaining,state.questionSeconds)}finally{h.close()}
 });
 
 test("Solo Showtime uses a short Solo welcome and provider failure starts the fair fallback safely",async()=>{
@@ -98,8 +98,23 @@ test("Back and Exit cleanup invalidate an active handoff countdown",()=>{
  for(const action of ["back","leaveGame"]){const h=createHarness();try{const state=h.api.getState();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];h.api.startGame();h.timers.advance(450);assert.equal(h.document.getElementById("handoffCount").textContent,"3");h.api[action]();assert.equal(state.screen,"home",action);const session=h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().runtimeSessionId;h.timers.advance(30000);assert.equal(state.screen,"home",action);assert.equal(h.window.__LOS_PLAYTEST_DIAGNOSTICS__.snapshot().runtimeSessionId,session,action)}finally{h.close()}}
 });
 
-test("handoff countdown no longer waits on a redundant Host turn announcement",()=>{
- const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState();state.mode="original";state.players=[{id:"p1",name:"Alex"},{id:"p2",name:"Blair"}];h.api.startGame();assert.equal(state.screen,"handoff");assert.equal(provider.calls.filter(x=>["firstTurn","turn","soloTurn"].includes(x.event)).length,0);h.timers.advance(449);assert.equal(h.document.getElementById("handoffCount").textContent,"");h.timers.advance(1);assert.equal(h.document.getElementById("handoffCount").textContent,"3");h.timers.advance(3000);assert.equal(state.screen,"question")}finally{h.close()}
+test("player handoff uses one complete natural LOWLOW line and waits before countdown",async()=>{
+ const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{
+  const state=h.api.getState();state.mode="original";state.players=[{id:"p1",name:"Patricia"},{id:"p2",name:"Blair"}];h.window.Math.random=()=>0;
+  h.api.startGame();assert.equal(state.screen,"handoff");
+  const cues=provider.calls.filter(x=>x.event==="homieHandoff");
+  assert.equal(cues.length,1);
+  assert.match(cues[0].text,/Patty/);
+  assert.doesNotMatch(cues[0].text,/Patricia/);
+  assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Patricia");
+  h.timers.advance(5000);
+  assert.equal(state.screen,"handoff");
+  assert.equal(h.document.getElementById("handoffCount").textContent,"");
+  provider.finish();await settle();
+  h.timers.advance(449);assert.equal(h.document.getElementById("handoffCount").textContent,"");
+  h.timers.advance(1);assert.equal(h.document.getElementById("handoffCount").textContent,"3");
+  h.timers.advance(3000);assert.equal(state.screen,"question");
+ }finally{h.close()}
 });
 
 test("first, later, replay, and Solo turns each render exactly one Player-Up stage",async()=>{
