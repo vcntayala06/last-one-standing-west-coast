@@ -3,3 +3,6 @@ node_modules/
 test-results/
 .env
 assets/visual-6.36/references - West Coast/
+
+# Generated local LOWLOW handoff recordings (copy this folder in local backups)
+runtime-voice-cache/
