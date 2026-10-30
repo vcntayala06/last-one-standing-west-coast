@@ -258,3 +258,21 @@ test("Player picker HEAR NAME previews full LOWLOW line without starting the gam
   assert.equal(state.game,null);
  }finally{h.close()}
 });
+
+test("custom LOWLOW SAYS name is saved without changing the player's display name",()=>{
+ const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{
+  const state=h.api.getState();state.screen="players";h.api.players();h.click("#add");
+  const form=h.document.querySelector(".los-player-sheet");
+  form.querySelector('[name="firstName"]').value="Natika";
+  form.querySelector('[name="spokenName"]').value="Nuh-TEE-kuh";
+  form.dispatchEvent(new h.window.Event("submit",{bubbles:true,cancelable:true}));
+  assert.equal(state.players[0].name,"Natika");
+  assert.equal(state.players[0].spokenName,"Nuh-TEE-kuh");
+  const profiles=JSON.parse(h.window.localStorage.getItem("los636_player_profiles"));
+  assert.equal(profiles[0].name,"Natika");
+  assert.equal(profiles[0].spokenName,"Nuh-TEE-kuh");
+  state.players.push({id:"second",name:"Vince"});h.api.startGame();
+  assert.match(provider.calls[0].text,/Nuh-TEE-kuh/);
+  assert.equal(h.document.querySelector(".handoff-player-name").textContent,"Natika");
+ }finally{h.close()}
+});
