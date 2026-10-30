@@ -20,7 +20,8 @@ const provider={
   if(statusReady)await statusReady;if(provider.available===false)throw new Error("Natural Host is not configured");
   if(current)provider.cancel("superseded");
   const dynamicName=String(cue.context?.name||"").trim();
-  const cacheable=!dynamicName||!String(cue.text).toLocaleLowerCase().includes(dynamicName.toLocaleLowerCase());
+  // Cache full, already-synthesized handoff phrases by voice + complete text.
+  const cacheable=cue.event==="homieHandoff"||!dynamicName||!String(cue.text).toLocaleLowerCase().includes(dynamicName.toLocaleLowerCase());
   diagnostics.requests++;record("request",{id,hostEventId,event:cue.event,screen:cue.context?.screen,runtimeSession:cue.context?.runtimeSession,cacheable});
   current={id,controller,audio:null,url:null,settle:null};
   try{
