@@ -234,3 +234,27 @@ test("Stage 6.37 diagnostics correlate Host IDs transitions lifetimes and build 
 test("Stage 6.15 Host event matrix carries correlated playback requests",async()=>{
  const provider=new FakeNaturalHostProvider(),h=createHarness({hostProvider:provider});try{const state=h.api.getState(),host=h.api.getHostSystem();state.voiceOn=true;h.window.Math.random=()=>0;const matrix=[["opening",{}],["showtime",{players:"Alex and Blair",seconds:15}],["firstTurn",{name:"Alex"}],["lockIn",{}],["questionRead",{question:"What planet is red?",name:"Alex"}],["correct",{name:"Alex"}],["wrong",{name:"Alex"}],["answerReveal",{name:"Alex",answer:"Mars"}],["showdown",{}],["champion",{name:"Alex"}]];for(const [event,context] of matrix){assert.equal(host.emit(event,context),true,event);const cue=provider.calls.at(-1),entry=host.history.at(-1);assert.equal(cue.event,event);assert.equal(cue.hostEventId,entry.hostEventId);assert.equal(entry.screen,state.screen);provider.finish();await settle();assert.equal(entry.result,"playback-completed",event)} }finally{h.close()}
 });
+
+test("Homie Vibe handoff phrases rotate independently for the same player",()=>{
+ const h=createHarness();try{
+  const host=h.api.getHostSystem();h.window.Math.random=()=>0;
+  const vince=Array.from({length:4},()=>host.choose("homieHandoff",{name:"Vince",playerId:"vince"}));
+  assert.equal(new Set(vince.map(line=>line.id)).size,4);
+  for(const line of vince){assert.match(line.text,/Vince/);assert.equal(line.workSafe,true);assert.equal(line.text.split("Vince").length,2)}
+  const patty=host.choose("homieHandoff",{name:"Patty",playerId:"patricia"});
+  assert.match(patty.text,/Patty/);
+  assert.equal(h.api.getState().game,null);
+ }finally{h.close()}
+});
+
+test("Player picker HEAR NAME previews full LOWLOW line without starting the game",()=>{
+ const provider=new FakeNaturalHostProvider(),storage={los636_player_profiles:JSON.stringify([{id:"patty",firstName:"Patricia",lastName:"",nickname:"",name:"Patricia",avatar:"silhouette"}])};
+ const h=createHarness({storage,hostProvider:provider});try{
+  const state=h.api.getState();state.screen="players";h.api.players();h.click("#selectPlayers");
+  h.click('[data-picker-preview="patty"]');
+  assert.equal(provider.calls.filter(x=>x.event==="homieHandoff").length,1);
+  assert.match(provider.calls.at(-1).text,/Patty/);
+  assert.ok(h.document.querySelector(".los-player-picker"));
+  assert.equal(state.game,null);
+ }finally{h.close()}
+});
