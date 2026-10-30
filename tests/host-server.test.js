@@ -4,6 +4,7 @@ const test=require("node:test");
 const assert=require("node:assert/strict");
 const fs=require("node:fs");
 const path=require("node:path");
+const os=require("node:os");
 const http=require("node:http");
 const {createAppServer}=require("../server");
 
@@ -69,4 +70,22 @@ test("normal response completion never aborts upstream while a true client disco
  let normalSignal;await withServer({env:configured,fetchImpl:async(_url,options)=>{normalSignal=options.signal;return new Response(Buffer.from("audio"),{status:200,headers:{"content-type":"audio/mpeg"}})}},async base=>{const r=await fetch(base+"/api/host-speech",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({text:"Normal completion"})});assert.equal(r.status,200);await r.arrayBuffer();await new Promise(resolve=>setImmediate(resolve));assert.equal(normalSignal.aborted,false)});
  let aborted=false,started;const upstreamStarted=new Promise(resolve=>started=resolve);
  await withServer({env:configured,fetchImpl:(_url,options)=>new Promise((_resolve,reject)=>{started();options.signal.addEventListener("abort",()=>{aborted=true;reject(Object.assign(new Error("client left"),{name:"AbortError"}))},{once:true})})},async base=>{const target=new URL(base+"/api/host-speech"),request=http.request({hostname:target.hostname,port:target.port,path:target.pathname,method:"POST",headers:{"content-type":"application/json"}});request.on("error",()=>{});request.end(JSON.stringify({text:"Disconnect test"}));await upstreamStarted;request.destroy();await new Promise(resolve=>setTimeout(resolve,20));assert.equal(aborted,true)});
+});
+
+test("full Homie Vibe recordings use softer delivery and survive a local server restart",async()=>{
+ const cacheDir=fs.mkdtempSync(path.join(os.tmpdir(),"los-low-low-")),input={event:"homieHandoff",text:"Hey, Patty, you're up.",cacheable:true};
+ let calls=0,settings;
+ const upstream=async(_url,options)=>{calls++;settings=JSON.parse(options.body).voice_settings;return new Response(Buffer.from("complete-phrase-audio"),{status:200,headers:{"content-type":"audio/mpeg"}})};
+ const speak=base=>fetch(base+"/api/host-speech",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(input)});
+ try{
+  await withServer({env:configured,fetchImpl:upstream,handoffCacheDir:cacheDir},async base=>{
+   const first=await speak(base);assert.equal(first.status,200);assert.equal(first.headers.get("x-los-host-source"),"live");assert.equal(await first.text(),"complete-phrase-audio");
+   assert.equal(settings.speed,.94);assert.equal(settings.style,.12);assert.equal(settings.stability,.68);
+   assert.equal(fs.readdirSync(cacheDir).filter(name=>name.endsWith(".mp3")).length,1);
+  });
+  await withServer({env:configured,fetchImpl:upstream,handoffCacheDir:cacheDir},async base=>{
+   const second=await speak(base);assert.equal(second.status,200);assert.equal(second.headers.get("x-los-host-source"),"disk");assert.equal(await second.text(),"complete-phrase-audio");
+  });
+  assert.equal(calls,1,"approved voice clip should play from the locally stored recording");
+ }finally{fs.rmSync(cacheDir,{recursive:true,force:true})}
 });
