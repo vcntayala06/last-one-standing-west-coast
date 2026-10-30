@@ -52,15 +52,18 @@ function createAppServer(options={}){
  const serverStartedAt=new Date().toISOString(),sha256=relative=>crypto.createHash("sha256").update(fs.readFileSync(path.join(root,relative))).digest("hex"),gitValue=args=>{try{return childProcess.execFileSync("git",args,{cwd:root,encoding:"utf8",stdio:["ignore","pipe","ignore"]}).trim()}catch{return"unavailable"}};
  const apiKey=String(env.ELEVENLABS_API_KEY||""),voiceId=String(env.ELEVENLABS_VOICE_ID||""),model=String(env.ELEVENLABS_MODEL_ID||"eleven_flash_v2_5");
  const timeoutMs=Math.max(500,Number(env.LOS_HOST_REQUEST_TIMEOUT_MS)||8000),cache=createLru(Math.max(1,Number(env.LOS_HOST_CACHE_SIZE)||96));
+ const handoffCacheDir=path.resolve(options.handoffCacheDir||path.join(root,"runtime-voice-cache","homie-handoff"));
  const configured=!!(apiKey&&voiceId&&fetchImpl);let lastHostRequest={result:"not-requested",source:null,providerRequest:"not-attempted",at:null,event:null,upstreamStatus:null,bytes:0,mimeType:null,latencyMs:null,retryAttempted:false};
  async function synthesize({text,event,priority,signal}){
-  const speed=priority==="critical"?1.02:event==="fastCorrect"?1.07:1,url=`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128`,started=Date.now();let retryAttempted=false;
+  // LOWLOW player handoffs are quieter, steadier and slightly slower; other Host cues keep their approved settings.
+  const casual=event==="homieHandoff",speed=casual?.94:priority==="critical"?1.02:event==="fastCorrect"?1.07:1,url=`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}/stream?output_format=mp3_44100_128`,started=Date.now();let retryAttempted=false;
+  const voiceSettings=casual?{stability:.68,similarity_boost:.78,style:.12,use_speaker_boost:true,speed}:{stability:.42,similarity_boost:.72,style:.38,use_speaker_boost:true,speed};
   for(let attempt=1;attempt<=2;attempt++){
    const controller=new AbortController();let timedOut=false,clientAborted=false;
    const relayAbort=()=>{clientAborted=true;controller.abort()};if(signal?.aborted)relayAbort();else signal?.addEventListener("abort",relayAbort,{once:true});
    const timer=setTimeout(()=>{timedOut=true;controller.abort()},timeoutMs);
    try{
-    const upstream=await fetchImpl(url,{method:"POST",headers:{"content-type":"application/json","accept":"audio/mpeg","xi-api-key":apiKey},signal:controller.signal,body:JSON.stringify({text,model_id:model,voice_settings:{stability:.42,similarity_boost:.72,style:.38,use_speaker_boost:true,speed}})});
+    const upstream=await fetchImpl(url,{method:"POST",headers:{"content-type":"application/json","accept":"audio/mpeg","xi-api-key":apiKey},signal:controller.signal,body:JSON.stringify({text,model_id:model,voice_settings:voiceSettings})});
     if(transientStatus(upstream.status)&&attempt===1){retryAttempted=true;await upstream.arrayBuffer().catch(()=>{});continue}
     const type=String(upstream.headers.get("content-type")||""),audio=upstream.ok?Buffer.from(await upstream.arrayBuffer()):null,providerDetail=upstream.ok?null:safeProviderDetail(await upstream.text());
     let category=upstream.status===401||upstream.status===403?"provider_auth":upstream.status===429?"provider_rate_limit":upstream.status>=500?"provider_5xx":upstream.ok?null:"provider_4xx";
@@ -87,8 +90,10 @@ function createAppServer(options={}){
     if(!configured)return json(res,503,{error:"Natural Host is not configured"});
     const input=healthCheck?{}:await bodyJson(req),text=healthCheck?"Host audio test.":String(input.text||"").trim(),event=healthCheck?"health":String(input.event||"").slice(0,40);
     if(!text||text.length>500)return json(res,400,{error:"Host text must contain 1-500 characters"});
-    const cacheable=input.cacheable===true,speed=input.priority==="critical"?1.02:event==="fastCorrect"?1.07:1,key=crypto.createHash("sha256").update(JSON.stringify({provider:"elevenlabs",model,voiceId,text,speed,style:"los-host-v1"})).digest("hex");
-    const cached=cacheable&&cache.get(key);if(cached){lastHostRequest={result:"cache-hit",source:"cache",providerRequest:"not-attempted",at:Date.now(),event,upstreamStatus:null,bytes:cached.length,mimeType:"audio/mpeg",latencyMs:0,retryAttempted:false};res.writeHead(200,{"content-type":"audio/mpeg","content-length":cached.length,"cache-control":"private, max-age=3600","x-los-host-cache":"hit","x-los-host-source":"cache"});return res.end(cached)}
+    const cacheable=input.cacheable===true,casual=event==="homieHandoff",speed=casual?.94:input.priority==="critical"?1.02:event==="fastCorrect"?1.07:1,key=crypto.createHash("sha256").update(JSON.stringify({provider:"elevenlabs",model,voiceId,text,speed,style:casual?"los-homie-vibe-v1":"los-host-v1"})).digest("hex");
+    const persistentHandoff=casual&&cacheable,handClip=persistentHandoff?path.join(handoffCacheDir,key+".mp3"):null;
+    const cached=cacheable&&cache.get(key),diskCached=handClip&&!cached?await fs.promises.readFile(handClip).catch(()=>null):null,clip=cached||diskCached;
+    if(clip){if(diskCached)cache.set(key,diskCached);const source=diskCached?"disk":"cache";lastHostRequest={result:"cache-hit",source,providerRequest:"not-attempted",at:Date.now(),event,upstreamStatus:null,bytes:clip.length,mimeType:"audio/mpeg",latencyMs:0,retryAttempted:false};res.writeHead(200,{"content-type":"audio/mpeg","content-length":clip.length,"cache-control":"private, max-age=3600","x-los-host-cache":"hit","x-los-host-source":source});return res.end(clip)}
     const clientController=new AbortController();req.once("aborted",()=>clientController.abort());res.once("close",()=>{if(!res.writableEnded)clientController.abort()});
     const result=await synthesize({text,event,priority:input.priority,signal:clientController.signal}),audio=result.audio,type=result.type||"";
     lastHostRequest={result:result.ok?"response-received":"provider-failed",source:"live",providerRequest:result.ok?"completed":"failed",at:Date.now(),event,upstreamStatus:result.status||null,bytes:audio?.length||0,mimeType:type||null,latencyMs:result.latencyMs,retryAttempted:result.retryAttempted,category:result.category,providerDetail:result.providerDetail||null,error:result.error||null,endpoint:result.endpoint,method:result.method,model:result.model,voiceIdPresent:!!voiceId,textLength:result.textLength};
@@ -98,7 +103,7 @@ function createAppServer(options={}){
     lastHostRequest.result="audio-ready";
     lastHostRequest.category=null;
     if(healthCheck)return json(res,200,{configured:true,upstreamReachable:true,authorizationAccepted:true,audioBytes:audio.length,mimeType:type,latencyMs:result.latencyMs,retryAttempted:result.retryAttempted});
-    if(cacheable)cache.set(key,audio);
+    if(cacheable){cache.set(key,audio);if(handClip){try{await fs.promises.mkdir(handoffCacheDir,{recursive:true});await fs.promises.writeFile(handClip,audio,{flag:"wx"})}catch(error){if(error?.code!=="EEXIST")console.warn("Could not preserve handoff audio clip:",String(error?.code||error?.message||error))}}}
     res.writeHead(200,{"content-type":type,"content-length":audio.length,"cache-control":"private, max-age=3600","x-los-host-cache":"miss","x-los-host-source":"live"});return res.end(audio);
    }
    if(req.method!=="GET"&&req.method!=="HEAD")return json(res,405,{error:"Method not allowed"});
